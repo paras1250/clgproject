@@ -1,0 +1,180 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                  AI CHATBOT BUILDER - SETUP INSTRUCTIONS                      ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🎉 CONGRATULATIONS! Your AI Chatbot Builder is ready!
+
+Follow these steps to get started:
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: GET YOUR API KEYS
+═══════════════════════════════════════════════════════════════════════════════
+
+1. MongoDB Atlas (Database):
+   • Go to: https://www.mongodb.com/cloud/atlas
+   • Create a free account
+   • Create a new cluster (choose FREE tier)
+   • Create a database user (remember the password!)
+   • Add IP whitelist: 0.0.0.0/0 (allow all IPs for development)
+   • Get connection string: Click "Connect" > "Connect your application"
+   • Copy the connection string
+   • Example: mongodb+srv://username:password@cluster.mongodb.net/database
+
+2. Hugging Face (AI Models):
+   • Go to: https://huggingface.co
+   • Create a free account
+   • Click your profile > Settings > Access Tokens
+   • Click "New token"
+   • Name it: "chatbot-builder"
+   • Select "Read" permissions
+   • Copy the token
+   • Example: your_huggingface_token_here
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: SETUP BACKEND
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open Terminal/Command Prompt
+2. Navigate to the project folder:
+   cd ai-chatbot-builder
+
+3. Navigate to backend folder:
+   cd backend
+
+4. Install dependencies:
+   npm install
+
+5. Create .env file (copy from example):
+   • On Windows: copy .env.example .env
+   • On Mac/Linux: cp .env.example .env
+
+6. Edit .env file with your credentials:
+   • Replace MONGODB_URI with your MongoDB connection string
+   • Replace JWT_SECRET with a random string (use any password generator)
+   • Replace HF_API_KEY with your Hugging Face token
+
+7. Start the backend server:
+   npm run dev
+
+   ✅ Backend is running on: http://localhost:5000
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: SETUP FRONTEND
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open a NEW Terminal/Command Prompt window
+2. Navigate to frontend folder:
+   cd frontend
+
+3. Install dependencies:
+   npm install
+
+4. Create .env.local file:
+   • On Windows: copy .env.example .env.local
+   • On Mac/Linux: cp .env.example .env.local
+
+5. Edit .env.local if needed:
+   • NEXT_PUBLIC_API_URL should be: http://localhost:5000
+
+6. Start the frontend server:
+   npm run dev
+
+   ✅ Frontend is running on: http://localhost:3000
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 4: TEST YOUR APPLICATION
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open your browser
+2. Go to: http://localhost:3000
+
+3. Create an account:
+   • Click "Get Started Free"
+   • Fill in your details
+   • Click "Sign Up"
+
+4. Create your first chatbot:
+   • Click "Create Bot"
+   • Give it a name
+   • Optionally upload a document
+   • Click "Create & Continue"
+
+5. Test the chatbot:
+   • Type a message
+   • See the AI response!
+
+6. View analytics:
+   • Go to Dashboard
+   • See your stats!
+
+═══════════════════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+Problem: "Cannot connect to MongoDB"
+Solution:
+  • Check your connection string is correct
+  • Make sure you replaced <password> with actual password
+  • Verify IP whitelist in MongoDB Atlas includes 0.0.0.0/0
+  • Wait a few minutes if you just created the cluster
+
+Problem: "HF_API_KEY error"
+Solution:
+  • Verify your Hugging Face token is correct
+  • Make sure token has "Read" permissions
+  • Try generating a new token
+
+Problem: "Port already in use"
+Solution:
+  • Kill the process using the port
+  • Or change the port in .env/.env.local
+
+Problem: "npm install fails"
+Solution:
+  • Delete node_modules folder
+  • Delete package-lock.json
+  • Run npm install again
+  • Make sure you have Node.js 18+ installed
+
+Problem: "Module not found"
+Solution:
+  • Make sure you're in the correct folder (backend or frontend)
+  • Run npm install again
+  • Check that you installed all dependencies
+
+═══════════════════════════════════════════════════════════════════════════════
+NEXT STEPS
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ Read README.md for full documentation
+✅ Check QUICKSTART.md for quick reference
+✅ See DEPLOYMENT.md to deploy to production
+✅ Read API.md for API documentation
+
+═══════════════════════════════════════════════════════════════════════════════
+HELPFUL COMMANDS
+═══════════════════════════════════════════════════════════════════════════════
+
+Backend:
+  npm install         - Install dependencies
+  npm run dev         - Start development server
+  npm start           - Start production server
+
+Frontend:
+  npm install         - Install dependencies
+  npm run dev         - Start development server
+  npm run build       - Build for production
+  npm start           - Start production server
+
+═══════════════════════════════════════════════════════════════════════════════
+SUPPORT
+═══════════════════════════════════════════════════════════════════════════════
+
+• Check CONTRIBUTING.md for guidelines
+• Open issues on GitHub if you find bugs
+• Read PROJECT_SUMMARY.md for project overview
+
+═══════════════════════════════════════════════════════════════════════════════
+ENJOY BUILDING AI CHATBOTS! 🚀
+═══════════════════════════════════════════════════════════════════════════════
+

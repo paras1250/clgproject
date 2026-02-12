@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+@theme {
+  --color-primary: #0a0807;
+  --color-secondary: #b6ed43;
+  --color-tertiary: #d200d3;
+  --color-quaternary: #615568;
+
+  --color-beige: #fef2ea;
+  --color-green-card: #dbf6a2;
+  --color-orange-card: #ffa13c;
+  --color-tan-start: #feefe5;
+  --color-tan-end: #fffcf9;
+
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+}
+
+:root {
+  --bg-tan: linear-gradient(288deg, var(--color-tan-start) 29.08%, var(--color-tan-end) 93.86%);
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-tan);
+  color: var(--color-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.noupe-bold {
+  font-weight: 700;
+}
+
+.noupe-semibold {
+  font-weight: 600;
+}
+
+.noupe-medium {
+  font-weight: 500;
+}
+
+.noupe-color-tertiary {
+  color: var(--color-tertiary);
+}
+
+.noupe-button {
+  @apply inline-flex items-center justify-center rounded-2xl font-semibold cursor-pointer transition-all border-none outline-none;
+}
+
+.noupe-button-primary {
+  @apply bg-primary text-white hover:opacity-90;
+}
+
+.noupe-button-google {
+  @apply bg-[#0076FF] text-white hover:opacity-90;
+}
+
+.noupe-blur-white {
+  @apply backdrop-blur-md bg-[#fffcf9]/80 border-b border-white/20;
+}
+
+/* Chatbot Mockup Styles */
+.chatbot-container {
+  @apply bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-white/40 flex flex-col relative;
+  z-index: 10;
+}
+
+.chatbot-container-header {
+  @apply bg-primary p-4 flex items-center gap-2 text-white shrink-0;
+}
+
+.chatbot-container-body {
+  @apply p-4 flex flex-col gap-4 overflow-y-auto;
+}
+
+.noupe-message {
+  @apply p-4 rounded-2xl max-w-[85%] text-sm leading-relaxed;
+}
+
+.noupe-message.agent {
+  @apply bg-white shadow-sm self-start border border-gray-100 flex flex-col gap-1;
+}
+
+.noupe-message.user {
+  @apply bg-gray-100 self-end opacity-0 h-4 w-32;
+  /* Placeholder like in source mockup */
+}
+
+/* Animations from source */
+@keyframes thinking-dot {
+
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+}
+
+.thinking-dots {
+  @apply flex gap-1 mb-1;
+}
+
+.thinking-dots .dot {
+  @apply w-1.5 h-1.5 bg-gray-400 rounded-full;
+  animation: thinking-dot 1.4s infinite ease-in-out both;
+}
+
+.thinking-dots .dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.thinking-dots .dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+/* Grid Utilities */
+.noupe-grid {
+  @apply grid gap-6;
+}
+
+/* Cloud Animations */
+.noupe-cloud-1 {
+  animation: float 20s infinite ease-in-out;
+}
+
+.noupe-cloud-2 {
+  animation: float 25s infinite ease-in-out reverse;
+}
+
+.noupe-cloud-3 {
+  animation: float 18s infinite ease-in-out 2s;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
+}

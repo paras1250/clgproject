@@ -1,0 +1,32 @@
+// ADD THIS FUNCTION TO builder.tsx AFTER LINE 79 (after the generateEmbedScript useEffect)
+
+  // Function to save customization settings to database before proceeding to Step 5
+  const saveCustomizationAndProceed = async () => {
+    if (!createdBot) return;
+    
+    try {
+      setLoadingMessage('Saving customization settings...');
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/bots/${createdBot.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get('token')}`
+        },
+        body: JSON.stringify({
+          widget_customization: customization
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to save customization');
+      }
+      
+      setLoadingMessage('');
+      setCurrentStep(5);
+    } catch (error: any) {
+      console.error('Error saving customization:', error);
+      setLoadingMessage('');
+      showToast('Failed to save customization settings. Please try again.', 'error');
+    }
+  };

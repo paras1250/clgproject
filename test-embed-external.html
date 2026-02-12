@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embed Script Test - External Website Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+        }
+
+        .test-steps {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .test-steps li {
+            margin: 10px 0;
+        }
+
+        code {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🤖 Chatbot Embed Test Page</h1>
+
+        <div class="status">
+            <strong>Status:</strong> Testing embed script on external website
+        </div>
+
+        <p>This page simulates an external website embedding your chatbot.</p>
+
+        <h2>What Should Happen:</h2>
+        <ul>
+            <li>✅ A chat button should appear in the bottom-right corner</li>
+            <li>✅ Clicking it should open the chatbot widget</li>
+            <li>✅ You should be able to send messages and get responses</li>
+        </ul>
+
+        <h2>If It Doesn't Work:</h2>
+        <div class="test-steps">
+            <strong>Troubleshooting Steps:</strong>
+            <ol>
+                <li>Open browser DevTools (Press <code>F12</code>)</li>
+                <li>Check the <strong>Console</strong> tab for errors</li>
+                <li>Check the <strong>Network</strong> tab:
+                    <ul>
+                        <li>Look for the <code>embed.js</code> request</li>
+                        <li>Check if it returns 200 OK or an error (404, 500, etc.)</li>
+                        <li>Check for CORS errors</li>
+                    </ul>
+                </li>
+                <li>Common Issues:
+                    <ul>
+                        <li><strong>404 Error:</strong> Bot ID doesn't exist or is inactive</li>
+                        <li><strong>CORS Error:</strong> Backend CORS configuration issue</li>
+                        <li><strong>Connection Failed:</strong> Backend server not running</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <h2>Test Instructions:</h2>
+        <ol>
+            <li>Make sure backend is running on <code>http://localhost:5000</code></li>
+            <li>Replace <code>YOUR_BOT_ID</code> in the script tag below with your actual bot ID</li>
+            <li>Open this HTML file in a browser</li>
+            <li>Check if the chat button appears</li>
+        </ol>
+
+        <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <strong>⚠️ Important:</strong> Update the bot ID in the script tag below!
+        </div>
+    </div>
+
+    <!-- 
+        REPLACE 'YOUR_BOT_ID' WITH YOUR ACTUAL BOT ID
+        You can find your bot ID in the dashboard or database
+    -->
+    <script src="http://localhost:5000/api/bots/YOUR_BOT_ID/embed.js"></script>
+
+    <script>
+        // Log when page loads to verify this script runs
+        console.log('🔍 Embed test page loaded');
+        console.log('⏰ Waiting for chatbot embed script to load...');
+
+        // Check if widget loaded after 2 seconds
+        setTimeout(function () {
+            var widget = document.querySelector('[id^="ai-chatbot-widget"]');
+            var button = document.querySelector('[id^="ai-chatbot-toggle"]');
+
+            if (button) {
+                console.log('✅ Chatbot button found!');
+            } else {
+                console.error('❌ Chatbot button NOT found. Check:');
+                console.error('   1. Is backend running?');
+                console.error('   2. Is bot ID correct?');
+                console.error('   3. Is bot active in database?');
+                console.error('   4. Check Network tab for embed.js errors');
+            }
+        }, 2000);
+    </script>
+</body>
+
+</html>

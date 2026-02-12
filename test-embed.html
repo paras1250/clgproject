@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Embed Test - IFrame Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .instructions {
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            border-left: 4px solid #00bcd4;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .instructions h3 {
+            color: #00838f;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+            color: #004d40;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Monaco', monospace;
+            font-size: 13px;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .warning-icon {
+            font-size: 24px;
+        }
+
+        .warning-text {
+            color: #6d4c00;
+            font-weight: 500;
+        }
+
+        .test-content {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+        }
+
+        .test-content h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .test-content p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .feature-desc {
+            font-size: 13px;
+            color: #666;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>🤖 Chatbot Embed Test Page</h1>
+                <p>Testing the new iframe-based embed system</p>
+            </div>
+
+            <div class="content">
+                <div class="instructions">
+                    <h3>📋 Instructions</h3>
+                    <ol>
+                        <li>Make sure your backend is running on <code>http://localhost:5000</code></li>
+                        <li>Create a chatbot in the builder (complete all 5 steps)</li>
+                        <li>Copy the bot ID from the embed code in Step 5</li>
+                        <li>Replace <code>YOUR_BOT_ID_HERE</code> in the script tag below</li>
+                        <li>Open this file in your browser</li>
+                        <li>You should see a chat button in the bottom-right corner!</li>
+                    </ol>
+                </div>
+
+                <div class="warning">
+                    <span class="warning-icon">⚠️</span>
+                    <span class="warning-text">Replace <code>YOUR_BOT_ID_HERE</code> in the script tag with your actual
+                        bot ID (UUID format)</span>
+                </div>
+
+                <div class="test-content">
+                    <h2>About This Test Page</h2>
+                    <p>This page demonstrates the new iframe-based chatbot embed system. Unlike the previous
+                        implementation that injected DOM directly, this version uses an isolated iframe to prevent CSS
+                        conflicts with your website.</p>
+                    <p>The chatbot widget should appear as a floating button in the bottom-right corner. Click it to
+                        open the chat window!</p>
+
+                    <div class="features">
+                        <div class="feature">
+                            <div class="feature-icon">🔒</div>
+                            <div class="feature-title">CSS Isolation</div>
+                            <div class="feature-desc">Widget styles won't conflict with your site</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-title">DOM Safe</div>
+                            <div class="feature-desc">Waits for page load before rendering</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">🎨</div>
+                            <div class="feature-title">Customizable</div>
+                            <div class="feature-desc">Uses your bot's color and settings</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">🌐</div>
+                            <div class="feature-title">Cross-Origin Ready</div>
+                            <div class="feature-desc">Works with any website domain</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        AI Chatbot Builder • Iframe Embed System v2.0
+    </footer>
+
+    <!-- CHATBOT EMBED SCRIPT - REPLACE YOUR_BOT_ID_HERE WITH YOUR ACTUAL BOT ID -->
+    <script src="http://localhost:5000/api/bots/0bcbf55d-edff-4beb-8399-494cce03f488/embed.js"></script>
+</body>
+
+</html>

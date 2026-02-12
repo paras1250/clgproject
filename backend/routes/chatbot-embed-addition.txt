@@ -1,0 +1,237 @@
+﻿// New public endpoint to serve embed.js file (no authentication required)
+router.get('/:id/embed.js', async (req, res) => {
+    try {
+        const botId = req.params.id;
+
+        // Get bot details (no authentication required for public embed)
+        const { data: bot, error } = await require('../lib/supabase')
+            .from('bots')
+            .select('*')
+            .eq('id', botId)
+            .eq('is_active', true)
+            .single();
+
+        if (error || !bot) {
+            // Return error as JavaScript comment
+            res.setHeader('Content-Type', 'application/javascript');
+            return res.send(`console.error('Chatbot not found or inactive');`);
+        }
+
+        // Get URLs from environment or use defaults
+        const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
+
+        // Get bot customization settings
+        const widgetCustomization = bot.widget_customization || {};
+        const greetingMessage = bot.greeting_message || 'Hi! How can I help you today?';
+        const embedCode = bot.embed_code;
+
+        // Generate complete embed JavaScript that creates and displays the chatbot widget
+        const embedScript = `
+(function() {
+  // Chatbot configuration
+  var config = {
+    botId: '${botId}',
+    embedCode: '${embedCode}',
+    backendUrl: '${backendUrl}',
+    primaryColor: '${widgetCustomization.primaryColor || '#8b5cf6'}',
+    avatar: '${(widgetCustomization.avatar || 'ðŸ¤–').replace(/'/g, "\\\\'")}',
+    greetingMessage: '${greetingMessage.replace(/'/g, "\\\\'")}',
+    position: '${widgetCustomization.position || 'bottom-right'}',
+    width: '${widgetCustomization.width || '380'}',
+    height: '${widgetCustomization.height || '600'}'
+  };
+
+  // Create chatbot widget
+  function createChatWidget() {
+    // Create container
+    var container = document.createElement('div');
+    container.id = 'ai-chatbot-widget-' + config.botId;
+    container.style.cssText = 'position: fixed; z-index: 9999; ' + 
+      (config.position.includes('bottom') ? 'bottom: 20px;' : 'top: 20px;') +
+      (config.position.includes('right') ? 'right: 20px;' : 'left: 20px;');
+    
+    // Create widget HTML
+    container.innerHTML = \`
+      <div id="chatbot-minimized" style="display: block;">
+        <button onclick="window.toggleChatbot()" style="
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: \${config.primaryColor};
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          font-size: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        ">\${config.avatar}</button>
+      </div>
+      <div id="chatbot-expanded" style="
+        display: none;
+        width: \${config.width}px;
+        height: \${config.height}px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        flex-direction: column;
+        overflow: hidden;
+      ">
+        <div style="
+          background: \${config.primaryColor};
+          color: white;
+          padding: 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        ">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 24px;">\${config.avatar}</span>
+            <span style="font-weight: bold;">AI Assistant</span>
+          </div>
+          <button onclick="window.toggleChatbot()" style="
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 24px;
+          ">âœ•</button>
+        </div>
+        <div id="chatbot-messages" style="
+          flex: 1;
+          overflow-y: auto;
+          padding: 16px;
+          background: #f9fafb;
+        ">
+          <div style="
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          ">\${config.greetingMessage}</div>
+        </div>
+        <div style="
+          padding: 16px;
+          border-top: 1px solid #e5e7eb;
+          background: white;
+        ">
+          <div style="display: flex; gap: 8px;">
+            <input id="chatbot-input" type="text" placeholder="Type your message..." style="
+              flex: 1;
+              padding: 12px;
+              border: 1px solid #d1d5db;
+              border-radius: 8px;
+              outline: none;
+            " />
+            <button onclick="window.sendChatMessage()" style="
+              background: \${config.primaryColor};
+              color: white;
+              border: none;
+              padding: 12px 24px;
+              border-radius: 8px;
+              cursor: pointer;
+              font-weight: bold;
+            ">Send</button>
+          </div>
+        </div>
+      </div>
+    \`;
+    
+    document.body.appendChild(container);
+  }
+
+  // Toggle chatbot visibility
+  window.toggleChatbot = function() {
+    var minimized = document.getElementById('chatbot-minimized');
+    var expanded = document.getElementById('chatbot-expanded');
+    if (minimized.style.display === 'none') {
+      minimized.style.display = 'block';
+      expanded.style.display = 'none';
+    } else {
+      minimized.style.display = 'none';
+      expanded.style.display = 'flex';
+    }
+  };
+
+  // Send chat message
+  window.sendChatMessage = function() {
+    var input = document.getElementById('chatbot-input');
+    var message = input.value.trim();
+    if (!message) return;
+
+    // Add user message to chat
+    var messagesDiv = document.getElementById('chatbot-messages');
+    var userMsg = document.createElement('div');
+    userMsg.style.cssText = 'background: ' + config.primaryColor + '; color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; margin-left: 20%; text-align: right;';
+    userMsg.textContent = message;
+    messagesDiv.appendChild(userMsg);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    input.value = '';
+
+    // Send to backend
+    fetch(config.backendUrl + '/api/bots/embed/' + config.embedCode + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        message: message,
+        sessionId: window.chatbotSessionId || null
+      })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      // Store session ID
+      if (data.sessionId) {
+        window.chatbotSessionId = data.sessionId;
+      }
+      
+      // Add bot response
+      var botMsg = document.createElement('div');
+      botMsg.style.cssText = 'background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
+      botMsg.textContent = data.response;
+      messagesDiv.appendChild(botMsg);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    })
+    .catch(function(error) {
+      console.error('Chat error:', error);
+      var errorMsg = document.createElement('div');
+      errorMsg.style.cssText = 'background: #fee; color: #c00; padding: 12px; border-radius: 8px; margin-bottom: 12px;';
+      errorMsg.textContent = 'Sorry, there was an error. Please try again.';
+      messagesDiv.appendChild(errorMsg);
+    });
+  };
+
+  // Handle Enter key in input
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      var input = document.getElementById('chatbot-input');
+      if (input) {
+        input.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            window.sendChatMessage();
+          }
+        });
+      }
+    }, 100);
+  });
+
+  // Initialize widget when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createChatWidget);
+  } else {
+    createChatWidget();
+  }
+})();
+`;
+
+        res.setHeader('Content-Type', 'application/javascript');
+        res.setHeader('Cache-Control', 'public, max-age=300'); // Cache for 5 minutes
+        res.send(embedScript);
+    } catch (error) {
+        console.error('Embed.js generation error:', error);
+        res.setHeader('Content-Type', 'application/javascript');
+        res.send(`console.error('Failed to load chatbot: ${error.message}');`);
+    }
+});
+

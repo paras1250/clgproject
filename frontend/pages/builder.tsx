@@ -389,24 +389,24 @@ export default function Builder() {
         <title>Edit Chatbot - Conversio AI</title>
       </Head>
 
-      <div className="min-h-screen bg-gradient-premium-bg relative overflow-hidden font-sans text-gray-100">
-        {/* Animated background elements - refined for premium look */}
+      <div className="min-h-screen bg-gradient-premium-bg relative overflow-hidden font-sans">
+        {/* Animated floating background elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute top-[20%] right-[20%] w-[30%] h-[30%] bg-cyan-500/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/15 rounded-full blur-[120px] animate-float-slow"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/15 rounded-full blur-[120px] animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-[20%] right-[20%] w-[30%] h-[30%] bg-cyan-400/10 rounded-full blur-[100px] animate-float-slow" style={{ animationDelay: '4s' }}></div>
         </div>
         <div className="relative z-10">
           <Navbar />
         </div>
 
-        <main className="px-6 py-4 relative z-10">
+        <main className="px-6 py-6 relative z-10">
           {/* Header */}
-          <div className="mb-6 animate-fade-in text-center">
-            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-200 mb-2 tracking-tight drop-shadow-sm">
+          <div className="mb-8 animate-fade-in text-center">
+            <h1 className="text-4xl font-extrabold text-gray-800 mb-2 tracking-tight">
               Build Your AI Workforce
             </h1>
-            <p className="text-lg text-blue-200/80 font-medium max-w-2xl mx-auto">
+            <p className="text-lg text-gray-500 font-medium max-w-2xl mx-auto">
               Create, train, and deploy intelligent agents in minutes.
             </p>
           </div>
@@ -415,7 +415,6 @@ export default function Builder() {
           <StepProgressBar steps={steps} currentStep={currentStep} />
 
           {/* Step Content */}
-          {/* Step Content - Full Width Glass Container */}
           <div className="w-full max-w-[1600px] mx-auto animate-fade-in-up transition-all duration-500 pb-24">
 
             {/* Step 1: Create & Train Agent - Two Panel Layout */}
@@ -425,38 +424,38 @@ export default function Builder() {
                 <div className="lg:col-span-7 space-y-4">
 
                   {/* Identity Card */}
-                  <div className="glass-panel rounded-xl p-6 transform transition-all hover:scale-[1.005] duration-500">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                  <div className="glass-panel rounded-2xl p-6 hover-lift">
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/25 animate-glow">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-gray-900">Agent Identity</h2>
-                        <p className="text-xs text-gray-500 font-medium">Define your agent's persona and role</p>
+                        <h2 className="text-xl font-bold text-gray-800">Agent Identity</h2>
+                        <p className="text-sm text-gray-500 font-medium">Define your agent's persona and role</p>
                       </div>
                     </div>
 
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1">Agent Name</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">Agent Name</label>
                         <input
                           type="text"
                           value={botData.name}
                           onChange={(e) => setBotData({ ...botData, name: e.target.value })}
-                          className="glass-input w-full px-4 py-2.5 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all text-sm font-medium"
+                          className="glass-input w-full px-4 py-2.5 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none transition-all text-sm font-medium"
                           placeholder="e.g., Sales Helper"
                           maxLength={100}
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 mb-1.5 ml-1">Role Description</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">Role Description</label>
                         <textarea
                           value={botData.description}
                           onChange={(e) => setBotData({ ...botData, description: e.target.value })}
                           rows={2}
-                          className="glass-input w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all text-sm min-h-[80px]"
+                          className="glass-input w-full px-4 py-3 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none transition-all text-sm min-h-[80px]"
                           placeholder="Briefly describe what this agent does..."
                         />
                       </div>
@@ -464,44 +463,44 @@ export default function Builder() {
                   </div>
 
                   {/* Knowledge Base Card */}
-                  <div className="glass-panel rounded-xl p-6 transform transition-all hover:scale-[1.005] duration-500">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                  <div className="glass-panel rounded-2xl p-6 hover-lift">
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25 animate-glow">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-gray-900">Knowledge Base</h2>
-                        <p className="text-xs text-gray-500 font-medium">Train your agent with your own data</p>
+                        <h2 className="text-xl font-bold text-gray-800">Knowledge Base</h2>
+                        <p className="text-sm text-gray-500 font-medium">Train your agent with your own data</p>
                       </div>
                     </div>
 
                     {/* Knowledge Source Selection */}
-                    <div className="mb-4 p-0.5 bg-gray-100/50 rounded-lg inline-flex border border-gray-200">
+                    <div className="mb-4 p-1 bg-white/50 backdrop-blur-sm rounded-xl inline-flex border border-white/60 shadow-sm">
                       <button
                         onClick={() => setTrainingMethod('text')}
-                        className={`px-4 py-2 rounded-md text-xs font-bold transition-all ${trainingMethod === 'text'
-                          ? 'bg-white text-primary-600 shadow-sm'
-                          : 'text-gray-500 hover:text-gray-900'
+                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'text'
+                          ? 'bg-white text-primary-600 shadow-md'
+                          : 'text-gray-500 hover:text-gray-800'
                           }`}
                       >
                         Raw Text
                       </button>
                       <button
                         onClick={() => setTrainingMethod('files')}
-                        className={`px-4 py-2 rounded-md text-xs font-bold transition-all ${trainingMethod === 'files'
-                          ? 'bg-white text-primary-600 shadow-sm'
-                          : 'text-gray-500 hover:text-gray-900'
+                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'files'
+                          ? 'bg-white text-primary-600 shadow-md'
+                          : 'text-gray-500 hover:text-gray-800'
                           }`}
                       >
                         Documents
                       </button>
                       <button
                         onClick={() => setTrainingMethod('both')}
-                        className={`px-4 py-2 rounded-md text-xs font-bold transition-all ${trainingMethod === 'both'
-                          ? 'bg-white text-primary-600 shadow-sm'
-                          : 'text-gray-500 hover:text-gray-900'
+                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'both'
+                          ? 'bg-white text-primary-600 shadow-md'
+                          : 'text-gray-500 hover:text-gray-800'
                           }`}
                       >
                         Both
@@ -516,7 +515,7 @@ export default function Builder() {
                           onChange={(e) => setTrainingText(e.target.value)}
                           disabled={isLoading}
                           rows={8}
-                          className="glass-input w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all font-mono text-xs leading-relaxed"
+                          className="glass-input w-full px-4 py-3 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none transition-all font-mono text-sm leading-relaxed"
                           placeholder={`Paste your training data here...`}
                         />
                         <div className="mt-2 flex items-center justify-between text-xs px-1">

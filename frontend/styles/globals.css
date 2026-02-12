@@ -1,3 +1,217 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================
+   CONVERSIO AI — Premium Glass Design System
+   ========================================== */
+
+/* Base resets */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+  }
+}
+
+/* ==========================================
+   Glass Morphism Components
+   ========================================== */
+@layer components {
+
+  /* Glass Panel — frosted card with backdrop blur */
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-xl border border-white/40 shadow-lg;
+  }
+
+  .glass-panel:hover {
+    @apply bg-white/90 shadow-xl;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Glass Input — semi-transparent input fields */
+  .glass-input {
+    @apply bg-white/60 backdrop-blur-sm border border-gray-200/60 shadow-inner;
+    transition: all 0.3s ease;
+  }
+
+  .glass-input:focus {
+    @apply bg-white/90 border-blue-400 ring-2 ring-blue-400/30 shadow-md;
+  }
+
+  .glass-input::placeholder {
+    @apply text-gray-400;
+  }
+}
+
+/* ==========================================
+   Premium Background Gradient
+   ========================================== */
+.bg-gradient-premium-bg {
+  background: linear-gradient(135deg,
+      #f0f4ff 0%,
+      #e8eeff 15%,
+      #f5f0ff 30%,
+      #eef6ff 50%,
+      #f0f0ff 70%,
+      #f5f8ff 85%,
+      #f0f4ff 100%);
+}
+
+/* ==========================================
+   Keyframe Animations
+   ========================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes floatSlow {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(-6px) rotate(0.5deg);
+  }
+
+  75% {
+    transform: translateY(4px) rotate(-0.5deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+  }
+}
+
+/* Animation utility classes */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+/* Staggered animation delays */
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+/* ==========================================
+   Utility Enhancements
+   ========================================== */
+
+/* Smooth hover lift for cards */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient text helper */
+.text-gradient {
+  @apply text-transparent bg-clip-text;
+  background-image: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 50%, #6366f1 100%);
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Navbar from '@/components/Navbar';
+import AppHeader from '@/components/AppHeader';
 import FileUploader from '@/components/FileUploader';
 import Cookies from 'js-cookie';
 import { botsAPI } from '@/lib/api';
@@ -10,7 +10,6 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import CollapsibleSection from '@/components/CollapsibleSection';
 import ChatbotWidgetPreview from '@/components/ChatbotWidgetPreview';
 import ConfirmDialog from '@/components/ConfirmDialog';
-import SessionWarning from '@/components/SessionWarning';
 import OfflineDetector from '@/components/OfflineDetector';
 import TrainingDataViewer from '@/components/TrainingDataViewer';
 
@@ -251,7 +250,7 @@ export default function EditBot() {
   if (isLoadingBot) {
     return (
       <>
-        <Navbar />
+        <AppHeader title="Edit Chatbot" breadcrumb="Dashboard / Edit Chatbot" />
         <LoadingSpinner fullScreen text="Loading bot..." />
       </>
     );
@@ -270,7 +269,7 @@ export default function EditBot() {
           <div className="absolute bottom-40 left-20 w-80 h-80 gradient-premium rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
         </div>
         <div className="relative z-10">
-          <Navbar />
+          <AppHeader title="Edit Chatbot" breadcrumb="Dashboard / Edit Chatbot" />
         </div>
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
@@ -738,7 +737,6 @@ Example:
         onConfirm={confirmDialog.onConfirm}
         onCancel={() => setConfirmDialog(prev => ({ ...prev, isOpen: false }))}
       />
-      <SessionWarning />
       <OfflineDetector />
     </>
   );

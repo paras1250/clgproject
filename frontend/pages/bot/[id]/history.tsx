@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Navbar from '@/components/Navbar';
+import AppHeader from '@/components/AppHeader';
 import Cookies from 'js-cookie';
 import api, { botsAPI } from '@/lib/api';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -70,7 +70,7 @@ export default function BotHistory() {
                 <title>Chat History - {botName}</title>
             </Head>
             <div className="min-h-screen bg-gray-50 flex flex-col">
-                <Navbar />
+                <AppHeader title="Chat History" breadcrumb="Dashboard / Chat History" />
 
                 <div className="flex-1 flex max-w-7xl mx-auto w-full px-4 py-8 gap-6 h-[calc(100vh-80px)]">
                     {/* Sidebar List */}

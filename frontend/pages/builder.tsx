@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Navbar from '@/components/Navbar';
+import AppHeader from '@/components/AppHeader';
 import FileUploader from '@/components/FileUploader';
 import ChatbotPreview from '@/components/ChatbotPreview';
 import Cookies from 'js-cookie';
@@ -9,7 +9,6 @@ import { botsAPI } from '@/lib/api';
 import type { Bot } from '@/types/api';
 import { showToast } from '@/components/Toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import SessionWarning from '@/components/SessionWarning';
 import OfflineDetector from '@/components/OfflineDetector';
 import { ChatbotProvider, useChatbot } from '@/components/chatbot-customization/ChatbotContext.jsx';
 import CustomizationPanel from '@/components/chatbot-customization/CustomizationPanel.jsx';
@@ -397,7 +396,7 @@ export default function Builder() {
           <div className="absolute top-[20%] right-[20%] w-[30%] h-[30%] bg-cyan-400/10 rounded-full blur-[100px] animate-float-slow" style={{ animationDelay: '4s' }}></div>
         </div>
         <div className="relative z-10">
-          <Navbar />
+          <AppHeader title="Chat Builder" breadcrumb="Dashboard / Builder" />
         </div>
 
         <main className="px-6 py-6 relative z-10">
@@ -775,7 +774,6 @@ export default function Builder() {
           </div >
         </main >
       </div >
-      <SessionWarning />
       <OfflineDetector />
     </>
   );

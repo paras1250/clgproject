@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ==========================================
-   CONVERSIO AI — Premium Glass Design System
+   CONVERSIO AI — Midnight Blue Design System
    ========================================== */
 
 /* Base resets */
@@ -14,51 +14,92 @@
 
   body {
     @apply antialiased;
+    background-color: #0F172A;
+    color: #F8FAFC;
   }
 }
 
 /* ==========================================
-   Glass Morphism Components
+   Glass Morphism Components (Dark)
    ========================================== */
 @layer components {
 
-  /* Glass Panel — frosted card with backdrop blur */
+  /* Glass Panel — dark frosted card */
   .glass-panel {
-    @apply bg-white/80 backdrop-blur-xl border border-white/40 shadow-lg;
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 
   .glass-panel:hover {
-    @apply bg-white/90 shadow-xl;
+    background: rgba(30, 41, 59, 0.85);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Glass Input — semi-transparent input fields */
+  /* Glass — shorthand alias */
+  .glass {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Glass Input — dark input fields */
   .glass-input {
-    @apply bg-white/60 backdrop-blur-sm border border-gray-200/60 shadow-inner;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #F8FAFC;
     transition: all 0.3s ease;
   }
 
   .glass-input:focus {
-    @apply bg-white/90 border-blue-400 ring-2 ring-blue-400/30 shadow-md;
+    background: rgba(15, 23, 42, 0.8);
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
   }
 
   .glass-input::placeholder {
-    @apply text-gray-400;
+    color: #64748B;
   }
 }
 
 /* ==========================================
-   Premium Background Gradient
+   Premium Background Gradient (Midnight)
    ========================================== */
 .bg-gradient-premium-bg {
   background: linear-gradient(135deg,
-      #f0f4ff 0%,
-      #e8eeff 15%,
-      #f5f0ff 30%,
-      #eef6ff 50%,
-      #f0f0ff 70%,
-      #f5f8ff 85%,
-      #f0f4ff 100%);
+      #0F172A 0%,
+      #131c33 20%,
+      #162032 40%,
+      #0F172A 60%,
+      #141e36 80%,
+      #0F172A 100%);
+}
+
+/* Premium gradient for buttons / accents */
+.gradient-premium {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+}
+
+.gradient-ocean {
+  background: linear-gradient(135deg, #3B82F6 0%, #22D3EE 100%);
+}
+
+/* ==========================================
+   Shadow Utilities (Dark Theme)
+   ========================================== */
+.shadow-lift {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-glow-premium {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.1);
 }
 
 /* ==========================================
@@ -140,11 +181,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
   }
 
   50% {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
   }
 }
 
@@ -170,7 +211,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.15), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
@@ -207,11 +248,153 @@
 
 .hover-lift:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
 }
 
 /* Gradient text helper */
 .text-gradient {
   @apply text-transparent bg-clip-text;
-  background-image: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 50%, #6366f1 100%);
+  background-image: linear-gradient(135deg, #3B82F6 0%, #22D3EE 50%, #3B82F6 100%);
+}
+
+/* ==========================================
+   Chat Mockup — Sequential Animation
+   ========================================== */
+
+/* Slide up from below */
+@keyframes chatSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dots visible then hidden */
+@keyframes dotsShow {
+  0% {
+    opacity: 1;
+    height: auto;
+    margin-bottom: 4px;
+  }
+
+  85% {
+    opacity: 1;
+    height: auto;
+    margin-bottom: 4px;
+  }
+
+  100% {
+    opacity: 0;
+    height: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+  }
+}
+
+/* Text fades in */
+@keyframes textReveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Dot bounce */
+@keyframes dotPulse {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* --- User question 1: appears first at 0s --- */
+.chat-user-1 {
+  opacity: 0;
+  animation: chatSlideUp 0.3s ease-out 0s forwards;
+}
+
+/* --- AI Message 1: starts at 0.5s (after question) --- */
+.chat-msg-1 {
+  opacity: 0;
+  animation: chatSlideUp 0.4s ease-out 0.5s forwards;
+}
+
+.chat-msg-1 .chat-dots {
+  animation: dotsShow 1.5s ease-in-out 0.5s forwards;
+}
+
+.chat-msg-1 .chat-dot {
+  animation: dotPulse 0.6s ease-in-out infinite;
+}
+
+.chat-msg-1 .chat-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.chat-msg-1 .chat-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.chat-msg-1 .chat-text {
+  opacity: 0;
+  animation: textReveal 0.4s ease-out 2s forwards;
+}
+
+.chat-msg-1 .chat-label {
+  opacity: 0;
+  animation: textReveal 0.3s ease-out 2.3s forwards;
+}
+
+/* --- User question 2: appears at 3s --- */
+.chat-user-2 {
+  opacity: 0;
+  animation: chatSlideUp 0.3s ease-out 3s forwards;
+}
+
+/* --- AI Message 2: starts at 3.5s (after question 2) --- */
+.chat-msg-2 {
+  opacity: 0;
+  animation: chatSlideUp 0.4s ease-out 3.5s forwards;
+}
+
+.chat-msg-2 .chat-dots {
+  opacity: 0;
+  animation: textReveal 0.1s ease-out 3.5s forwards, dotsShow 1.5s ease-in-out 3.5s forwards;
+}
+
+.chat-msg-2 .chat-dot {
+  animation: dotPulse 0.6s ease-in-out infinite;
+}
+
+.chat-msg-2 .chat-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.chat-msg-2 .chat-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.chat-msg-2 .chat-text {
+  opacity: 0;
+  animation: textReveal 0.4s ease-out 5s forwards;
+}
+
+.chat-msg-2 .chat-label {
+  opacity: 0;
+  animation: textReveal 0.3s ease-out 5.3s forwards;
 }

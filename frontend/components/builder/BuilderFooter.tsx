@@ -22,13 +22,13 @@ export default function BuilderFooter({
     showBack = true
 }: BuilderFooterProps) {
     return (
-        <div className="fixed bottom-0 left-0 right-0 bg-white/70 backdrop-blur-2xl border-t border-gray-200/60 p-4 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] animate-fade-in-up">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/70 backdrop-blur-2xl border-t border-white/10/60 p-4 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] animate-fade-in-up">
             <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center px-6">
                 {showBack && onBack ? (
                     <button
                         onClick={onBack}
                         disabled={isLoading}
-                        className="text-gray-700 hover:text-gray-900 font-semibold px-6 py-2.5 rounded-xl bg-white/60 hover:bg-white border border-gray-300 transition-all flex items-center gap-2 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
+                        className="text-[#94A3B8] hover:text-[#F8FAFC] font-semibold px-6 py-2.5 rounded-xl bg-white/60 hover:bg-[#1E293B] border border-white/10 transition-all flex items-center gap-2 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

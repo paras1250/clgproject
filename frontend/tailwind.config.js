@@ -20,6 +20,24 @@ module.exports = {
                     800: '#1e40af',
                     900: '#1e3a8a',
                 },
+                dark: {
+                    bg: '#0F172A',
+                    surface: '#1E293B',
+                    border: 'rgba(255,255,255,0.1)',
+                    text: '#F8FAFC',
+                    muted: '#94A3B8',
+                    faint: '#64748B',
+                },
+                accent: {
+                    blue: '#3B82F6',
+                    'blue-hover': '#2563EB',
+                    cyan: '#22D3EE',
+                },
+                status: {
+                    success: '#10B981',
+                    warning: '#F59E0B',
+                    error: '#F43F5E',
+                },
             },
             animation: {
                 'fade-in': 'fadeIn 0.5s ease-out forwards',
@@ -52,8 +70,8 @@ module.exports = {
                     '75%': { transform: 'translateY(4px) rotate(-0.5deg)' },
                 },
                 glow: {
-                    '0%, 100%': { boxShadow: '0 0 15px rgba(59, 130, 246, 0.15)' },
-                    '50%': { boxShadow: '0 0 30px rgba(59, 130, 246, 0.25)' },
+                    '0%, 100%': { boxShadow: '0 0 15px rgba(59, 130, 246, 0.2)' },
+                    '50%': { boxShadow: '0 0 30px rgba(59, 130, 246, 0.4)' },
                 },
             },
             backdropBlur: {

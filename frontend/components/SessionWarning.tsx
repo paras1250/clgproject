@@ -44,12 +44,38 @@ export default function SessionWarning() {
     return () => clearInterval(interval);
   }, [router]);
 
-  const handleExtendSession = () => {
-    // In a real app, you'd refresh the token here
-    // For now, just hide the warning
-    setShowWarning(false);
-    // Ideally, make an API call to refresh the token
-    router.reload();
+  const handleExtendSession = async () => {
+    try {
+      const token = Cookies.get('token');
+      if (!token) {
+        router.push('/login?sessionExpired=true');
+        return;
+      }
+
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${API_URL}/api/auth/refresh-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Save the new token with fresh expiry
+        Cookies.set('token', data.token, { expires: 7 });
+        setShowWarning(false);
+      } else {
+        // Token already expired or invalid, redirect to login
+        Cookies.remove('token');
+        router.push('/login?sessionExpired=true');
+      }
+    } catch (error) {
+      console.error('Error refreshing session:', error);
+      // Fallback: just reload
+      router.reload();
+    }
   };
 
   const handleLogout = () => {
@@ -75,7 +101,7 @@ export default function SessionWarning() {
               Session Expiring Soon
             </h3>
             <p className="text-sm text-gray-700 font-semibold mb-4">
-              Your session will expire in approximately {timeRemaining} minute{timeRemaining !== 1 ? 's' : ''}. 
+              Your session will expire in approximately {timeRemaining} minute{timeRemaining !== 1 ? 's' : ''}.
               Reload the page to extend your session or save your work.
             </p>
             <div className="flex gap-3">
@@ -83,7 +109,7 @@ export default function SessionWarning() {
                 onClick={handleExtendSession}
                 className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg transform hover:scale-105"
               >
-                Reload Page
+                Extend Session
               </button>
               <button
                 onClick={handleLogout}

@@ -14,7 +14,7 @@ export const useChatbot = () => {
 export const ChatbotProvider = ({ children, botId }) => {
     const [selectedAvatar, setSelectedAvatar] = useState('/avatars/avatar1.png');
     const [firstMessage, setFirstMessage] = useState(
-        "Hi there! 👋 I'm Noupe, I'm here to help. How can I assist you today? I can provide you with information on enjoying videos and music you love, uploading original content, and sharing it with friends, family, and the world on YouTube. Feel free to ask me anything!"
+        "Hi there! 👋 I'm Conversio, I'm here to help. How can I assist you today? I can provide you with information on enjoying videos and music you love, uploading original content, and sharing it with friends, family, and the world on YouTube. Feel free to ask me anything!"
     );
     const [themeColor, setThemeColor] = useState('#EF4444'); // Default red
     const [widgetSize, setWidgetSize] = useState('medium'); // small, medium, large

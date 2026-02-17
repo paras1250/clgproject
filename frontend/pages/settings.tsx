@@ -94,7 +94,7 @@ export default function Settings() {
         return (
             <DashboardLayout>
                 <div className="flex items-center justify-center h-[80vh]">
-                    <div className="animate-spin w-8 h-8 border-2 border-[#0A0807] border-t-transparent rounded-full"></div>
+                    <div className="animate-spin w-8 h-8 border-2 border-[#3B82F6] border-t-transparent rounded-full"></div>
                 </div>
             </DashboardLayout>
         );
@@ -107,32 +107,32 @@ export default function Settings() {
             </Head>
 
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-[#0A0807]">Settings</h1>
-                <p className="text-gray-500">Manage your account and preferences.</p>
+                <h1 className="text-2xl font-bold text-[#F8FAFC]">Settings</h1>
+                <p className="text-[#94A3B8]">Manage your account and preferences.</p>
             </div>
 
             <div className="max-w-2xl space-y-6">
                 {/* Account Information */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <div className="bg-[#1E293B] rounded-2xl border border-white/10 p-6">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
-                            <User size={20} className="text-gray-600" />
+                        <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
+                            <User size={20} className="text-[#94A3B8]" />
                         </div>
-                        <h2 className="text-lg font-bold text-[#0A0807]">Account Information</h2>
+                        <h2 className="text-lg font-bold text-[#F8FAFC]">Account Information</h2>
                     </div>
 
                     <div className="space-y-4">
                         <div>
-                            <label className="text-sm font-medium text-gray-500 block mb-1">Email</label>
-                            <p className="text-[#0A0807] font-medium">{user?.email || 'Not available'}</p>
+                            <label className="text-sm font-medium text-[#64748B] block mb-1">Email</label>
+                            <p className="text-[#F8FAFC] font-medium">{user?.email || 'Not available'}</p>
                         </div>
                         <div>
-                            <label className="text-sm font-medium text-gray-500 block mb-1">Name</label>
-                            <p className="text-[#0A0807] font-medium">{user?.name || 'Not set'}</p>
+                            <label className="text-sm font-medium text-[#64748B] block mb-1">Name</label>
+                            <p className="text-[#F8FAFC] font-medium">{user?.name || 'Not set'}</p>
                         </div>
                         <div>
-                            <label className="text-sm font-medium text-gray-500 block mb-1">Account Created</label>
-                            <p className="text-[#0A0807] font-medium">
+                            <label className="text-sm font-medium text-[#64748B] block mb-1">Account Created</label>
+                            <p className="text-[#F8FAFC] font-medium">
                                 {user?.createdAt
                                     ? new Date(user.createdAt).toLocaleDateString('en-US', {
                                         year: 'numeric',
@@ -146,27 +146,27 @@ export default function Settings() {
                 </div>
 
                 {/* API Key Section */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <div className="bg-[#1E293B] rounded-2xl border border-white/10 p-6">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
-                            <Key size={20} className="text-gray-600" />
+                        <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
+                            <Key size={20} className="text-[#94A3B8]" />
                         </div>
-                        <h2 className="text-lg font-bold text-[#0A0807]">API Key</h2>
+                        <h2 className="text-lg font-bold text-[#F8FAFC]">API Key</h2>
                     </div>
 
                     <div className="space-y-4">
                         <div className="flex items-center gap-3">
-                            <div className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 font-mono text-sm text-gray-600 overflow-hidden">
+                            <div className="flex-1 bg-[#0F172A] border border-white/10 rounded-xl px-4 py-3 font-mono text-sm text-[#94A3B8] overflow-hidden">
                                 {maskApiKey(apiKey)}
                             </div>
                             <button
                                 onClick={copyApiKey}
-                                className="flex items-center gap-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors text-sm font-medium"
+                                className="flex items-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-sm font-medium text-[#F8FAFC]"
                             >
                                 {copied ? (
                                     <>
-                                        <Check size={16} className="text-green-500" />
-                                        <span className="text-green-600">Copied!</span>
+                                        <Check size={16} className="text-[#10B981]" />
+                                        <span className="text-[#10B981]">Copied!</span>
                                     </>
                                 ) : (
                                     <>
@@ -178,27 +178,27 @@ export default function Settings() {
                         </div>
 
                         {showRegenerateWarning ? (
-                            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                            <div className="bg-[#F59E0B]/10 border border-[#F59E0B]/20 rounded-xl p-4">
                                 <div className="flex items-start gap-3">
-                                    <AlertTriangle size={20} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                                    <AlertTriangle size={20} className="text-[#F59E0B] mt-0.5 flex-shrink-0" />
                                     <div>
-                                        <p className="text-sm font-medium text-amber-800 mb-1">
+                                        <p className="text-sm font-medium text-[#F59E0B] mb-1">
                                             Are you sure you want to regenerate your API key?
                                         </p>
-                                        <p className="text-sm text-amber-700 mb-3">
+                                        <p className="text-sm text-[#94A3B8] mb-3">
                                             Your current key will stop working immediately. Any integrations using the old key will need to be updated.
                                         </p>
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={regenerateApiKey}
                                                 disabled={regenerating}
-                                                className="px-4 py-2 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition-colors disabled:opacity-50"
+                                                className="px-4 py-2 bg-[#F59E0B] text-[#0F172A] text-sm font-medium rounded-lg hover:bg-[#F59E0B]/90 transition-colors disabled:opacity-50"
                                             >
                                                 {regenerating ? 'Regenerating...' : 'Yes, Regenerate'}
                                             </button>
                                             <button
                                                 onClick={() => setShowRegenerateWarning(false)}
-                                                className="px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100 rounded-lg transition-colors"
+                                                className="px-4 py-2 text-sm font-medium text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-white/5 rounded-lg transition-colors"
                                             >
                                                 Cancel
                                             </button>
@@ -209,7 +209,7 @@ export default function Settings() {
                         ) : (
                             <button
                                 onClick={() => setShowRegenerateWarning(true)}
-                                className="text-sm text-gray-500 hover:text-[#0A0807] font-medium transition-colors"
+                                className="text-sm text-[#64748B] hover:text-[#F8FAFC] font-medium transition-colors"
                             >
                                 Regenerate API Key
                             </button>
@@ -218,20 +218,20 @@ export default function Settings() {
                 </div>
 
                 {/* Logout */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <div className="bg-[#1E293B] rounded-2xl border border-white/10 p-6">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center">
-                                <LogOut size={20} className="text-red-500" />
+                            <div className="w-10 h-10 bg-[#F43F5E]/10 rounded-xl flex items-center justify-center">
+                                <LogOut size={20} className="text-[#F43F5E]" />
                             </div>
                             <div>
-                                <h2 className="text-lg font-bold text-[#0A0807]">Logout</h2>
-                                <p className="text-sm text-gray-500">Sign out of your account</p>
+                                <h2 className="text-lg font-bold text-[#F8FAFC]">Logout</h2>
+                                <p className="text-sm text-[#94A3B8]">Sign out of your account</p>
                             </div>
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="px-6 py-2.5 bg-red-50 text-red-600 font-medium rounded-xl hover:bg-red-100 transition-colors"
+                            className="px-6 py-2.5 bg-[#F43F5E]/10 text-[#F43F5E] font-medium rounded-xl hover:bg-[#F43F5E]/20 transition-colors"
                         >
                             Logout
                         </button>

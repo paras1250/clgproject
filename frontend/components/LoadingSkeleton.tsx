@@ -1,4 +1,4 @@
-// Professional skeleton loading components matching Noupe design
+// Professional skeleton loading components matching Conversio design
 
 // Skeleton animation
 const skeletonPulse = 'animate-pulse';

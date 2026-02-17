@@ -28,7 +28,7 @@ const ChatAvatarHeader = ({ botName }: { botName: string }) => {
   const isImageAvatar = selectedAvatar && (selectedAvatar.startsWith('/') || selectedAvatar.startsWith('http'));
 
   return (
-    <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm">
+    <div className="bg-[#1E293B] border-b border-white/10 px-6 py-4 flex items-center justify-between shadow-sm">
       <div className="flex items-center gap-3">
         {isImageAvatar ? (
           <div className="w-10 h-10 rounded-full overflow-hidden shadow-sm border-2 border-blue-200">
@@ -40,8 +40,8 @@ const ChatAvatarHeader = ({ botName }: { botName: string }) => {
           </div>
         )}
         <div>
-          <h3 className="text-lg font-bold text-gray-900">{botName}</h3>
-          <p className="text-sm text-gray-600">Online • Replies instantly</p>
+          <h3 className="text-lg font-bold text-[#F8FAFC]">{botName}</h3>
+          <p className="text-sm text-[#94A3B8]">Online • Replies instantly</p>
         </div>
       </div>
     </div>
@@ -402,10 +402,10 @@ export default function Builder() {
         <main className="px-6 py-6 relative z-10">
           {/* Header */}
           <div className="mb-8 animate-fade-in text-center">
-            <h1 className="text-4xl font-extrabold text-gray-800 mb-2 tracking-tight">
+            <h1 className="text-4xl font-extrabold text-[#F8FAFC] mb-2 tracking-tight">
               Build Your AI Workforce
             </h1>
-            <p className="text-lg text-gray-500 font-medium max-w-2xl mx-auto">
+            <p className="text-lg text-[#94A3B8] font-medium max-w-2xl mx-auto">
               Create, train, and deploy intelligent agents in minutes.
             </p>
           </div>
@@ -431,30 +431,30 @@ export default function Builder() {
                         </svg>
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-gray-800">Agent Identity</h2>
-                        <p className="text-sm text-gray-500 font-medium">Define your agent's persona and role</p>
+                        <h2 className="text-xl font-bold text-[#F8FAFC]">Agent Identity</h2>
+                        <p className="text-sm text-[#94A3B8] font-medium">Define your agent's persona and role</p>
                       </div>
                     </div>
 
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">Agent Name</label>
+                        <label className="block text-sm font-bold text-[#94A3B8] mb-1.5 ml-1">Agent Name</label>
                         <input
                           type="text"
                           value={botData.name}
                           onChange={(e) => setBotData({ ...botData, name: e.target.value })}
-                          className="glass-input w-full px-4 py-2.5 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none transition-all text-sm font-medium"
+                          className="glass-input w-full px-4 py-2.5 rounded-xl text-[#F8FAFC] placeholder-[#64748B] focus:outline-none transition-all text-sm font-medium"
                           placeholder="e.g., Sales Helper"
                           maxLength={100}
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">Role Description</label>
+                        <label className="block text-sm font-bold text-[#94A3B8] mb-1.5 ml-1">Role Description</label>
                         <textarea
                           value={botData.description}
                           onChange={(e) => setBotData({ ...botData, description: e.target.value })}
                           rows={2}
-                          className="glass-input w-full px-4 py-3 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none transition-all text-sm min-h-[80px]"
+                          className="glass-input w-full px-4 py-3 rounded-xl text-[#F8FAFC] placeholder-[#64748B] focus:outline-none transition-all text-sm min-h-[80px]"
                           placeholder="Briefly describe what this agent does..."
                         />
                       </div>
@@ -470,8 +470,8 @@ export default function Builder() {
                         </svg>
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-gray-800">Knowledge Base</h2>
-                        <p className="text-sm text-gray-500 font-medium">Train your agent with your own data</p>
+                        <h2 className="text-xl font-bold text-[#F8FAFC]">Knowledge Base</h2>
+                        <p className="text-sm text-[#94A3B8] font-medium">Train your agent with your own data</p>
                       </div>
                     </div>
 
@@ -480,8 +480,8 @@ export default function Builder() {
                       <button
                         onClick={() => setTrainingMethod('text')}
                         className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'text'
-                          ? 'bg-white text-primary-600 shadow-md'
-                          : 'text-gray-500 hover:text-gray-800'
+                          ? 'bg-[#1E293B] text-primary-600 shadow-md'
+                          : 'text-[#94A3B8] hover:text-[#F8FAFC]'
                           }`}
                       >
                         Raw Text
@@ -489,8 +489,8 @@ export default function Builder() {
                       <button
                         onClick={() => setTrainingMethod('files')}
                         className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'files'
-                          ? 'bg-white text-primary-600 shadow-md'
-                          : 'text-gray-500 hover:text-gray-800'
+                          ? 'bg-[#1E293B] text-primary-600 shadow-md'
+                          : 'text-[#94A3B8] hover:text-[#F8FAFC]'
                           }`}
                       >
                         Documents
@@ -498,8 +498,8 @@ export default function Builder() {
                       <button
                         onClick={() => setTrainingMethod('both')}
                         className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'both'
-                          ? 'bg-white text-primary-600 shadow-md'
-                          : 'text-gray-500 hover:text-gray-800'
+                          ? 'bg-[#1E293B] text-primary-600 shadow-md'
+                          : 'text-[#94A3B8] hover:text-[#F8FAFC]'
                           }`}
                       >
                         Both
@@ -514,12 +514,12 @@ export default function Builder() {
                           onChange={(e) => setTrainingText(e.target.value)}
                           disabled={isLoading}
                           rows={8}
-                          className="glass-input w-full px-4 py-3 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none transition-all font-mono text-sm leading-relaxed"
+                          className="glass-input w-full px-4 py-3 rounded-xl text-[#F8FAFC] placeholder-[#64748B] focus:outline-none transition-all font-mono text-sm leading-relaxed"
                           placeholder={`Paste your training data here...`}
                         />
                         <div className="mt-2 flex items-center justify-between text-xs px-1">
-                          <span className="text-gray-500 font-medium">Markdown Supported</span>
-                          <span className={`font-bold ${trainingText.length >= 50 ? 'text-green-600' : 'text-gray-400'}`}>
+                          <span className="text-[#94A3B8] font-medium">Markdown Supported</span>
+                          <span className={`font-bold ${trainingText.length >= 50 ? 'text-green-600' : 'text-[#64748B]'}`}>
                             {trainingText.length} characters
                           </span>
                         </div>
@@ -618,23 +618,23 @@ export default function Builder() {
                       </div>
 
                       {/* Suggested Prompts - Now Functional */}
-                      <div className="bg-white border-t border-gray-200 px-6 py-3">
+                      <div className="bg-[#1E293B] border-t border-white/10 px-6 py-3">
                         <div className="flex gap-2 flex-wrap">
                           <button
                             onClick={() => chatRef.current?.sendMessage("What are your pricing options?")}
-                            className="text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-gray-700 transition-all hover:shadow-sm"
+                            className="text-xs bg-white/5 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-[#94A3B8] transition-all hover:shadow-sm"
                           >
                             Ask about pricing
                           </button>
                           <button
                             onClick={() => chatRef.current?.sendMessage("What are your support hours?")}
-                            className="text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-gray-700 transition-all hover:shadow-sm"
+                            className="text-xs bg-white/5 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-[#94A3B8] transition-all hover:shadow-sm"
                           >
                             Support hours
                           </button>
                           <button
                             onClick={() => chatRef.current?.sendMessage("How do I integrate this with my website?")}
-                            className="text-xs bg-gray-100 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-gray-700 transition-all hover:shadow-sm"
+                            className="text-xs bg-white/5 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-[#94A3B8] transition-all hover:shadow-sm"
                           >
                             Integration help
                           </button>
@@ -667,10 +667,10 @@ export default function Builder() {
                           </svg>
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          <h3 className="text-xl font-bold text-[#F8FAFC] mb-2">
                             🎉 Success! Your chatbot <span className="text-blue-700">{createdBot.name}</span> is ready!
                           </h3>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-[#94A3B8]">
                             Copy the embed code below and paste it into your website's HTML to activate your AI assistant.
                           </p>
                         </div>
@@ -678,11 +678,11 @@ export default function Builder() {
                     </div>
 
                     {/* Embed Code Section */}
-                    <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                    <div className="bg-[#1E293B] rounded-xl p-6 border border-white/10 shadow-sm">
                       <div className="flex items-center justify-between mb-4">
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900">Embed Code</h3>
-                          <p className="text-sm text-gray-600">One-line script to add to your website</p>
+                          <h3 className="text-lg font-bold text-[#F8FAFC]">Embed Code</h3>
+                          <p className="text-sm text-[#94A3B8]">One-line script to add to your website</p>
                         </div>
                         <button
                           onClick={copyEmbedCode}
@@ -695,13 +695,13 @@ export default function Builder() {
                         </button>
                       </div>
                       {isGeneratingScript ? (
-                        <div className="bg-gray-100 rounded-lg p-8 flex items-center justify-center">
+                        <div className="bg-white/5 rounded-lg p-8 flex items-center justify-center">
                           <div className="flex items-center gap-3">
                             <svg className="animate-spin h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24">
                               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            <span className="text-sm font-semibold text-gray-700">Generating embed code...</span>
+                            <span className="text-sm font-semibold text-[#94A3B8]">Generating embed code...</span>
                           </div>
                         </div>
                       ) : embedCode ? (
@@ -720,21 +720,21 @@ export default function Builder() {
                           </button>
                         </div>
                       ) : (
-                        <div className="bg-gray-50 rounded-lg p-8 text-center">
-                          <p className="text-sm text-gray-600">Generating your embed code...</p>
+                        <div className="bg-[#0F172A] rounded-lg p-8 text-center">
+                          <p className="text-sm text-[#94A3B8]">Generating your embed code...</p>
                         </div>
                       )}
                     </div>
 
                     {/* Installation Guide */}
                     <div className="bg-blue-50 rounded-lg p-5 border border-blue-200">
-                      <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <h4 className="font-bold text-[#F8FAFC] mb-3 flex items-center gap-2">
                         <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                         </svg>
                         Installation Guide
                       </h4>
-                      <ol className="space-y-2 text-sm text-gray-700">
+                      <ol className="space-y-2 text-sm text-[#94A3B8]">
                         <li className="flex gap-2">
                           <span className="font-bold text-blue-600">1.</span>
                           <span>Copy the embed code above using the "Copy Code" button</span>

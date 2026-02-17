@@ -87,16 +87,16 @@ const faqs = [
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <div className="border border-gray-200 rounded-xl overflow-hidden">
+        <div className="border border-white/10 rounded-xl overflow-hidden">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-white/5 transition-colors"
             >
-                <span className="font-semibold text-[#0A0807]">{question}</span>
-                {isOpen ? <ChevronUp size={20} className="text-gray-400" /> : <ChevronDown size={20} className="text-gray-400" />}
+                <span className="font-semibold text-[#F8FAFC]">{question}</span>
+                {isOpen ? <ChevronUp size={20} className="text-[#64748B]" /> : <ChevronDown size={20} className="text-[#64748B]" />}
             </button>
             {isOpen && (
-                <div className="px-6 pb-4 text-gray-600 leading-relaxed">
+                <div className="px-6 pb-4 text-[#94A3B8] leading-relaxed">
                     {answer}
                 </div>
             )}
@@ -106,7 +106,7 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 export default function Pricing() {
     return (
-        <div className="min-h-screen bg-[#F9FAFB]">
+        <div className="min-h-screen bg-[#0F172A]">
             <Head>
                 <title>Pricing - Conversio AI</title>
                 <meta name="description" content="Choose the right plan for your AI chatbot needs." />
@@ -116,8 +116,8 @@ export default function Pricing() {
             <div className="max-w-6xl mx-auto px-6 py-20">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <h1 className="text-4xl font-bold text-[#0A0807] mb-4">Simple, Transparent Pricing</h1>
-                    <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+                    <h1 className="text-4xl font-bold text-[#F8FAFC] mb-4">Simple, Transparent Pricing</h1>
+                    <p className="text-xl text-[#94A3B8] max-w-2xl mx-auto">
                         Choose the plan that fits your needs. Start free and scale as you grow.
                     </p>
                 </div>
@@ -127,34 +127,34 @@ export default function Pricing() {
                     {plans.map((plan) => (
                         <div
                             key={plan.name}
-                            className={`relative bg-white rounded-3xl border p-8 flex flex-col transition-all hover:shadow-lg ${plan.highlight
-                                    ? 'border-[#0A0807] shadow-md scale-[1.02]'
-                                    : 'border-gray-200 shadow-sm'
+                            className={`relative bg-[#1E293B] rounded-3xl border p-8 flex flex-col transition-all hover:shadow-lg ${plan.highlight
+                                ? 'border-[#3B82F6] shadow-lg shadow-blue-500/10 scale-[1.02]'
+                                : 'border-white/10'
                                 }`}
                         >
                             {plan.badge && (
-                                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#0A0807] text-white text-xs font-bold px-4 py-1 rounded-full">
+                                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#3B82F6] text-white text-xs font-bold px-4 py-1 rounded-full">
                                     {plan.badge}
                                 </span>
                             )}
 
-                            <h3 className="text-xl font-bold text-[#0A0807] mb-2">{plan.name}</h3>
-                            <p className="text-gray-500 text-sm mb-6">{plan.description}</p>
+                            <h3 className="text-xl font-bold text-[#F8FAFC] mb-2">{plan.name}</h3>
+                            <p className="text-[#94A3B8] text-sm mb-6">{plan.description}</p>
 
                             <div className="mb-8">
-                                <span className="text-4xl font-bold text-[#0A0807]">{plan.price}</span>
-                                <span className="text-gray-500">{plan.period}</span>
+                                <span className="text-4xl font-bold text-[#F8FAFC]">{plan.price}</span>
+                                <span className="text-[#64748B]">{plan.period}</span>
                             </div>
 
                             <ul className="space-y-3 mb-8 flex-1">
                                 {plan.features.map((feature, idx) => (
                                     <li key={idx} className="flex items-center gap-3">
                                         {feature.included ? (
-                                            <Check size={18} className="text-green-500 flex-shrink-0" />
+                                            <Check size={18} className="text-[#10B981] flex-shrink-0" />
                                         ) : (
-                                            <X size={18} className="text-gray-300 flex-shrink-0" />
+                                            <X size={18} className="text-[#64748B] flex-shrink-0" />
                                         )}
-                                        <span className={feature.included ? 'text-gray-700' : 'text-gray-400'}>
+                                        <span className={feature.included ? 'text-[#F8FAFC]' : 'text-[#64748B]'}>
                                             {feature.text}
                                         </span>
                                     </li>
@@ -164,8 +164,8 @@ export default function Pricing() {
                             <Link href="/login">
                                 <button
                                     className={`w-full py-3.5 rounded-xl font-bold transition-all ${plan.highlight
-                                            ? 'bg-[#0A0807] text-white hover:opacity-90'
-                                            : 'bg-gray-100 text-[#0A0807] hover:bg-gray-200'
+                                        ? 'bg-[#3B82F6] text-white hover:bg-[#2563EB] shadow-lg shadow-blue-500/25'
+                                        : 'bg-white/5 text-[#F8FAFC] hover:bg-white/10 border border-white/10'
                                         }`}
                                 >
                                     {plan.cta}
@@ -177,18 +177,18 @@ export default function Pricing() {
 
                 {/* Feature Comparison Table */}
                 <div className="mb-20">
-                    <h2 className="text-2xl font-bold text-[#0A0807] text-center mb-8">Feature Comparison</h2>
-                    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                    <h2 className="text-2xl font-bold text-[#F8FAFC] text-center mb-8">Feature Comparison</h2>
+                    <div className="bg-[#1E293B] rounded-2xl border border-white/10 overflow-hidden">
                         <table className="w-full">
                             <thead>
-                                <tr className="border-b border-gray-200 bg-gray-50">
-                                    <th className="text-left px-6 py-4 font-semibold text-gray-700">Feature</th>
-                                    <th className="text-center px-6 py-4 font-semibold text-gray-700">Free</th>
-                                    <th className="text-center px-6 py-4 font-semibold text-gray-700">Pro</th>
-                                    <th className="text-center px-6 py-4 font-semibold text-gray-700">Enterprise</th>
+                                <tr className="border-b border-white/10 bg-white/5">
+                                    <th className="text-left px-6 py-4 font-semibold text-[#94A3B8]">Feature</th>
+                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8]">Free</th>
+                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8]">Pro</th>
+                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8]">Enterprise</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-100">
+                            <tbody className="divide-y divide-white/5">
                                 {[
                                     ['Chatbots', '1', '10', 'Unlimited'],
                                     ['Messages / month', '100', '5,000', 'Unlimited'],
@@ -199,14 +199,14 @@ export default function Pricing() {
                                     ['Dedicated Account Manager', false, false, true],
                                     ['API Access', false, true, true],
                                 ].map((row, idx) => (
-                                    <tr key={idx} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-gray-700">{row[0]}</td>
+                                    <tr key={idx} className="hover:bg-white/5 transition-colors">
+                                        <td className="px-6 py-4 font-medium text-[#F8FAFC]">{row[0]}</td>
                                         {[row[1], row[2], row[3]].map((val, i) => (
                                             <td key={i} className="px-6 py-4 text-center">
                                                 {typeof val === 'boolean' ? (
-                                                    val ? <Check size={18} className="text-green-500 mx-auto" /> : <X size={18} className="text-gray-300 mx-auto" />
+                                                    val ? <Check size={18} className="text-[#10B981] mx-auto" /> : <X size={18} className="text-[#64748B] mx-auto" />
                                                 ) : (
-                                                    <span className="text-gray-600 font-medium">{val}</span>
+                                                    <span className="text-[#94A3B8] font-medium">{val}</span>
                                                 )}
                                             </td>
                                         ))}
@@ -219,7 +219,7 @@ export default function Pricing() {
 
                 {/* FAQ Section */}
                 <div className="max-w-3xl mx-auto">
-                    <h2 className="text-2xl font-bold text-[#0A0807] text-center mb-8">Frequently Asked Questions</h2>
+                    <h2 className="text-2xl font-bold text-[#F8FAFC] text-center mb-8">Frequently Asked Questions</h2>
                     <div className="space-y-3">
                         {faqs.map((faq, idx) => (
                             <FAQItem key={idx} question={faq.question} answer={faq.answer} />

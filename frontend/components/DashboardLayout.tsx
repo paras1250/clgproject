@@ -4,41 +4,48 @@ import { useRouter } from 'next/router';
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
 
+    const navItems = [
+        { href: '/dashboard', label: 'Dashboard', icon: '📊' },
+        { href: '/bots', label: 'My Chatbots', icon: '🤖' },
+        { href: '/analytics', label: 'Analytics', icon: '📈' },
+        { href: '/settings', label: 'Settings', icon: '⚙️' },
+    ];
+
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+        <div className="min-h-screen bg-[#0F172A] flex flex-col md:flex-row">
             {/* Sidebar */}
-            <aside className="w-full md:w-64 bg-white border-r border-gray-200 hidden md:block">
+            <aside className="w-full md:w-64 bg-[#1E293B] border-r border-white/10 hidden md:block">
                 <div className="p-6">
                     <Link href="/" className="block">
                         <div className="flex items-center gap-2">
                             <img src="/assets/conversio-logo.png" alt="Conversio AI" className="w-8 h-8 object-contain" />
-                            <span className="font-bold text-xl text-[#0A0807]">Conversio AI</span>
+                            <span className="font-bold text-xl text-[#F8FAFC]">Conversio AI</span>
                         </div>
                     </Link>
                 </div>
                 <nav className="p-4 space-y-1">
-                    <Link href="/dashboard" className={`block px-4 py-2.5 rounded-lg font-medium transition-colors ${router.pathname === '/dashboard' ? 'bg-[#0A0807] text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}>
-                        Dashboard
-                    </Link>
-                    <Link href="/bots" className={`block px-4 py-2.5 rounded-lg font-medium transition-colors ${router.pathname.startsWith('/bots') ? 'bg-[#0A0807] text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}>
-                        My Chatbots
-                    </Link>
-                    <Link href="/analytics" className={`block px-4 py-2.5 rounded-lg font-medium transition-colors ${router.pathname === '/analytics' ? 'bg-[#0A0807] text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}>
-                        Analytics
-                    </Link>
-                    <Link href="/settings" className={`block px-4 py-2.5 rounded-lg font-medium transition-colors ${router.pathname === '/settings' ? 'bg-[#0A0807] text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}>
-                        Settings
-                    </Link>
+                    {navItems.map(item => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`block px-4 py-2.5 rounded-lg font-medium transition-colors ${router.pathname === item.href || (item.href !== '/dashboard' && router.pathname.startsWith(item.href))
+                                    ? 'bg-[#3B82F6] text-white'
+                                    : 'text-[#94A3B8] hover:bg-white/5 hover:text-[#F8FAFC]'
+                                }`}
+                        >
+                            {item.label}
+                        </Link>
+                    ))}
                 </nav>
             </aside>
 
-            {/* Mobile Header (simplified) */}
-            <div className="md:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+            {/* Mobile Header */}
+            <div className="md:hidden bg-[#1E293B] border-b border-white/10 p-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <img src="/assets/conversio-logo.png" alt="Conversio AI" className="w-8 h-8 object-contain" />
-                    <span className="font-bold text-xl text-[#0A0807]">Conversio AI</span>
+                    <span className="font-bold text-xl text-[#F8FAFC]">Conversio AI</span>
                 </div>
-                <button className="text-gray-500">Menu</button>
+                <button className="text-[#94A3B8] hover:text-[#F8FAFC]">Menu</button>
             </div>
 
             {/* Main Content */}

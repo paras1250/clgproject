@@ -53,14 +53,14 @@ export const ToastContainer = () => {
             {toasts.map(toast => (
                 <div
                     key={toast.id}
-                    className={`pointer-events-auto flex items-start gap-3 min-w-[300px] max-w-sm p-4 rounded-xl shadow-lg border animate-in slide-in-from-right-10 transition-all ${toast.type === 'success' ? 'bg-white border-green-100 text-gray-800' :
-                            toast.type === 'error' ? 'bg-white border-red-100 text-gray-800' :
-                                toast.type === 'warning' ? 'bg-white border-yellow-100 text-gray-800' :
-                                    'bg-white border-blue-100 text-gray-800'
+                    className={`pointer-events-auto flex items-start gap-3 min-w-[300px] max-w-sm p-4 rounded-xl shadow-lg border animate-in slide-in-from-right-10 transition-all ${toast.type === 'success' ? 'bg-[#1E293B] border-green-100 text-[#F8FAFC]' :
+                            toast.type === 'error' ? 'bg-[#1E293B] border-red-100 text-[#F8FAFC]' :
+                                toast.type === 'warning' ? 'bg-[#1E293B] border-yellow-100 text-[#F8FAFC]' :
+                                    'bg-[#1E293B] border-blue-100 text-[#F8FAFC]'
                         }`}
                 >
-                    <div className={`mt-0.5 ${toast.type === 'success' ? 'text-green-500' :
-                            toast.type === 'error' ? 'text-red-500' :
+                    <div className={`mt-0.5 ${toast.type === 'success' ? 'text-[#10B981]' :
+                            toast.type === 'error' ? 'text-[#F43F5E]' :
                                 toast.type === 'warning' ? 'text-yellow-500' :
                                     'text-blue-500'
                         }`}>
@@ -70,7 +70,7 @@ export const ToastContainer = () => {
                         {toast.type === 'info' && <Info size={18} />}
                     </div>
                     <p className="text-sm font-medium flex-1">{toast.message}</p>
-                    <button onClick={() => removeToast(toast.id)} className="text-gray-400 hover:text-gray-600">
+                    <button onClick={() => removeToast(toast.id)} className="text-[#64748B] hover:text-[#94A3B8]">
                         <X size={16} />
                     </button>
                 </div>

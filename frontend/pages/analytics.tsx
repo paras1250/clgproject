@@ -5,17 +5,17 @@ import { BarChart3, Users, MessageCircle, Clock, TrendingUp } from 'lucide-react
 import Cookies from 'js-cookie';
 
 const StatCard = ({ label, value, trend, icon: Icon, color }: any) => (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-4">
+    <div className="bg-[#1E293B] p-6 rounded-2xl border border-white/10 flex flex-col gap-4">
         <div className="flex items-center justify-between">
-            <span className="text-gray-500 font-medium">{label}</span>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color || 'bg-gray-100'}`}>
+            <span className="text-[#94A3B8] font-medium">{label}</span>
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color || 'bg-white/5'}`}>
                 <Icon size={20} className="text-white" />
             </div>
         </div>
         <div className="flex items-end justify-between">
-            <span className="text-3xl font-bold text-[#0A0807]">{value}</span>
+            <span className="text-3xl font-bold text-[#F8FAFC]">{value}</span>
             {trend && (
-                <span className={`text-sm font-medium px-2.5 py-1 rounded-full flex items-center gap-1 ${trend.startsWith('+') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
+                <span className={`text-sm font-medium px-2.5 py-1 rounded-full flex items-center gap-1 ${trend.startsWith('+') ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#F43F5E]/10 text-[#F43F5E]'
                     }`}>
                     <TrendingUp size={14} />
                     {trend}
@@ -71,7 +71,7 @@ export default function Analytics() {
         return (
             <DashboardLayout>
                 <div className="flex items-center justify-center h-[80vh]">
-                    <div className="animate-spin w-8 h-8 border-2 border-[#0A0807] border-t-transparent rounded-full"></div>
+                    <div className="animate-spin w-8 h-8 border-2 border-[#3B82F6] border-t-transparent rounded-full"></div>
                 </div>
             </DashboardLayout>
         );
@@ -81,8 +81,8 @@ export default function Analytics() {
         return (
             <DashboardLayout>
                 <div className="p-8 text-center">
-                    <p className="text-red-500 mb-4">{error}</p>
-                    <button onClick={fetchAnalytics} className="text-[#0A0807] underline font-medium">Try Again</button>
+                    <p className="text-[#F43F5E] mb-4">{error}</p>
+                    <button onClick={fetchAnalytics} className="text-[#3B82F6] underline font-medium">Try Again</button>
                 </div>
             </DashboardLayout>
         );
@@ -95,73 +95,47 @@ export default function Analytics() {
             </Head>
 
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-[#0A0807]">Analytics Dashboard</h1>
-                <p className="text-gray-500">Monitor performance across all your chatbots.</p>
+                <h1 className="text-2xl font-bold text-[#F8FAFC]">Analytics Dashboard</h1>
+                <p className="text-[#94A3B8]">Monitor performance across all your chatbots.</p>
             </div>
 
-            {/* 2x2 Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                <StatCard
-                    label="Total Bots"
-                    value={data?.overview?.totalBots || 0}
-                    trend="+12.5%"
-                    icon={BarChart3}
-                    color="bg-blue-500"
-                />
-                <StatCard
-                    label="Active Users"
-                    value={data?.overview?.activeBots || 0}
-                    trend="+8.2%"
-                    icon={Users}
-                    color="bg-green-500"
-                />
-                <StatCard
-                    label="Total Messages"
-                    value={data?.overview?.totalChats || 0}
-                    trend="+24.5%"
-                    icon={MessageCircle}
-                    color="bg-purple-500"
-                />
-                <StatCard
-                    label="Avg Response Time"
-                    value="1.2s"
-                    trend="-5.1%"
-                    icon={Clock}
-                    color="bg-orange-500"
-                />
+                <StatCard label="Total Bots" value={data?.overview?.totalBots || 0} trend="+12.5%" icon={BarChart3} color="bg-[#3B82F6]" />
+                <StatCard label="Active Users" value={data?.overview?.activeBots || 0} trend="+8.2%" icon={Users} color="bg-[#10B981]" />
+                <StatCard label="Total Messages" value={data?.overview?.totalChats || 0} trend="+24.5%" icon={MessageCircle} color="bg-[#22D3EE]" />
+                <StatCard label="Avg Response Time" value="1.2s" trend="-5.1%" icon={Clock} color="bg-[#F59E0B]" />
             </div>
 
-            {/* Top Performing Bots */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-gray-100">
-                    <h2 className="text-lg font-bold text-[#0A0807]">Top Performing Bots</h2>
-                    <p className="text-sm text-gray-400">Ranked by conversation count</p>
+            <div className="bg-[#1E293B] rounded-2xl border border-white/10 overflow-hidden">
+                <div className="p-6 border-b border-white/10">
+                    <h2 className="text-lg font-bold text-[#F8FAFC]">Top Performing Bots</h2>
+                    <p className="text-sm text-[#64748B]">Ranked by conversation count</p>
                 </div>
 
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-white/5">
                     {bots.length > 0 ? (
                         bots.slice(0, 5).map((bot: any, idx: number) => (
-                            <div key={bot._id || bot.id || idx} className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors">
+                            <div key={bot._id || bot.id || idx} className="flex items-center justify-between px-6 py-4 hover:bg-white/5 transition-colors">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#22D3EE] flex items-center justify-center text-white font-bold text-sm">
                                         {bot.name?.charAt(0)?.toUpperCase() || '?'}
                                     </div>
                                     <div>
-                                        <p className="font-semibold text-[#0A0807]">{bot.name}</p>
-                                        <p className="text-sm text-gray-400">
+                                        <p className="font-semibold text-[#F8FAFC]">{bot.name}</p>
+                                        <p className="text-sm text-[#64748B]">
                                             {bot.isActive ? 'Active' : 'Inactive'}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="font-bold text-[#0A0807]">{bot.conversationCount || 0}</p>
-                                    <p className="text-xs text-gray-400">conversations</p>
+                                    <p className="font-bold text-[#F8FAFC]">{bot.conversationCount || 0}</p>
+                                    <p className="text-xs text-[#64748B]">conversations</p>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <div className="px-6 py-12 text-center text-gray-400">
-                            <MessageCircle size={32} className="mx-auto mb-3 text-gray-300" />
+                        <div className="px-6 py-12 text-center text-[#64748B]">
+                            <MessageCircle size={32} className="mx-auto mb-3 text-[#64748B]" />
                             <p>No chatbots created yet.</p>
                             <p className="text-sm mt-1">Create your first bot to see analytics here.</p>
                         </div>

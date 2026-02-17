@@ -15,7 +15,7 @@ export default function TestingSuitePanel({ onTestPrompt, onProceedToEmbed }: Te
     ];
 
     return (
-        <div className="w-80 bg-white border-l border-gray-200 p-5 space-y-5 overflow-y-auto">
+        <div className="w-80 bg-[#1E293B] border-l border-white/10 p-5 space-y-5 overflow-y-auto">
             {/* Ready to Launch */}
             <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl p-5 text-white shadow-lg">
                 <h3 className="font-bold text-lg mb-2">Ready to Launch?</h3>
@@ -24,7 +24,7 @@ export default function TestingSuitePanel({ onTestPrompt, onProceedToEmbed }: Te
                 </p>
                 <button
                     onClick={onProceedToEmbed}
-                    className="w-full bg-white text-blue-600 px-4 py-3 rounded-lg font-bold text-sm hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-[#1E293B] text-blue-600 px-4 py-3 rounded-lg font-bold text-sm hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
                 >
                     Looks Good! Get Code
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
@@ -39,34 +39,34 @@ export default function TestingSuitePanel({ onTestPrompt, onProceedToEmbed }: Te
                     <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                     </svg>
-                    <h3 className="font-bold text-gray-900">Testing Suite</h3>
+                    <h3 className="font-bold text-[#F8FAFC]">Testing Suite</h3>
                 </div>
 
                 {/* Site Context Toggle */}
-                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200 mb-4">
+                <div className="bg-[#0F172A] rounded-lg p-3 border border-white/10 mb-4">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-semibold text-gray-700">Site Context</span>
+                        <span className="text-sm font-semibold text-[#94A3B8]">Site Context</span>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" className="sr-only peer" />
-                            <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#1E293B] after:border-white/10 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                         </label>
                     </div>
-                    <p className="text-xs text-gray-500">Preview as overlay</p>
+                    <p className="text-xs text-[#94A3B8]">Preview as overlay</p>
                 </div>
 
                 {/* Quick Test Prompts */}
                 <div>
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Quick Test Prompts</p>
+                    <p className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wide mb-3">Quick Test Prompts</p>
                     <div className="space-y-2">
                         {quickTestPrompts.map((prompt, index) => (
                             <button
                                 key={index}
                                 onClick={() => onTestPrompt?.(prompt)}
-                                className="w-full text-left bg-white border border-gray-200 rounded-lg p-3 hover:border-blue-400 hover:bg-blue-50 transition-all group"
+                                className="w-full text-left bg-[#1E293B] border border-white/10 rounded-lg p-3 hover:border-blue-400 hover:bg-blue-50 transition-all group"
                             >
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm text-gray-700 group-hover:text-blue-700">{prompt}</span>
-                                    <svg className="w-4 h-4 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <span className="text-sm text-[#94A3B8] group-hover:text-blue-700">{prompt}</span>
+                                    <svg className="w-4 h-4 text-[#64748B] group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                     </svg>
                                 </div>
@@ -82,9 +82,9 @@ export default function TestingSuitePanel({ onTestPrompt, onProceedToEmbed }: Te
                     onClick={() => setShowDebugLog(!showDebugLog)}
                     className="flex items-center justify-between w-full text-left mb-2"
                 >
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Show Debug Log</span>
+                    <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wide">Show Debug Log</span>
                     <svg
-                        className={`w-4 h-4 text-gray-400 transition-transform ${showDebugLog ? 'rotate-180' : ''}`}
+                        className={`w-4 h-4 text-[#64748B] transition-transform ${showDebugLog ? 'rotate-180' : ''}`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

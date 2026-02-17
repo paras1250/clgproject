@@ -15,14 +15,14 @@ export default function LoadingSpinner({ fullScreen = false, text, size = 'md', 
 
     const spinner = (
         <div className={`flex flex-col items-center justify-center gap-4 ${className}`}>
-            <div className={`${sizeClasses[size]} rounded-full border-gray-200 border-t-[#0A0807] animate-spin`}></div>
-            {text && <p className="text-gray-500 font-medium animate-pulse">{text}</p>}
+            <div className={`${sizeClasses[size]} rounded-full border-white/10 border-t-[#3B82F6] animate-spin`}></div>
+            {text && <p className="text-[#94A3B8] font-medium animate-pulse">{text}</p>}
         </div>
     );
 
     if (fullScreen) {
         return (
-            <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
+            <div className="fixed inset-0 bg-[#0F172A]/90 backdrop-blur-sm z-50 flex items-center justify-center">
                 {spinner}
             </div>
         );

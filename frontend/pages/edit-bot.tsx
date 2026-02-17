@@ -277,7 +277,7 @@ export default function EditBot() {
             <h1 className="text-5xl sm:text-6xl font-extrabold bg-gradient-premium bg-clip-text text-transparent mb-3 tracking-tight">
               Customize Your Chatbot
             </h1>
-            <p className="text-xl text-gray-700 font-semibold">
+            <p className="text-xl text-[#94A3B8] font-semibold">
               Configure appearance, behavior, and advanced settings ✨
             </p>
           </div>
@@ -287,7 +287,7 @@ export default function EditBot() {
             <div className="lg:col-span-2 space-y-6">
               {/* Basic Settings */}
               <div className="glass rounded-2xl border-2 border-white/50 p-8 shadow-lift animate-fade-in">
-                <h2 className="text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                <h2 className="text-2xl font-extrabold text-[#F8FAFC] mb-6 flex items-center gap-3">
                   <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -296,40 +296,40 @@ export default function EditBot() {
                 </h2>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-base font-extrabold text-gray-900 mb-3">
+                    <label className="block text-base font-extrabold text-[#F8FAFC] mb-3">
                       Bot Name <span className="text-red-600 text-xl">*</span>
                     </label>
                     <input
                       type="text"
                       value={botData.name}
                       onChange={(e) => setBotData({ ...botData, name: e.target.value })}
-                      className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-4 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                      className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-4 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                       placeholder="My Customer Support Bot"
                       maxLength={100}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-base font-extrabold text-gray-900 mb-3">
-                      Description <span className="text-gray-500 text-sm font-semibold">(Optional)</span>
+                    <label className="block text-base font-extrabold text-[#F8FAFC] mb-3">
+                      Description <span className="text-[#94A3B8] text-sm font-semibold">(Optional)</span>
                     </label>
                     <textarea
                       value={botData.description}
                       onChange={(e) => setBotData({ ...botData, description: e.target.value })}
                       rows={4}
-                      className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-4 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all resize-none shadow-sm"
+                      className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-4 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all resize-none shadow-sm"
                       placeholder="A helpful chatbot for customer support..."
                     />
                   </div>
 
                   <div>
-                    <label className="block text-base font-extrabold text-gray-900 mb-3">
+                    <label className="block text-base font-extrabold text-[#F8FAFC] mb-3">
                       AI Model
                     </label>
                     <select
                       value={botData.modelName}
                       onChange={(e) => setBotData({ ...botData, modelName: e.target.value })}
-                      className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-4 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                      className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-4 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                     >
                       <optgroup label="Google Gemini (Recommended)">
                         <option value="gemini-pro">Gemini Pro</option>
@@ -348,7 +348,7 @@ export default function EditBot() {
 
               {/* Customization Sections */}
               <div className="glass rounded-2xl border-2 border-white/50 p-8 shadow-lift animate-fade-in">
-                <h2 className="text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                <h2 className="text-2xl font-extrabold text-[#F8FAFC] mb-6 flex items-center gap-3">
                   <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                   </svg>
@@ -370,10 +370,10 @@ export default function EditBot() {
                       value={botData.greetingMessage}
                       onChange={(e) => setBotData({ ...botData, greetingMessage: e.target.value })}
                       rows={3}
-                      className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-3 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all resize-none shadow-sm"
+                      className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-3 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all resize-none shadow-sm"
                       placeholder="Hi! How can I help you today?"
                     />
-                    <p className="text-sm text-gray-600 mt-3 font-semibold">This message appears when users first open the chatbot</p>
+                    <p className="text-sm text-[#94A3B8] mt-3 font-semibold">This message appears when users first open the chatbot</p>
                   </div>
                 </CollapsibleSection>
 
@@ -388,7 +388,7 @@ export default function EditBot() {
                   defaultOpen={true}
                 >
                   <div className="mt-4">
-                    <label className="block text-sm font-extrabold text-gray-900 mb-3">
+                    <label className="block text-sm font-extrabold text-[#F8FAFC] mb-3">
                       Primary Color
                     </label>
                     <div className="flex gap-4">
@@ -396,13 +396,13 @@ export default function EditBot() {
                         type="color"
                         value={botData.widgetColor}
                         onChange={(e) => setBotData({ ...botData, widgetColor: e.target.value })}
-                        className="h-14 w-24 border-2 border-gray-300 rounded-xl cursor-pointer shadow-sm"
+                        className="h-14 w-24 border-2 border-white/10 rounded-xl cursor-pointer shadow-sm"
                       />
                       <input
                         type="text"
                         value={botData.widgetColor}
                         onChange={(e) => setBotData({ ...botData, widgetColor: e.target.value })}
-                        className="flex-1 border-2 border-gray-300 bg-white rounded-xl px-5 py-3 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                        className="flex-1 border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-3 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                         placeholder="#8b5cf6"
                       />
                     </div>
@@ -420,7 +420,7 @@ export default function EditBot() {
                 >
                   <div className="mt-4 grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-extrabold text-gray-900 mb-3">
+                      <label className="block text-sm font-extrabold text-[#F8FAFC] mb-3">
                         Width (px)
                       </label>
                       <input
@@ -429,11 +429,11 @@ export default function EditBot() {
                         onChange={(e) => setBotData({ ...botData, widgetWidth: e.target.value })}
                         min="300"
                         max="600"
-                        className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-3 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                        className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-3 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-extrabold text-gray-900 mb-3">
+                      <label className="block text-sm font-extrabold text-[#F8FAFC] mb-3">
                         Height (px)
                       </label>
                       <input
@@ -442,7 +442,7 @@ export default function EditBot() {
                         onChange={(e) => setBotData({ ...botData, widgetHeight: e.target.value })}
                         min="400"
                         max="800"
-                        className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-3 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                        className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-3 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                       />
                     </div>
                   </div>
@@ -459,13 +459,13 @@ export default function EditBot() {
                 >
                   <div className="mt-4 space-y-4">
                     <div>
-                      <label className="block text-sm font-extrabold text-gray-900 mb-3">
+                      <label className="block text-sm font-extrabold text-[#F8FAFC] mb-3">
                         Position
                       </label>
                       <select
                         value={botData.embedPosition}
                         onChange={(e) => setBotData({ ...botData, embedPosition: e.target.value })}
-                        className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-3 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                        className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-3 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                       >
                         <option value="bottom-right">Bottom Right</option>
                         <option value="bottom-left">Bottom Left</option>
@@ -475,13 +475,13 @@ export default function EditBot() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-extrabold text-gray-900 mb-3">
+                      <label className="block text-sm font-extrabold text-[#F8FAFC] mb-3">
                         Theme
                       </label>
                       <select
                         value={botData.embedTheme}
                         onChange={(e) => setBotData({ ...botData, embedTheme: e.target.value })}
-                        className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-3 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                        className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-3 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                       >
                         <option value="default">Light Theme</option>
                         <option value="dark">Dark Theme</option>
@@ -489,7 +489,7 @@ export default function EditBot() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-extrabold text-gray-900 mb-3">
+                      <label className="block text-sm font-extrabold text-[#F8FAFC] mb-3">
                         Avatar
                       </label>
                       <input
@@ -497,10 +497,10 @@ export default function EditBot() {
                         value={botData.widgetAvatar}
                         onChange={(e) => setBotData({ ...botData, widgetAvatar: e.target.value })}
                         maxLength={2}
-                        className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-3 text-base text-center text-2xl font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                        className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-3 text-base text-center text-2xl font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                         placeholder="😊"
                       />
-                      <p className="text-sm text-gray-600 mt-2 font-semibold">Emoji or text (1-2 characters)</p>
+                      <p className="text-sm text-[#94A3B8] mt-2 font-semibold">Emoji or text (1-2 characters)</p>
                     </div>
                   </div>
                 </CollapsibleSection>
@@ -508,7 +508,7 @@ export default function EditBot() {
 
               {/* Email Notifications */}
               <div className="glass rounded-2xl border-2 border-white/50 p-8 shadow-lift animate-fade-in">
-                <h2 className="text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                <h2 className="text-2xl font-extrabold text-[#F8FAFC] mb-6 flex items-center gap-3">
                   <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
@@ -522,24 +522,24 @@ export default function EditBot() {
                       onChange={(e) => setBotData({ ...botData, emailNotifications: e.target.checked })}
                       className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer"
                     />
-                    <span className="text-base font-extrabold text-gray-900">
+                    <span className="text-base font-extrabold text-[#F8FAFC]">
                       Receive email notifications for new conversations
                     </span>
                   </label>
                   {botData.emailNotifications && (
                     <div className="animate-fade-in">
-                      <label className="block text-sm font-extrabold text-gray-900 mb-3">
+                      <label className="block text-sm font-extrabold text-[#F8FAFC] mb-3">
                         Email Address <span className="text-red-600">*</span>
                       </label>
                       <input
                         type="email"
                         value={botData.emailAddress}
                         onChange={(e) => setBotData({ ...botData, emailAddress: e.target.value })}
-                        className="w-full border-2 border-gray-300 bg-white rounded-xl px-5 py-3 text-base font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
+                        className="w-full border-2 border-white/10 bg-[#1E293B] rounded-xl px-5 py-3 text-base font-medium text-[#F8FAFC] focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all shadow-sm"
                         placeholder="you@example.com"
                         required
                       />
-                      <p className="text-xs text-gray-600 mt-2 font-semibold">We'll send you an email when someone starts a new conversation</p>
+                      <p className="text-xs text-[#94A3B8] mt-2 font-semibold">We'll send you an email when someone starts a new conversation</p>
                     </div>
                   )}
                 </div>
@@ -547,7 +547,7 @@ export default function EditBot() {
 
               {/* Training Data Section */}
               <div className="glass rounded-2xl border-2 border-white/50 p-8 shadow-lift animate-fade-in">
-                <h2 className="text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                <h2 className="text-2xl font-extrabold text-[#F8FAFC] mb-6 flex items-center gap-3">
                   <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
@@ -556,17 +556,17 @@ export default function EditBot() {
 
                 {/* Training Text Section */}
                 <div className="mb-8">
-                  <label className="block text-base font-extrabold text-gray-900 mb-3 flex items-center gap-2">
+                  <label className="block text-base font-extrabold text-[#F8FAFC] mb-3 flex items-center gap-2">
                     <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
-                    Training Text <span className="text-gray-500 text-sm">(Edit your bot's knowledge)</span>
+                    Training Text <span className="text-[#94A3B8] text-sm">(Edit your bot's knowledge)</span>
                   </label>
                   <textarea
                     value={trainingText}
                     onChange={(e) => setTrainingText(e.target.value)}
                     rows={10}
-                    className="w-full border-2 border-blue-300/50 bg-white rounded-xl px-6 py-4 text-gray-900 text-base font-medium focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all resize-none shadow-sm"
+                    className="w-full border-2 border-blue-300/50 bg-[#1E293B] rounded-xl px-6 py-4 text-[#F8FAFC] text-base font-medium focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all resize-none shadow-sm"
                     placeholder="Enter or edit the training text for your chatbot...
 
 Example:
@@ -578,20 +578,20 @@ Example:
 - Any knowledge your bot should have"
                   />
                   <div className="mt-3 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                       </svg>
                       <span className="font-medium">Update training data to improve responses</span>
                     </div>
-                    <span className={`text-sm font-bold ${trainingText.length >= 50 ? 'text-green-600' : trainingText.length > 0 ? 'text-yellow-600' : 'text-gray-500'}`}>
+                    <span className={`text-sm font-bold ${trainingText.length >= 50 ? 'text-green-600' : trainingText.length > 0 ? 'text-yellow-600' : 'text-[#94A3B8]'}`}>
                       {trainingText.length} characters
                     </span>
                   </div>
                 </div>
 
-                <div className="border-t-2 border-gray-200 pt-6 mb-6">
-                  <h3 className="text-lg font-extrabold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="border-t-2 border-white/10 pt-6 mb-6">
+                  <h3 className="text-lg font-extrabold text-[#F8FAFC] mb-4 flex items-center gap-2">
                     <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
@@ -604,7 +604,7 @@ Example:
                           key={index}
                           className="flex items-center justify-between bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl px-5 py-3 shadow-sm"
                         >
-                          <span className="text-base text-gray-900 font-bold">{doc.originalName || doc.filename}</span>
+                          <span className="text-base text-[#F8FAFC] font-bold">{doc.originalName || doc.filename}</span>
                           <button
                             onClick={() => removeDocument(index, doc.originalName || doc.filename)}
                             className="text-red-600 hover:text-red-800 text-sm font-bold px-4 py-2 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-2 border-2 border-transparent hover:border-red-200"
@@ -631,14 +631,14 @@ Example:
               {/* View Training Data Section */}
               {id && (
                 <div className="glass rounded-2xl border-2 border-white/50 p-8 shadow-lift animate-fade-in">
-                  <h2 className="text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-3">
+                  <h2 className="text-2xl font-extrabold text-[#F8FAFC] mb-6 flex items-center gap-3">
                     <svg className="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                     View Training Data
                   </h2>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-[#94A3B8] mb-4">
                     See all the training data (text and documents) that your chatbot is using to generate responses.
                   </p>
                   <TrainingDataViewer botId={id as string} />
@@ -658,7 +658,7 @@ Example:
                     </svg>
                     {isLoading ? 'Training...' : 'Train Chatbot'}
                   </button>
-                  <p className="text-xs text-gray-500 mt-2 text-center">
+                  <p className="text-xs text-[#94A3B8] mt-2 text-center">
                     Click to update only the training data (text and documents)
                   </p>
                 </div>
@@ -674,7 +674,7 @@ Example:
                 </button>
                 <button
                   onClick={() => router.push('/dashboard')}
-                  className="px-6 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-extrabold text-base hover:border-gray-400 hover:shadow-md"
+                  className="px-6 py-4 border-2 border-white/10 text-[#94A3B8] rounded-xl hover:bg-[#0F172A] transition-colors font-extrabold text-base hover:border-gray-400 hover:shadow-md"
                 >
                   Cancel
                 </button>
@@ -704,7 +704,7 @@ Example:
             {/* Right Panel - Preview */}
             <div className="lg:col-span-1">
               <div className="glass rounded-2xl border-2 border-white/50 p-6 sticky top-24 shadow-lift animate-fade-in">
-                <h3 className="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
+                <h3 className="text-xl font-extrabold text-[#F8FAFC] mb-6 flex items-center gap-2">
                   <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />

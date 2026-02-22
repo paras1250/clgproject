@@ -1,8 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 import DashboardLayout from '../components/DashboardLayout';
 import { MessageSquare, Plus, Settings } from 'lucide-react';
+import { botsAPI } from '../lib/api';
 
 const BotCard = ({ bot }: any) => (
     <div className="bg-[#1E293B] p-6 rounded-2xl border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between gap-6">
@@ -30,19 +33,30 @@ const BotCard = ({ bot }: any) => (
 );
 
 export default function Bots() {
+    const router = useRouter();
     const [bots, setBots] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setTimeout(() => {
-            setBots([
-                { id: '1', name: 'Customer Support', isActive: true, avatar: '🎧', description: 'Handles general customer inquiries and support tickets.' },
-                { id: '2', name: 'Sales Assistant', isActive: true, avatar: '💼', description: 'Helps customers find products and generate leads.' },
-                { id: '3', name: 'Internal HR', isActive: false, avatar: '👥', description: 'Answers employee questions about policies and benefits.' },
-            ]);
-            setLoading(false);
-        }, 1000);
-    }, []);
+        const fetchBots = async () => {
+            const token = Cookies.get('token');
+            if (!token) {
+                router.push('/login');
+                return;
+            }
+
+            try {
+                const data = await botsAPI.list();
+                setBots(data.bots || []);
+            } catch (error) {
+                console.error('Failed to fetch bots:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBots();
+    }, [router]);
 
     return (
         <DashboardLayout>

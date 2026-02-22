@@ -1,8 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 import DashboardLayout from '../components/DashboardLayout';
 import { MessageSquare, TrendingUp, Plus, ArrowRight, Settings, BarChart2 } from 'lucide-react';
+import { analyticsAPI, botsAPI } from '../lib/api';
 
 const StatCard = ({ label, value, trend, icon: Icon }: any) => (
     <div className="bg-[#1E293B] p-6 rounded-2xl border border-white/10 flex flex-col gap-4">
@@ -38,21 +41,42 @@ const RecentBotItem = ({ bot }: any) => (
 );
 
 export default function Dashboard() {
+    const router = useRouter();
     const [stats, setStats] = useState({ totalBots: 0, activeBots: 0, totalChats: 0 });
     const [recentBots, setRecentBots] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setTimeout(() => {
-            setStats({ totalBots: 3, activeBots: 2, totalChats: 1240 });
-            setRecentBots([
-                { id: '1', name: 'Customer Support', isActive: true, avatar: '🎧' },
-                { id: '2', name: 'Sales Assistant', isActive: true, avatar: '💼' },
-                { id: '3', name: 'Internal HR', isActive: false, avatar: '👥' },
-            ]);
-            setLoading(false);
-        }, 1000);
-    }, []);
+        const fetchData = async () => {
+            const token = Cookies.get('token');
+            if (!token) {
+                router.push('/login');
+                return;
+            }
+
+            try {
+                // Fetch stats and bots in parallel
+                const [dashboardData, botsData] = await Promise.all([
+                    analyticsAPI.getDashboard().catch(() => ({ totalBots: 0, activeBots: 0, totalConversations: 0 })),
+                    botsAPI.list().catch(() => ({ bots: [] }))
+                ]);
+
+                setStats({
+                    totalBots: dashboardData.totalBots || 0,
+                    activeBots: dashboardData.activeBots || 0,
+                    totalChats: dashboardData.totalConversations || 0
+                });
+
+                setRecentBots(botsData.bots?.slice(0, 5) || []);
+            } catch (error) {
+                console.error('Failed to fetch dashboard data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [router]);
 
     if (loading) return (
         <DashboardLayout>

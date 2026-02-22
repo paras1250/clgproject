@@ -11,6 +11,14 @@ const Logo = () => (
 export default function Navbar() {
     const router = useRouter();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useState(() => {
+        if (typeof window !== 'undefined') {
+            const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+            setIsLoggedIn(!!token);
+        }
+    });
 
     return (
         <header className="px-6 md:px-12 py-6 flex justify-between items-center bg-[#0F172A]/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
@@ -27,9 +35,11 @@ export default function Navbar() {
                     ))}
                 </nav>
                 <div className="flex items-center gap-4">
-                    <Link href="/login" className="text-[#F8FAFC] font-semibold hover:text-[#3B82F6] transition-colors">Log In</Link>
-                    <Link href="/login" className="bg-[#3B82F6] text-white px-5 py-2.5 rounded-full font-medium hover:bg-[#2563EB] transition-all shadow-lg shadow-blue-500/25">
-                        Get Started
+                    <Link href={isLoggedIn ? "/dashboard" : "/login"} className="text-[#F8FAFC] font-semibold hover:text-[#3B82F6] transition-colors">
+                        {isLoggedIn ? 'Dashboard' : 'Log In'}
+                    </Link>
+                    <Link href={isLoggedIn ? "/builder" : "/login"} className="bg-[#3B82F6] text-white px-5 py-2.5 rounded-full font-medium hover:bg-[#2563EB] transition-all shadow-lg shadow-blue-500/25">
+                        {isLoggedIn ? 'Create Bot' : 'Get Started'}
                     </Link>
                 </div>
             </div>

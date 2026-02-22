@@ -11,6 +11,16 @@ export default function Login() {
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({ email: '', password: '', name: '' });
 
+    useState(() => {
+        // Initial check for server-side or immediate client-side redirect
+        if (typeof window !== 'undefined') {
+            const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+            if (token) {
+                router.push('/dashboard');
+            }
+        }
+    });
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -26,6 +36,11 @@ export default function Login() {
 
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || 'Authentication failed');
+
+            // Save token and user data to cookies
+            const Cookies = (await import('js-cookie')).default;
+            Cookies.set('token', data.token, { expires: 7 });
+            Cookies.set('user', JSON.stringify(data.user), { expires: 7 });
 
             router.push('/dashboard');
         } catch (err: any) {

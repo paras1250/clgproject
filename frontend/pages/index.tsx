@@ -111,7 +111,7 @@ const ChatbotMockup = () => (
                                 Yes, absolutely! 🥦 We offer vegetarian pizzas, pastas with seasonal veggies, and fresh salads.
                             </p>
                         </div>
-                        <span className="chat-label text-[9px] font-bold text-[#3B82F6] uppercase tracking-wider ml-1">Conversio AI Answered</span>
+                        <span className="chat-label text-[9px] fcdont-bold text-[#3B82F6] uppercase tracking-wider ml-1">Conversio AI Answered</span>
                     </div>
                 </div>
             </div>
@@ -162,7 +162,7 @@ const FeatureCard = ({ title, description, image, fullWidth, bgClass = "bg-[#1E2
     </div>
 );
 
-const Hero = () => (
+const Hero = ({ isLoggedIn }: { isLoggedIn: boolean }) => (
     <section className="relative px-6 md:px-20 py-10 md:py-24 max-w-[1400px] mx-auto min-h-[85vh] flex items-center">
         <BackgroundClouds />
 
@@ -176,20 +176,24 @@ const Hero = () => (
                 </p>
 
                 <div className="flex flex-col gap-4 max-w-md relative">
-                    <Link href="/login" className="noupe-button noupe-button-google py-4 px-6 text-xl relative group bg-[#1E293B] border border-white/10 rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center">
+                    <Link href={isLoggedIn ? "/dashboard" : "/login"}
+                        className="noupe-button noupe-button-google py-4 px-6 text-xl relative group bg-[#1E293B] border border-white/10 rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center"
+                    >
                         <span className="absolute left-4 bg-[#1E293B] p-1 rounded-full">
                             <img src="/assets/google.svg" width="22" alt="Google" />
                         </span>
                         <span className="flex items-center gap-2 font-semibold">
-                            Sign Up with Google
+                            {isLoggedIn ? 'Go to Dashboard' : 'Sign Up with Google'}
                             <svg className="w-6 h-6 pt-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M14.707 6.293a1 1 0 1 0-1.414 1.414L16.586 11H5a1 1 0 1 0 0 2h11.586l-3.293 3.293a1 1 0 0 0 1.414 1.414l5-5a1 1 0 0 0 0-1.414l-5-5Z" /></svg>
                         </span>
                     </Link>
 
-                    <Link href="/login" className="noupe-button noupe-button-primary py-4 px-6 text-xl group bg-[#3B82F6] text-white rounded-full hover:bg-opacity-90 transition-all flex items-center justify-center">
+                    <Link href={isLoggedIn ? "/builder" : "/login"}
+                        className="noupe-button noupe-button-primary py-4 px-6 text-xl group bg-[#3B82F6] text-white rounded-full hover:bg-opacity-90 transition-all flex items-center justify-center"
+                    >
                         <span className="flex items-center gap-3 font-semibold">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M1 7.52V18a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3V7.52l-9.28 6.496a3 3 0 0 1-3.44 0L1 7.521Zm21.881-2.358A3.001 3.001 0 0 0 20 3H4a3.001 3.001 0 0 0-2.881 2.162l10.308 7.216a1 1 0 0 0 1.146 0l10.308-7.216Z" /></svg>
-                            Sign Up with an email
+                            {isLoggedIn ? 'Create New Chatbot' : 'Sign Up with an email'}
                             <svg className="w-6 h-6 pt-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M14.707 6.293a1 1 0 1 0-1.414 1.414L16.586 11H5a1 1 0 1 0 0 2h11.586l-3.293 3.293a1 1 0 0 0 1.414 1.414l5-5a1 1 0 0 0 0-1.414l-5-5Z" /></svg>
                         </span>
                     </Link>
@@ -246,6 +250,17 @@ const Footer = () => (
 );
 
 export default function LandingPage() {
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+    React.useEffect(() => {
+        const checkAuth = async () => {
+            const Cookies = (await import('js-cookie')).default;
+            const token = Cookies.get('token');
+            setIsLoggedIn(!!token);
+        };
+        checkAuth();
+    }, []);
+
     return (
         <div className="min-h-screen selection:bg-[#D200D3]/20 font-sans">
             <Head>
@@ -260,9 +275,13 @@ export default function LandingPage() {
                         {["Solutions", "Blog", "Pricing"].map(item => (
                             <Link key={item} href={item === "Pricing" ? "/pricing" : "#"} className="noupe-medium text-[#94A3B8] hover:text-[#F8FAFC] transition-colors text-lg font-medium">{item}</Link>
                         ))}
-                        <Link href="/login" className="noupe-medium text-[#94A3B8] hover:text-[#F8FAFC] transition-colors text-lg font-medium">Login</Link>
+                        <Link href={isLoggedIn ? "/dashboard" : "/login"} className="noupe-medium text-[#94A3B8] hover:text-[#F8FAFC] transition-colors text-lg font-medium">
+                            {isLoggedIn ? 'Dashboard' : 'Login'}
+                        </Link>
                     </nav>
-                    <Link href="/login" className="noupe-button noupe-button-primary px-6 py-3 text-md hidden md:flex bg-[#3B82F6] text-white rounded-full hover:bg-[#2563EB] hover:shadow-lg hover:shadow-blue-500/25 transition-all font-semibold">Sign Up for Free</Link>
+                    <Link href={isLoggedIn ? "/builder" : "/login"} className="noupe-button noupe-button-primary px-6 py-3 text-md hidden md:flex bg-[#3B82F6] text-white rounded-full hover:bg-[#2563EB] hover:shadow-lg hover:shadow-blue-500/25 transition-all font-semibold">
+                        {isLoggedIn ? 'Create Free Bot' : 'Sign Up for Free'}
+                    </Link>
                     <div className="w-10 h-10 bg-white/10 rounded-full md:flex hidden flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-white/20 transition-all">
                         <div className="w-4 h-[1px] bg-[#F8FAFC]"></div>
                         <div className="w-4 h-[1px] bg-[#F8FAFC] my-[1px]"></div>
@@ -271,7 +290,7 @@ export default function LandingPage() {
                 </div>
             </header>
 
-            <Hero />
+            <Hero isLoggedIn={isLoggedIn} />
 
             {/* ══════════════════════════════════════════════
                FEATURES SECTION

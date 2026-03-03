@@ -69,14 +69,14 @@ export default function BotHistory() {
             <Head>
                 <title>Chat History - {botName}</title>
             </Head>
-            <div className="min-h-screen bg-[#0F172A] flex flex-col">
+            <div className="min-h-screen bg-[#0A0F1C] flex flex-col">
                 <AppHeader title="Chat History" breadcrumb="Dashboard / Chat History" />
 
                 <div className="flex-1 flex max-w-7xl mx-auto w-full px-4 py-8 gap-6 h-[calc(100vh-80px)]">
                     {/* Sidebar List */}
-                    <div className="w-1/3 bg-[#1E293B] rounded-xl border border-white/10 overflow-hidden flex flex-col">
-                        <div className="p-4 border-b border-white/10">
-                            <h2 className="font-bold text-[#F8FAFC]">Conversations ({conversations.length})</h2>
+                    <div className="w-1/3 bg-[#121826] rounded-xl border border-white/[0.06] overflow-hidden flex flex-col">
+                        <div className="p-4 border-b border-white/[0.06]">
+                            <h2 className="font-sora font-bold text-[#F1F5F9]">Conversations ({conversations.length})</h2>
                         </div>
                         <div className="flex-1 overflow-y-auto">
                             {conversations.length === 0 ? (
@@ -86,9 +86,9 @@ export default function BotHistory() {
                                     <div
                                         key={conv.id}
                                         onClick={() => setSelectedConversation(conv)}
-                                        className={`p-4 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-colors ${selectedConversation?.id === conv.id ? 'bg-[#3B82F6]/10 border-l-4 border-l-[#3B82F6]' : ''}`}
+                                        className={`p-4 border-b border-white/5 cursor-pointer hover:bg-[#182034] transition-colors ${selectedConversation?.id === conv.id ? 'bg-[#00F5D4]/5 border-l-4 border-l-[#00F5D4]' : ''}`}
                                     >
-                                        <div className="font-semibold text-[#F8FAFC] text-sm truncate">
+                                        <div className="font-semibold text-[#F1F5F9] text-sm truncate font-inter">
                                             Session: {conv.sessionId.substring(0, 8)}
                                         </div>
                                         <div className="text-xs text-[#64748B] mt-1">
@@ -104,11 +104,11 @@ export default function BotHistory() {
                     </div>
 
                     {/* Chat Detail View */}
-                    <div className="flex-1 bg-[#1E293B] rounded-xl border border-white/10 overflow-hidden flex flex-col">
+                    <div className="flex-1 bg-[#121826] rounded-xl border border-white/[0.06] overflow-hidden flex flex-col">
                         {selectedConversation ? (
                             <>
-                                <div className="p-4 border-b border-white/10 flex justify-between items-center">
-                                    <h3 className="font-bold text-[#F8FAFC]">
+                                <div className="p-4 border-b border-white/[0.06] flex justify-between items-center">
+                                    <h3 className="font-sora font-bold text-[#F1F5F9]">
                                         Session Detail: {selectedConversation.sessionId}
                                     </h3>
                                     <div className="flex items-center gap-3">
@@ -130,7 +130,7 @@ export default function BotHistory() {
                                                     }
                                                 }
                                             }}
-                                            className="text-[#F43F5E] hover:text-[#F43F5E]/80 p-1 hover:bg-[#F43F5E]/10 rounded transition-colors"
+                                            className="text-[#EF4444] hover:text-[#EF4444]/80 p-1 hover:bg-[#EF4444]/10 rounded transition-colors"
                                             title="Delete Conversation"
                                         >
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -139,12 +139,12 @@ export default function BotHistory() {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#0F172A]/30">
+                                <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#0A0F1C]/30">
                                     {selectedConversation.messages.map((msg: any, idx: number) => (
                                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                             <div className={`max-w-[80%] rounded-2xl px-5 py-3 ${msg.role === 'user'
-                                                ? 'bg-[#3B82F6] text-white rounded-br-none'
-                                                : 'bg-[#1E293B] text-[#F8FAFC] border border-white/10 rounded-bl-none'
+                                                ? 'bg-[#00F5D4] text-[#0A0F1C] rounded-br-none'
+                                                : 'bg-[#121826] text-[#F1F5F9] border border-white/[0.06] rounded-bl-none'
                                                 }`}>
                                                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
                                             </div>

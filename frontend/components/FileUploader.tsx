@@ -38,7 +38,7 @@ export default function FileUploader({
     return (
         <div className="w-full">
             <div
-                className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer ${isDragging ? 'border-[#3B82F6] bg-[#3B82F6]/5' : 'border-white/10 hover:border-white/20 hover:bg-white/5'
+                className={`border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${isDragging ? 'border-[#00F5D4] bg-[#00F5D4]/5' : 'border-white/[0.08] hover:border-[#00F5D4]/30 hover:bg-white/[0.02]'
                     }`}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -71,8 +71,8 @@ export default function FileUploader({
             {uploadedFiles.length > 0 && (
                 <div className="mt-4 space-y-2">
                     {uploadedFiles.map((file, index) => (
-                        <div key={index} className="flex items-center p-3 bg-[#1E293B] border border-white/10 rounded-lg group">
-                            <div className="w-8 h-8 bg-[#3B82F6]/10 text-[#3B82F6] rounded-lg flex items-center justify-center mr-3">
+                        <div key={index} className="flex items-center p-3 bg-[#121826] border border-white/[0.06] rounded-lg group">
+                            <div className="w-8 h-8 bg-[#00F5D4]/10 text-[#00F5D4] rounded-lg flex items-center justify-center mr-3">
                                 <FileText size={16} />
                             </div>
                             <div className="flex-1 min-w-0">

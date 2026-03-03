@@ -1,0 +1,49 @@
+<svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00F5D4"/>
+      <stop offset="45%" stop-color="#3A86FF"/>
+      <stop offset="85%" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Text -->
+  <text
+    x="50%"
+    y="115"
+    text-anchor="middle"
+    font-family="Inter, Poppins, sans-serif"
+    font-weight="700"
+    font-size="125"
+    letter-spacing="2"
+    fill="url(#brandGradient)"
+    opacity="0">
+    conversio
+    <animate
+      attributeName="opacity"
+      from="0"
+      to="1"
+      dur="0.8s"
+      fill="freeze" />
+  </text>
+
+  <!-- Smile -->
+  <path
+    d="M440 150 Q480 175 520 150"
+    stroke="url(#brandGradient)"
+    stroke-width="8"
+    stroke-linecap="round"
+    fill="none"
+    stroke-dasharray="120"
+    stroke-dashoffset="120">
+    <animate
+      attributeName="stroke-dashoffset"
+      from="120"
+      to="0"
+      dur="0.7s"
+      begin="0.8s"
+      fill="freeze" />
+  </path>
+
+</svg>

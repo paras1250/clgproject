@@ -87,16 +87,16 @@ const faqs = [
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <div className="border border-white/10 rounded-xl overflow-hidden">
+        <div className="border border-white/[0.06] rounded-xl overflow-hidden">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-white/5 transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-[#182034] transition-colors"
             >
-                <span className="font-semibold text-[#F8FAFC]">{question}</span>
+                <span className="font-semibold text-[#F1F5F9] font-inter">{question}</span>
                 {isOpen ? <ChevronUp size={20} className="text-[#64748B]" /> : <ChevronDown size={20} className="text-[#64748B]" />}
             </button>
             {isOpen && (
-                <div className="px-6 pb-4 text-[#94A3B8] leading-relaxed">
+                <div className="px-6 pb-4 text-[#94A3B8] leading-relaxed font-inter">
                     {answer}
                 </div>
             )}
@@ -106,7 +106,7 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 export default function Pricing() {
     return (
-        <div className="min-h-screen bg-[#0F172A]">
+        <div className="min-h-screen bg-[#0A0F1C]">
             <Head>
                 <title>Pricing - Conversio AI</title>
                 <meta name="description" content="Choose the right plan for your AI chatbot needs." />
@@ -116,8 +116,8 @@ export default function Pricing() {
             <div className="max-w-6xl mx-auto px-6 py-20">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <h1 className="text-4xl font-bold text-[#F8FAFC] mb-4">Simple, Transparent Pricing</h1>
-                    <p className="text-xl text-[#94A3B8] max-w-2xl mx-auto">
+                    <h1 className="font-sora text-4xl font-bold text-[#F1F5F9] mb-4 tracking-tight">Simple, Transparent Pricing</h1>
+                    <p className="text-xl text-[#94A3B8] max-w-2xl mx-auto font-inter">
                         Choose the plan that fits your needs. Start free and scale as you grow.
                     </p>
                 </div>
@@ -127,34 +127,34 @@ export default function Pricing() {
                     {plans.map((plan) => (
                         <div
                             key={plan.name}
-                            className={`relative bg-[#1E293B] rounded-3xl border p-8 flex flex-col transition-all hover:shadow-lg ${plan.highlight
-                                ? 'border-[#3B82F6] shadow-lg shadow-blue-500/10 scale-[1.02]'
-                                : 'border-white/10'
+                            className={`relative bg-[#121826] rounded-3xl border p-8 flex flex-col transition-all hover:shadow-lg ${plan.highlight
+                                ? 'border-[#00F5D4] shadow-lg shadow-[#00F5D4]/10 scale-[1.02]'
+                                : 'border-white/[0.06]'
                                 }`}
                         >
                             {plan.badge && (
-                                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#3B82F6] text-white text-xs font-bold px-4 py-1 rounded-full">
+                                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#00F5D4] text-[#0A0F1C] text-xs font-bold px-4 py-1 rounded-full font-inter">
                                     {plan.badge}
                                 </span>
                             )}
 
-                            <h3 className="text-xl font-bold text-[#F8FAFC] mb-2">{plan.name}</h3>
-                            <p className="text-[#94A3B8] text-sm mb-6">{plan.description}</p>
+                            <h3 className="font-sora text-xl font-bold text-[#F1F5F9] mb-2">{plan.name}</h3>
+                            <p className="text-[#94A3B8] text-sm mb-6 font-inter">{plan.description}</p>
 
                             <div className="mb-8">
-                                <span className="text-4xl font-bold text-[#F8FAFC]">{plan.price}</span>
-                                <span className="text-[#64748B]">{plan.period}</span>
+                                <span className="text-4xl font-bold text-[#F1F5F9] font-sora">{plan.price}</span>
+                                <span className="text-[#64748B] font-inter">{plan.period}</span>
                             </div>
 
                             <ul className="space-y-3 mb-8 flex-1">
                                 {plan.features.map((feature, idx) => (
-                                    <li key={idx} className="flex items-center gap-3">
+                                    <li key={idx} className="flex items-center gap-3 font-inter">
                                         {feature.included ? (
                                             <Check size={18} className="text-[#10B981] flex-shrink-0" />
                                         ) : (
                                             <X size={18} className="text-[#64748B] flex-shrink-0" />
                                         )}
-                                        <span className={feature.included ? 'text-[#F8FAFC]' : 'text-[#64748B]'}>
+                                        <span className={feature.included ? 'text-[#F1F5F9]' : 'text-[#64748B]'}>
                                             {feature.text}
                                         </span>
                                     </li>
@@ -163,9 +163,9 @@ export default function Pricing() {
 
                             <Link href="/login">
                                 <button
-                                    className={`w-full py-3.5 rounded-xl font-bold transition-all ${plan.highlight
-                                        ? 'bg-[#3B82F6] text-white hover:bg-[#2563EB] shadow-lg shadow-blue-500/25'
-                                        : 'bg-white/5 text-[#F8FAFC] hover:bg-white/10 border border-white/10'
+                                    className={`w-full py-3.5 rounded-xl font-semibold transition-all font-inter tracking-wide ${plan.highlight
+                                        ? 'bg-[#00F5D4] text-[#0A0F1C] hover:bg-[#00D9C0] shadow-lg shadow-[#00F5D4]/15'
+                                        : 'bg-white/5 text-[#F1F5F9] hover:bg-white/10 border border-white/[0.08]'
                                         }`}
                                 >
                                     {plan.cta}
@@ -177,15 +177,15 @@ export default function Pricing() {
 
                 {/* Feature Comparison Table */}
                 <div className="mb-20">
-                    <h2 className="text-2xl font-bold text-[#F8FAFC] text-center mb-8">Feature Comparison</h2>
-                    <div className="bg-[#1E293B] rounded-2xl border border-white/10 overflow-hidden">
+                    <h2 className="font-sora text-2xl font-bold text-[#F1F5F9] text-center mb-8">Feature Comparison</h2>
+                    <div className="bg-[#121826] rounded-2xl border border-white/[0.06] overflow-hidden">
                         <table className="w-full">
                             <thead>
-                                <tr className="border-b border-white/10 bg-white/5">
-                                    <th className="text-left px-6 py-4 font-semibold text-[#94A3B8]">Feature</th>
-                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8]">Free</th>
-                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8]">Pro</th>
-                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8]">Enterprise</th>
+                                <tr className="border-b border-white/[0.06] bg-white/[0.02]">
+                                    <th className="text-left px-6 py-4 font-semibold text-[#94A3B8] font-inter">Feature</th>
+                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8] font-inter">Free</th>
+                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8] font-inter">Pro</th>
+                                    <th className="text-center px-6 py-4 font-semibold text-[#94A3B8] font-inter">Enterprise</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
@@ -199,14 +199,14 @@ export default function Pricing() {
                                     ['Dedicated Account Manager', false, false, true],
                                     ['API Access', false, true, true],
                                 ].map((row, idx) => (
-                                    <tr key={idx} className="hover:bg-white/5 transition-colors">
-                                        <td className="px-6 py-4 font-medium text-[#F8FAFC]">{row[0]}</td>
+                                    <tr key={idx} className="hover:bg-[#182034] transition-colors">
+                                        <td className="px-6 py-4 font-medium text-[#F1F5F9] font-inter">{row[0]}</td>
                                         {[row[1], row[2], row[3]].map((val, i) => (
                                             <td key={i} className="px-6 py-4 text-center">
                                                 {typeof val === 'boolean' ? (
                                                     val ? <Check size={18} className="text-[#10B981] mx-auto" /> : <X size={18} className="text-[#64748B] mx-auto" />
                                                 ) : (
-                                                    <span className="text-[#94A3B8] font-medium">{val}</span>
+                                                    <span className="text-[#94A3B8] font-medium font-inter">{val}</span>
                                                 )}
                                             </td>
                                         ))}
@@ -219,7 +219,7 @@ export default function Pricing() {
 
                 {/* FAQ Section */}
                 <div className="max-w-3xl mx-auto">
-                    <h2 className="text-2xl font-bold text-[#F8FAFC] text-center mb-8">Frequently Asked Questions</h2>
+                    <h2 className="font-sora text-2xl font-bold text-[#F1F5F9] text-center mb-8">Frequently Asked Questions</h2>
                     <div className="space-y-3">
                         {faqs.map((faq, idx) => (
                             <FAQItem key={idx} question={faq.question} answer={faq.answer} />

@@ -71,6 +71,7 @@ export default function Builder() {
   });
   const [isGeneratingScript, setIsGeneratingScript] = useState(false);
   const [creationAborted, setCreationAborted] = useState(false);
+  const [showKnowledgeSidebar, setShowKnowledgeSidebar] = useState(false);
 
   // Ref for chat component to enable sending messages from quick prompts
   const chatRef = useRef<any>(null);
@@ -388,12 +389,12 @@ export default function Builder() {
         <title>Edit Chatbot - Conversio AI</title>
       </Head>
 
-      <div className="min-h-screen bg-gradient-premium-bg relative overflow-hidden font-sans">
+      <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden font-sans">
         {/* Animated floating background elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/15 rounded-full blur-[120px] animate-float-slow"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/15 rounded-full blur-[120px] animate-float" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute top-[20%] right-[20%] w-[30%] h-[30%] bg-cyan-400/10 rounded-full blur-[100px] animate-float-slow" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#00F5D4]/[0.04] rounded-full blur-[120px] animate-float-slow"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#3A86FF]/[0.04] rounded-full blur-[120px] animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-[20%] right-[20%] w-[30%] h-[30%] bg-[#00F5D4]/[0.02] rounded-full blur-[100px] animate-float-slow" style={{ animationDelay: '4s' }}></div>
         </div>
         <div className="relative z-10">
           <AppHeader title="Chat Builder" breadcrumb="Dashboard / Builder" />
@@ -402,10 +403,10 @@ export default function Builder() {
         <main className="px-6 py-6 relative z-10">
           {/* Header */}
           <div className="mb-8 animate-fade-in text-center">
-            <h1 className="text-4xl font-extrabold text-[#F8FAFC] mb-2 tracking-tight">
+            <h1 className="font-sora text-3xl font-bold text-[#F1F5F9] mb-2 tracking-tight">
               Build Your AI Workforce
             </h1>
-            <p className="text-lg text-[#94A3B8] font-medium max-w-2xl mx-auto">
+            <p className="text-base text-[#94A3B8] font-inter max-w-2xl mx-auto">
               Create, train, and deploy intelligent agents in minutes.
             </p>
           </div>
@@ -418,149 +419,179 @@ export default function Builder() {
 
             {/* Step 1: Create & Train Agent - Two Panel Layout */}
             {currentStep === 1 && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-1">
-                {/* Left Column - Configuration (7 cols) */}
-                <div className="lg:col-span-7 space-y-4">
+              <div className="flex-1 flex flex-col items-center px-6 pt-6 min-h-[calc(100vh-220px)]">
+                <div className="w-full max-w-[1150px] mx-auto px-2">
 
-                  {/* Identity Card */}
-                  <div className="glass-panel rounded-2xl p-6 hover-lift">
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/25 animate-glow">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-bold text-[#F8FAFC]">Agent Identity</h2>
-                        <p className="text-sm text-[#94A3B8] font-medium">Define your agent's persona and role</p>
-                      </div>
+                  {/* Main Prompt Card */}
+                  <div
+                    className="bg-[#121826] rounded-[20px] p-10 shadow-[0_10px_30px_rgba(0,0,0,0.4)] animate-fade-in-up"
+                    style={{ animationDelay: '200ms' }}
+                  >
+
+                    {/* Section 1 — Agent Name */}
+                    <div className="mb-5">
+                      <label className="block text-xs font-medium text-[#94A3B8] mb-2 font-inter tracking-wide uppercase">Chatbot Name</label>
+                      <input
+                        type="text"
+                        value={botData.name}
+                        onChange={(e) => setBotData({ ...botData, name: e.target.value })}
+                        className="w-full bg-[#0F1629] text-[#F1F5F9] text-sm font-medium font-inter placeholder-[#64748B] focus:outline-none rounded-xl h-12 px-4 transition-all focus:shadow-[0_0_0_2px_rgba(0,245,212,0.3)]"
+                        placeholder="e.g., Sales Helper, Support Bot, FAQ Agent..."
+                        maxLength={100}
+                        disabled={isLoading}
+                      />
                     </div>
 
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-bold text-[#94A3B8] mb-1.5 ml-1">Agent Name</label>
-                        <input
-                          type="text"
-                          value={botData.name}
-                          onChange={(e) => setBotData({ ...botData, name: e.target.value })}
-                          className="glass-input w-full px-4 py-2.5 rounded-xl text-[#F8FAFC] placeholder-[#64748B] focus:outline-none transition-all text-sm font-medium"
-                          placeholder="e.g., Sales Helper"
-                          maxLength={100}
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-bold text-[#94A3B8] mb-1.5 ml-1">Role Description</label>
-                        <textarea
-                          value={botData.description}
-                          onChange={(e) => setBotData({ ...botData, description: e.target.value })}
-                          rows={2}
-                          className="glass-input w-full px-4 py-3 rounded-xl text-[#F8FAFC] placeholder-[#64748B] focus:outline-none transition-all text-sm min-h-[80px]"
-                          placeholder="Briefly describe what this agent does..."
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Knowledge Base Card */}
-                  <div className="glass-panel rounded-2xl p-6 hover-lift">
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25 animate-glow">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-bold text-[#F8FAFC]">Knowledge Base</h2>
-                        <p className="text-sm text-[#94A3B8] font-medium">Train your agent with your own data</p>
-                      </div>
+                    {/* Section 2 — Agent Description */}
+                    <div className="mb-6">
+                      <label className="block text-xs font-medium text-[#94A3B8] mb-2 font-inter tracking-wide uppercase">What should this chatbot do?</label>
+                      <textarea
+                        value={botData.description}
+                        onChange={(e) => setBotData({ ...botData, description: e.target.value })}
+                        rows={3}
+                        disabled={isLoading}
+                        className="w-full bg-[#0F1629] text-[#F1F5F9] text-sm font-inter placeholder-[#64748B] focus:outline-none rounded-xl px-4 py-3.5 resize-none leading-relaxed transition-all focus:shadow-[0_0_0_2px_rgba(0,245,212,0.3)]"
+                        placeholder="Describe its role, personality, and what it should help users with..."
+                      />
                     </div>
 
-                    {/* Knowledge Source Selection */}
-                    <div className="mb-4 p-1 bg-white/50 backdrop-blur-sm rounded-xl inline-flex border border-white/60 shadow-sm">
-                      <button
-                        onClick={() => setTrainingMethod('text')}
-                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'text'
-                          ? 'bg-[#1E293B] text-primary-600 shadow-md'
-                          : 'text-[#94A3B8] hover:text-[#F8FAFC]'
-                          }`}
-                      >
-                        Raw Text
-                      </button>
-                      <button
-                        onClick={() => setTrainingMethod('files')}
-                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'files'
-                          ? 'bg-[#1E293B] text-primary-600 shadow-md'
-                          : 'text-[#94A3B8] hover:text-[#F8FAFC]'
-                          }`}
-                      >
-                        Documents
-                      </button>
-                      <button
-                        onClick={() => setTrainingMethod('both')}
-                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${trainingMethod === 'both'
-                          ? 'bg-[#1E293B] text-primary-600 shadow-md'
-                          : 'text-[#94A3B8] hover:text-[#F8FAFC]'
-                          }`}
-                      >
-                        Both
-                      </button>
-                    </div>
+                    {/* Divider — stronger separation before training */}
+                    <div className="border-t border-white/[0.06] mb-8 mt-2"></div>
 
-                    {/* Text Training Area */}
-                    {(trainingMethod === 'text' || trainingMethod === 'both') && (
-                      <div className="mb-4">
-                        <textarea
-                          value={trainingText}
-                          onChange={(e) => setTrainingText(e.target.value)}
-                          disabled={isLoading}
-                          rows={8}
-                          className="glass-input w-full px-4 py-3 rounded-xl text-[#F8FAFC] placeholder-[#64748B] focus:outline-none transition-all font-mono text-sm leading-relaxed"
-                          placeholder={`Paste your training data here...`}
-                        />
-                        <div className="mt-2 flex items-center justify-between text-xs px-1">
-                          <span className="text-[#94A3B8] font-medium">Markdown Supported</span>
-                          <span className={`font-bold ${trainingText.length >= 50 ? 'text-green-600' : 'text-[#64748B]'}`}>
-                            {trainingText.length} characters
-                          </span>
+                    {/* Section 3 — Training Data (Primary Workspace) */}
+                    <div className="bg-[#0B1120] rounded-2xl p-6 border border-white/[0.06] shadow-[inset_0_1px_0_rgba(0,245,212,0.04)]">
+                      {/* Training method toggle */}
+                      <div className="flex items-center justify-between mb-4">
+                        <label className="text-sm font-semibold text-[#E2E8F0] font-inter tracking-wide">
+                          Training Data
+                          <span className="ml-2 text-[10px] font-normal text-[#00F5D4]/60">— feed knowledge to your AI</span>
+                        </label>
+                        <div className="p-0.5 bg-[#0A0F1C] rounded-lg inline-flex">
+                          <button
+                            onClick={() => setTrainingMethod('text')}
+                            className={`px-3 py-1 rounded-md text-[11px] font-semibold transition-all duration-200 font-inter ${trainingMethod === 'text'
+                              ? 'bg-[#00F5D4] text-[#0A0F1C] shadow-sm'
+                              : 'text-[#64748B] hover:text-[#94A3B8]'
+                              }`}
+                          >
+                            Text
+                          </button>
+                          <button
+                            onClick={() => setTrainingMethod('files')}
+                            className={`px-3 py-1 rounded-md text-[11px] font-semibold transition-all duration-200 font-inter ${trainingMethod === 'files'
+                              ? 'bg-[#00F5D4] text-[#0A0F1C] shadow-sm'
+                              : 'text-[#64748B] hover:text-[#94A3B8]'
+                              }`}
+                          >
+                            Upload
+                          </button>
+                          <button
+                            onClick={() => setTrainingMethod('both')}
+                            className={`px-3 py-1 rounded-md text-[11px] font-semibold transition-all duration-200 font-inter ${trainingMethod === 'both'
+                              ? 'bg-[#00F5D4] text-[#0A0F1C] shadow-sm'
+                              : 'text-[#64748B] hover:text-[#94A3B8]'
+                              }`}
+                          >
+                            Both
+                          </button>
                         </div>
                       </div>
-                    )}
 
-                    {/* File Upload Area */}
-                    {(trainingMethod === 'files' || trainingMethod === 'both') && (
-                      <div className="mb-4">
-                        <FileUploader
-                          onFilesSelected={handleFilesSelected}
-                          uploadedFiles={uploadedFiles}
-                          onFileRemove={handleRemoveFile}
-                        />
+                      {/* Training text area */}
+                      {(trainingMethod === 'text' || trainingMethod === 'both') && (
+                        <div className="bg-[#0F1629] rounded-xl p-[18px] mb-3 border border-white/[0.04]">
+                          <textarea
+                            value={trainingText}
+                            onChange={(e) => setTrainingText(e.target.value)}
+                            disabled={isLoading}
+                            rows={8}
+                            className="w-full bg-transparent text-[#F1F5F9] text-sm font-inter placeholder-[#64748B] focus:outline-none resize-none min-h-[220px] max-h-[400px] leading-relaxed"
+                            placeholder="Paste training content, FAQs, product info, or any knowledge your AI should know..."
+                          />
+                          <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
+                            <span className="text-[10px] text-[#64748B] font-inter">Supports markdown</span>
+                            <span className={`text-[10px] font-semibold font-inter ${trainingText.length >= 50 ? 'text-[#10B981]' : 'text-[#64748B]'}`}>
+                              {trainingText.length} chars
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* File upload area */}
+                      {(trainingMethod === 'files' || trainingMethod === 'both') && (
+                        <div className="mb-3">
+                          <FileUploader
+                            onFilesSelected={handleFilesSelected}
+                            uploadedFiles={uploadedFiles}
+                            onFileRemove={handleRemoveFile}
+                          />
+                        </div>
+                      )}
+
+                      {/* Bottom Action Bar */}
+                      <div className="flex items-center justify-between pt-3">
+                        {/* Left — file picker shortcut + badges */}
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="file"
+                            id="quickFileInput"
+                            className="hidden"
+                            multiple
+                            accept=".pdf,.doc,.docx,.txt"
+                            onChange={(e) => handleFilesSelected(e.target.files)}
+                          />
+                          <button
+                            onClick={() => document.getElementById('quickFileInput')?.click()}
+                            className="flex items-center gap-1.5 text-[#64748B] hover:text-[#00F5D4] transition-colors duration-200 text-xs font-inter"
+                            title="Attach files"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                            </svg>
+                            <span>Attach</span>
+                          </button>
+
+                          {/* Inline badges */}
+                          {uploadedFiles.length > 0 && (
+                            <span className="text-[10px] bg-[#00F5D4]/10 text-[#00F5D4] px-2 py-0.5 rounded-full font-medium font-inter">
+                              {uploadedFiles.length} file{uploadedFiles.length > 1 ? 's' : ''}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Right — Send Button */}
+                        <button
+                          onClick={handleNextStep}
+                          disabled={!botData.name || botData.name.trim().length < 2 || isLoading}
+                          className="w-11 h-11 rounded-full bg-[#00F5D4] hover:bg-[#00D9C0] text-[#0A0F1C] flex items-center justify-center transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed btn-hover-scale shadow-lg shadow-[#00F5D4]/20"
+                        >
+                          {isLoading ? (
+                            <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+                            </svg>
+                          )}
+                        </button>
                       </div>
-                    )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Right Column - Status & Actions (5 cols) */}
-                <div className="lg:col-span-5 space-y-3">
-                  {/* Status Panel */}
-                  <div className="sticky top-4 space-y-3">
-                    <TrainingStatusPanel
-                      trainingMethod={trainingMethod}
-                      uploadedFilesCount={uploadedFiles.length}
-                      trainingTextLength={trainingText.length}
-                      isTraining={isLoading}
-                    />
+                  {/* Loading Message */}
+                  {isLoading && loadingMessage && (
+                    <div className="text-center mt-4 animate-fade-in">
+                      <p className="text-sm text-[#00F5D4] font-medium font-inter">{loadingMessage}</p>
+                    </div>
+                  )}
 
-                    {/* Create Button */}
-                  </div>
+                  {/* Disclaimer */}
+                  <p className="text-center text-xs text-[#64748B] mt-5 font-inter animate-fade-in" style={{ animationDelay: '300ms' }}>
+                    AI can make mistakes. Please verify important information.
+                  </p>
                 </div>
-                <BuilderFooter
-                  onNext={handleNextStep}
-                  nextLabel="Create & Train Agent"
-                  showBack={false}
-                  isNextDisabled={!botData.name || botData.name.trim().length < 2}
-                  isLoading={isLoading}
-                  loadingText={loadingMessage || "Creating Agent..."}
-                />
               </div>
             )}
 
@@ -607,7 +638,7 @@ export default function Builder() {
                     </div>
 
                     {/* Center Panel - Chat Preview */}
-                    <div className="flex-1 flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
+                    <div className="flex-1 flex flex-col bg-[#0A0F1C]">
                       {/* Header with Avatar - uses ChatbotContext */}
                       <ChatAvatarHeader
                         botName={createdBot.name}
@@ -618,23 +649,23 @@ export default function Builder() {
                       </div>
 
                       {/* Suggested Prompts - Now Functional */}
-                      <div className="bg-[#1E293B] border-t border-white/10 px-6 py-3">
+                      <div className="bg-[#121826] border-t border-white/[0.06] px-6 py-3">
                         <div className="flex gap-2 flex-wrap">
                           <button
                             onClick={() => chatRef.current?.sendMessage("What are your pricing options?")}
-                            className="text-xs bg-white/5 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-[#94A3B8] transition-all hover:shadow-sm"
+                            className="text-xs bg-white/5 hover:bg-[#00F5D4]/10 hover:text-[#00F5D4] px-3 py-1.5 rounded-full text-[#94A3B8] transition-all font-inter"
                           >
                             Ask about pricing
                           </button>
                           <button
                             onClick={() => chatRef.current?.sendMessage("What are your support hours?")}
-                            className="text-xs bg-white/5 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-[#94A3B8] transition-all hover:shadow-sm"
+                            className="text-xs bg-white/5 hover:bg-[#00F5D4]/10 hover:text-[#00F5D4] px-3 py-1.5 rounded-full text-[#94A3B8] transition-all font-inter"
                           >
                             Support hours
                           </button>
                           <button
                             onClick={() => chatRef.current?.sendMessage("How do I integrate this with my website?")}
-                            className="text-xs bg-white/5 hover:bg-blue-100 hover:text-blue-700 px-3 py-1.5 rounded-full text-[#94A3B8] transition-all hover:shadow-sm"
+                            className="text-xs bg-white/5 hover:bg-[#00F5D4]/10 hover:text-[#00F5D4] px-3 py-1.5 rounded-full text-[#94A3B8] transition-all font-inter"
                           >
                             Integration help
                           </button>
@@ -659,18 +690,18 @@ export default function Builder() {
                   {/* Left Panel - Code & Installation */}
                   <div className="flex-1 space-y-6 max-w-5xl">
                     {/* Success Message */}
-                    <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border border-green-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-[#121826] rounded-xl p-6 border border-[#00F5D4]/20 shadow-sm">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                          <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#00F5D4] to-[#3A86FF] rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+                          <svg className="w-6 h-6 text-[#0A0F1C]" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-[#F8FAFC] mb-2">
-                            🎉 Success! Your chatbot <span className="text-blue-700">{createdBot.name}</span> is ready!
+                          <h3 className="font-sora text-xl font-bold text-[#F1F5F9] mb-2">
+                            🎉 Success! Your chatbot <span className="text-[#00F5D4]">{createdBot.name}</span> is ready!
                           </h3>
-                          <p className="text-sm text-[#94A3B8]">
+                          <p className="text-sm text-[#94A3B8] font-inter">
                             Copy the embed code below and paste it into your website's HTML to activate your AI assistant.
                           </p>
                         </div>
@@ -678,15 +709,15 @@ export default function Builder() {
                     </div>
 
                     {/* Embed Code Section */}
-                    <div className="bg-[#1E293B] rounded-xl p-6 border border-white/10 shadow-sm">
+                    <div className="bg-[#121826] rounded-xl p-6 border border-white/[0.06] shadow-sm">
                       <div className="flex items-center justify-between mb-4">
                         <div>
-                          <h3 className="text-lg font-bold text-[#F8FAFC]">Embed Code</h3>
-                          <p className="text-sm text-[#94A3B8]">One-line script to add to your website</p>
+                          <h3 className="font-sora text-lg font-bold text-[#F1F5F9]">Embed Code</h3>
+                          <p className="text-sm text-[#94A3B8] font-inter">One-line script to add to your website</p>
                         </div>
                         <button
                           onClick={copyEmbedCode}
-                          className="px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:shadow-lg transition-all font-medium text-sm flex items-center gap-2"
+                          className="px-4 py-2 bg-gradient-to-r from-[#00F5D4] to-[#3A86FF] text-[#0A0F1C] rounded-lg hover:shadow-lg hover:shadow-[#00F5D4]/15 transition-all font-semibold text-sm flex items-center gap-2 font-inter"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -697,7 +728,7 @@ export default function Builder() {
                       {isGeneratingScript ? (
                         <div className="bg-white/5 rounded-lg p-8 flex items-center justify-center">
                           <div className="flex items-center gap-3">
-                            <svg className="animate-spin h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24">
+                            <svg className="animate-spin h-6 w-6 text-[#00F5D4]" fill="none" viewBox="0 0 24 24">
                               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
@@ -711,7 +742,7 @@ export default function Builder() {
                           </div>
                           <button
                             onClick={copyEmbedCode}
-                            className="absolute top-3 right-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors flex items-center gap-2"
+                            className="absolute top-3 right-3 bg-[#00F5D4] hover:bg-[#00D9C0] text-[#0A0F1C] px-4 py-2 rounded text-sm font-semibold transition-colors flex items-center gap-2 font-inter"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -720,33 +751,33 @@ export default function Builder() {
                           </button>
                         </div>
                       ) : (
-                        <div className="bg-[#0F172A] rounded-lg p-8 text-center">
+                        <div className="bg-[#0A0F1C] rounded-lg p-8 text-center">
                           <p className="text-sm text-[#94A3B8]">Generating your embed code...</p>
                         </div>
                       )}
                     </div>
 
                     {/* Installation Guide */}
-                    <div className="bg-blue-50 rounded-lg p-5 border border-blue-200">
-                      <h4 className="font-bold text-[#F8FAFC] mb-3 flex items-center gap-2">
-                        <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="bg-[#121826] rounded-lg p-5 border border-white/[0.06]">
+                      <h4 className="font-sora font-bold text-[#F1F5F9] mb-3 flex items-center gap-2">
+                        <svg className="w-5 h-5 text-[#00F5D4]" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                         </svg>
                         Installation Guide
                       </h4>
-                      <ol className="space-y-2 text-sm text-[#94A3B8]">
+                      <ol className="space-y-2 text-sm text-[#94A3B8] font-inter">
                         <li className="flex gap-2">
-                          <span className="font-bold text-blue-600">1.</span>
+                          <span className="font-bold text-[#00F5D4]">1.</span>
                           <span>Copy the embed code above using the "Copy Code" button</span>
                         </li>
                         <li className="flex gap-2">
-                          <span className="font-bold text-blue-600">2.</span>
+                          <span className="font-bold text-[#00F5D4]">2.</span>
                           <span>
-                            Paste it just before the closing <code className="bg-blue-200 px-1.5 py-0.5 rounded text-xs font-mono">&lt;/body&gt;</code> tag in your website's HTML
+                            Paste it just before the closing <code className="bg-[#00F5D4]/10 text-[#00F5D4] px-1.5 py-0.5 rounded text-xs font-mono">&lt;/body&gt;</code> tag in your website's HTML
                           </span>
                         </li>
                         <li className="flex gap-2">
-                          <span className="font-bold text-blue-600">3.</span>
+                          <span className="font-bold text-[#00F5D4]">3.</span>
                           <span>Save and publish your website - the chatbot will appear automatically!</span>
                         </li>
                       </ol>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ==========================================
-   CONVERSIO AI — Midnight Blue Design System
+   CONVERSIO AI — Deep Navy + Neon Teal Design System
    ========================================== */
 
 /* Base resets */
@@ -14,92 +14,126 @@
 
   body {
     @apply antialiased;
-    background-color: #0F172A;
-    color: #F8FAFC;
+    background-color: #0A0F1C;
+    color: #F1F5F9;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Sora', sans-serif;
   }
 }
 
 /* ==========================================
-   Glass Morphism Components (Dark)
+   Glass Morphism Components (Deep Navy)
    ========================================== */
 @layer components {
 
   /* Glass Panel — dark frosted card */
   .glass-panel {
-    background: rgba(30, 41, 59, 0.7);
+    background: rgba(18, 24, 38, 0.8);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
   }
 
   .glass-panel:hover {
-    background: rgba(30, 41, 59, 0.85);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(24, 32, 52, 0.95);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    transform: translateY(-3px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Glass — shorthand alias */
   .glass {
-    background: rgba(30, 41, 59, 0.7);
+    background: rgba(18, 24, 38, 0.8);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   }
 
-  /* Glass Input — dark input fields */
+  /* Glass Input — deep navy input fields */
   .glass-input {
-    background: rgba(15, 23, 42, 0.6);
+    background: #0F1629;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #F8FAFC;
-    transition: all 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: #F1F5F9;
+    transition: all 0.25s ease;
   }
 
   .glass-input:focus {
-    background: rgba(15, 23, 42, 0.8);
-    border-color: #3B82F6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    background: #0F1629;
+    box-shadow: 0 0 0 2px rgba(0, 245, 212, 0.3);
+    outline: none;
   }
 
   .glass-input::placeholder {
     color: #64748B;
   }
+
+  /* Premium Card — structured solid card */
+  .premium-card {
+    background: #121826;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s ease;
+  }
+
+  .premium-card:hover {
+    background: #182034;
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Accent top line — 2px teal border */
+  .accent-top {
+    border-top: 2px solid #00F5D4;
+  }
 }
 
 /* ==========================================
-   Premium Background Gradient (Midnight)
+   Premium Background Gradient (Deep Navy)
    ========================================== */
 .bg-gradient-premium-bg {
   background: linear-gradient(135deg,
-      #0F172A 0%,
-      #131c33 20%,
-      #162032 40%,
-      #0F172A 60%,
-      #141e36 80%,
-      #0F172A 100%);
+      #0A0F1C 0%,
+      #0D1324 20%,
+      #0F1629 40%,
+      #0A0F1C 60%,
+      #0E1428 80%,
+      #0A0F1C 100%);
 }
 
-/* Premium gradient for buttons / accents */
+/* Premium gradient for buttons / accents — Neon Teal */
 .gradient-premium {
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #00F5D4 0%, #00D9C0 100%);
 }
 
 .gradient-ocean {
-  background: linear-gradient(135deg, #3B82F6 0%, #22D3EE 100%);
+  background: linear-gradient(135deg, #00F5D4 0%, #3A86FF 100%);
 }
 
 /* ==========================================
    Shadow Utilities (Dark Theme)
    ========================================== */
 .shadow-lift {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 
 .shadow-glow-premium {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 20px rgba(0, 245, 212, 0.2), 0 0 40px rgba(0, 245, 212, 0.08);
 }
 
 /* ==========================================
@@ -181,11 +215,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 15px rgba(0, 245, 212, 0.15);
   }
 
   50% {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 30px rgba(0, 245, 212, 0.3);
   }
 }
 
@@ -211,7 +245,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.15), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 245, 212, 0.1), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
@@ -243,18 +277,27 @@
 
 /* Smooth hover lift for cards */
 .hover-lift {
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* Gradient text helper */
+/* Button hover scale — micro interaction */
+.btn-hover-scale {
+  transition: transform 0.2s ease;
+}
+
+.btn-hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Gradient text helper — Teal to Blue */
 .text-gradient {
   @apply text-transparent bg-clip-text;
-  background-image: linear-gradient(135deg, #3B82F6 0%, #22D3EE 50%, #3B82F6 100%);
+  background-image: linear-gradient(135deg, #00F5D4 0%, #3A86FF 50%, #00F5D4 100%);
 }
 
 /* ==========================================
@@ -397,4 +440,80 @@
 .chat-msg-2 .chat-label {
   opacity: 0;
   animation: textReveal 0.3s ease-out 5.3s forwards;
+}
+
+/* ==========================================
+   Dashboard — Sidebar & Workspace Utilities
+   ========================================== */
+
+/* Sidebar Nav Item */
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94A3B8;
+  transition: all 0.2s ease;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+}
+
+.sidebar-nav-item:hover {
+  color: #F1F5F9;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sidebar-nav-item-active {
+  color: #00F5D4;
+  background: rgba(0, 245, 212, 0.06);
+}
+
+.sidebar-nav-item-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  border-radius: 0 4px 4px 0;
+  background: #00F5D4;
+}
+
+/* Dashboard Card */
+.dashboard-card {
+  background: #121826;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Prompt Input */
+.prompt-input {
+  background: #121826;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  color: #F1F5F9;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  resize: none;
+}
+
+.prompt-input:focus {
+  outline: none;
+  border-color: rgba(0, 245, 212, 0.3);
+  box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.08);
+}
+
+.prompt-input::placeholder {
+  color: #64748B;
 }

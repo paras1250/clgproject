@@ -304,21 +304,23 @@ export default function LandingPage() {
                 <div className="px-6 lg:px-12 py-5 flex justify-between items-center">
                     <Logo />
 
-                    {/* Desktop nav — visible on lg+ */}
-                    <nav className="hidden lg:flex items-center gap-10">
-                        {["Solutions", "Blog", "Pricing"].map(item => (
-                            <Link key={item} href={item === "Pricing" ? "/pricing" : "#"}
-                                className="font-inter text-[#94A3B8] hover:text-[#F1F5F9] transition-colors text-base font-medium">
-                                {item}
-                            </Link>
-                        ))}
-                        <Link href="/login"
-                            className="font-inter text-[#94A3B8] hover:text-[#F1F5F9] transition-colors text-base font-medium">
-                            Login
-                        </Link>
-                    </nav>
+                    {/* Right side: nav + actions — grouped together so they're right-aligned */}
+                    <div className="flex items-center gap-8">
 
-                    <div className="flex items-center gap-4">
+                        {/* Desktop nav — visible on lg+ */}
+                        <nav className="hidden lg:flex items-center gap-10">
+                            {["Solutions", "Blog", "Pricing"].map(item => (
+                                <Link key={item} href={item === "Pricing" ? "/pricing" : "#"}
+                                    className="font-inter text-[#94A3B8] hover:text-[#F1F5F9] transition-colors text-base font-medium">
+                                    {item}
+                                </Link>
+                            ))}
+                            <Link href="/login"
+                                className="font-inter text-[#94A3B8] hover:text-[#F1F5F9] transition-colors text-base font-medium">
+                                Login
+                            </Link>
+                        </nav>
+
                         {/* Sign Up button — desktop only */}
                         <Link href="/login"
                             className="noupe-button noupe-button-primary px-5 py-2.5 text-sm hidden lg:flex bg-[#00F5D4] text-[#0A0F1C] rounded-full hover:bg-[#00D9C0] hover:shadow-lg hover:shadow-[#00F5D4]/15 transition-all font-semibold font-inter">
@@ -335,6 +337,7 @@ export default function LandingPage() {
                             <span className={`block w-4 h-[1.5px] bg-[#F1F5F9] transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`}></span>
                             <span className={`block w-4 h-[1.5px] bg-[#F1F5F9] transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[6.5px]' : ''}`}></span>
                         </button>
+
                     </div>
                 </div>
 

@@ -5,52 +5,100 @@ const ChatLog = require('../models/chatlog');
 const authMiddleware = require('../middleware/auth');
 const { ErrorResponses } = require('../utils/errors');
 
-// Get analytics for a specific bot
-router.get('/bot/:botId', authMiddleware, async (req, res) => {
+// Get top questions (FAQ) for a specific bot with optional date range
+router.get('/bot/:botId/faq', authMiddleware, async (req, res) => {
   try {
     const { botId } = req.params;
-    
+    const { from, to } = req.query;
+
+    // Verify bot ownership
+    const bot = await Bot.findByIdAndUserId(botId, req.user.id);
+    if (!bot) return ErrorResponses.NOT_FOUND(res, 'Bot not found');
+
+    // Build date filter
+    const dateFilter = {};
+    if (from) dateFilter.$gte = new Date(from);
+    if (to) dateFilter.$lte = new Date(to);
+
+    const query = { bot_id: botId };
+    if (Object.keys(dateFilter).length) query.started_at = dateFilter;
+
+    const chatLogs = await ChatLog.find(query).select('messages started_at');
+
+    // Extract, normalise and count user messages
+    const counts = {};
+    for (const log of chatLogs) {
+      for (const msg of (log.messages || [])) {
+        if (msg.role !== 'user') continue;
+        const text = (msg.content || '')
+          .trim()
+          .replace(/^[?!.,\s]+|[?!.,\s]+$/g, '') // strip leading/trailing punctuation
+          .toLowerCase();
+        if (text.length < 3) continue; // skip noise
+        counts[text] = (counts[text] || 0) + 1;
+      }
+    }
+
+    // Sort and take top 25
+    const questions = Object.entries(counts)
+      .map(([text, count]) => ({ text, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 25);
+
+    res.json({ questions });
+  } catch (error) {
+    console.error('FAQ analytics error:', error);
+    ErrorResponses.INTERNAL_SERVER_ERROR(res);
+  }
+});
+
+// Get analytics for a specific bot
+router.get('/bot/:botId', authMiddleware, async (req, res) => {
+
+  try {
+    const { botId } = req.params;
+
     // Verify bot ownership
     const bot = await Bot.findByIdAndUserId(botId, req.user.id);
     if (!bot) {
       return ErrorResponses.NOT_FOUND(res, 'Bot not found');
     }
-    
+
     // Get chat statistics
     const totalChats = await ChatLog.countByBotId(botId);
     const chatLogs = await ChatLog.findByBotId(botId);
-    
+
     // Get recent chats
     const recentChats = chatLogs.slice(0, 10).map(log => ({
       sessionId: log.session_id,
       messages: log.messages || [],
       startedAt: log.started_at
     }));
-    
+
     // Get total messages
     const totalMessages = chatLogs.reduce((sum, log) => sum + (log.messages?.length || 0), 0);
-    
+
     // Get feedback statistics
     const feedbackStats = {
       total: 0,
       averageRating: 0,
       ratings: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
     };
-    
+
     chatLogs.forEach(log => {
       if (log.feedback && log.feedback.rating) {
         feedbackStats.total++;
         feedbackStats.ratings[log.feedback.rating]++;
       }
     });
-    
+
     if (feedbackStats.total > 0) {
       const totalRating = chatLogs.reduce((sum, log) => {
         return sum + (log.feedback?.rating || 0);
       }, 0);
       feedbackStats.averageRating = totalRating / feedbackStats.total;
     }
-    
+
     res.json({
       bot: {
         name: bot.name,
@@ -74,13 +122,13 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
   try {
     const bots = await Bot.findByUserId(req.user.id);
     const botIds = bots.map(bot => bot.id);
-    
+
     const totalChats = await ChatLog.countByBotIds(botIds);
     const totalBots = bots.length;
-    
+
     // Get recent activity
     const recentChats = await ChatLog.findRecentByBotIds(botIds, 20);
-    
+
     // Format recent activity with bot names
     const recentActivity = recentChats.map(chat => {
       const bot = bots.find(b => b.id === chat.bot_id);
@@ -93,7 +141,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
         startedAt: chat.started_at
       };
     });
-    
+
     res.json({
       overview: {
         totalBots,

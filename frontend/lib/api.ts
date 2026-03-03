@@ -140,6 +140,13 @@ export const analyticsAPI = {
     const response = await api.get('/api/analytics/dashboard');
     return response.data;
   },
+  getBotFAQ: async (botId: string, from?: string, to?: string) => {
+    const params: Record<string, string> = {};
+    if (from) params.from = from;
+    if (to) params.to = to;
+    const response = await api.get(`/api/analytics/bot/${botId}/faq`, { params });
+    return response.data;
+  },
 };
 
 export default api;

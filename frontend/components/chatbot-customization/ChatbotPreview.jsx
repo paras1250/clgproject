@@ -35,7 +35,7 @@ const ChatbotPreview = () => {
     };
 
     return (
-        <div className="flex-1 h-screen bg-gray-50 relative">
+        <div className="flex-1 h-screen bg-[#0A0F1C] relative bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:20px_20px]">
             {isMinimized ? (
                 // Minimized state: Floating circular avatar launcher
                 <button

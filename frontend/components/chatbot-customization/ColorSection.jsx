@@ -17,19 +17,19 @@ const ColorSection = () => {
     ];
 
     return (
-        <div className="border-b border-gray-200">
+        <div className="border-b border-white/[0.06]">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between hover:bg-[#121826] transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
-                    <span className="font-semibold text-gray-800">Color</span>
+                    <span className="font-semibold text-[#F1F5F9] font-inter">Color</span>
                 </div>
                 <svg
-                    className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-[#64748B] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -40,7 +40,7 @@ const ColorSection = () => {
 
             {isExpanded && (
                 <div className="px-6 pb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-[#CBD5E1] font-inter mb-3">
                         Chat Header Color
                     </label>
                     <div className="grid grid-cols-4 gap-3">
@@ -50,7 +50,7 @@ const ColorSection = () => {
                                 onClick={() => setThemeColor(color.value)}
                                 className={`
                   w-full h-12 rounded-lg transition-all duration-200
-                  ${themeColor === color.value ? 'ring-4 ring-offset-2 ring-gray-400 scale-105' : 'hover:scale-105'}
+                  ${themeColor === color.value ? 'ring-2 ring-offset-2 ring-offset-[#0F1629] ring-[#00F5D4] scale-105' : 'hover:scale-105'}
                 `}
                                 style={{ backgroundColor: color.value }}
                                 title={color.name}
@@ -58,14 +58,14 @@ const ColorSection = () => {
                         ))}
                     </div>
                     <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#CBD5E1] font-inter mb-2">
                             Custom Color
                         </label>
                         <input
                             type="color"
                             value={themeColor}
                             onChange={(e) => setThemeColor(e.target.value)}
-                            className="w-full h-12 rounded-lg cursor-pointer"
+                            className="w-full h-12 rounded-lg cursor-pointer bg-[#121826] border border-white/[0.1] p-1"
                         />
                     </div>
                 </div>

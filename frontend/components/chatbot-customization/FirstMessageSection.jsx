@@ -14,19 +14,19 @@ const FirstMessageSection = () => {
     };
 
     return (
-        <div className="border-b border-gray-200">
+        <div className="border-b border-white/[0.06]">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between hover:bg-[#121826] transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                     </svg>
-                    <span className="font-semibold text-gray-800">First Message</span>
+                    <span className="font-semibold text-[#F1F5F9] font-inter">First Message</span>
                 </div>
                 <svg
-                    className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-[#64748B] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -41,10 +41,10 @@ const FirstMessageSection = () => {
                         value={firstMessage}
                         onChange={handleChange}
                         placeholder="Enter your first message..."
-                        className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-chat-pink focus:border-transparent"
+                        className="w-full p-3 bg-[#121826] border border-white/[0.1] text-[#F1F5F9] rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#00F5D4] focus:border-transparent font-inter placeholder-[#64748B]"
                         rows={4}
                     />
-                    <div className="mt-2 text-sm text-gray-500 text-right">
+                    <div className="mt-2 text-sm text-[#64748B] font-inter text-right">
                         {firstMessage.length} / {maxLength}
                     </div>
                 </div>

@@ -6,8 +6,8 @@ const AvatarCard = ({ src, isSelected, onClick }) => {
         <div
             onClick={onClick}
             className={`
-        w-16 h-16 rounded-full cursor-pointer avatar-hover
-        ${isSelected ? 'avatar-selected' : 'ring-2 ring-gray-200'}
+        w-16 h-16 rounded-full cursor-pointer avatar-hover transition-all
+        ${isSelected ? 'ring-2 ring-[#00F5D4] ring-offset-2 ring-offset-[#0F1629]' : 'ring-1 ring-white/[0.1] hover:ring-[#00F5D4]/50'}
       `}
         >
             <img
@@ -51,19 +51,19 @@ const AvatarSection = () => {
     };
 
     return (
-        <div className="border-b border-gray-200">
+        <div className="border-b border-white/[0.06]">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between hover:bg-[#121826] transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <span className="font-semibold text-gray-800">Avatar</span>
+                    <span className="font-semibold text-[#F1F5F9] font-inter">Avatar</span>
                 </div>
                 <svg
-                    className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-[#64748B] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -85,14 +85,14 @@ const AvatarSection = () => {
                         ))}
 
                         {/* Add Custom Avatar Button */}
-                        <label className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center cursor-pointer hover:bg-red-600 transition-colors">
+                        <label className="w-16 h-16 rounded-full bg-[#121826] border border-white/[0.1] flex items-center justify-center cursor-pointer hover:border-[#00F5D4] transition-colors group">
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={handleCustomAvatarUpload}
                                 className="hidden"
                             />
-                            <span className="text-white text-2xl font-light">+</span>
+                            <span className="text-[#64748B] group-hover:text-[#00F5D4] text-2xl font-light transition-colors">+</span>
                         </label>
                     </div>
                 </div>

@@ -11,19 +11,19 @@ const AlignmentSection = () => {
     ];
 
     return (
-        <div className="border-b border-gray-200">
+        <div className="border-b border-white/[0.06]">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between hover:bg-[#121826] transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
                     </svg>
-                    <span className="font-semibold text-gray-800">Alignment</span>
+                    <span className="font-semibold text-[#F1F5F9] font-inter">Alignment</span>
                 </div>
                 <svg
-                    className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-[#64748B] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -40,10 +40,10 @@ const AlignmentSection = () => {
                                 key={align.value}
                                 onClick={() => setAlignment(align.value)}
                                 className={`
-                  px-4 py-3 rounded-lg text-center transition-all duration-200 font-medium
+                  px-4 py-3 rounded-lg text-center transition-all duration-200 font-medium font-inter
                   ${alignment === align.value
-                                        ? 'bg-pink-500 text-white shadow-lg'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        ? 'bg-[#00F5D4] text-[#0A0F1C] shadow-lg shadow-[#00F5D4]/20'
+                                        : 'bg-[#121826] text-[#CBD5E1] hover:bg-white/[0.06]'
                                     }
                 `}
                             >

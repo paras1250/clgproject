@@ -12,19 +12,19 @@ const SizeSection = () => {
     ];
 
     return (
-        <div className="border-b border-gray-200">
+        <div className="border-b border-white/[0.06]">
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between hover:bg-[#121826] transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                     </svg>
-                    <span className="font-semibold text-gray-800">Size</span>
+                    <span className="font-semibold text-[#F1F5F9] font-inter">Size</span>
                 </div>
                 <svg
-                    className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-[#64748B] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -43,13 +43,13 @@ const SizeSection = () => {
                                 className={`
                   w-full px-4 py-3 rounded-lg text-left transition-all duration-200
                   ${widgetSize === size.value
-                                        ? 'bg-pink-50 border-2 border-pink-500 text-pink-900'
-                                        : 'bg-gray-50 border-2 border-gray-200 text-gray-700 hover:border-gray-300'
+                                        ? 'bg-[#00F5D4]/10 border-2 border-[#00F5D4] text-[#00F5D4]'
+                                        : 'bg-[#121826] border-2 border-white/[0.06] text-[#CBD5E1] hover:border-white/[0.2]'
                                     }
                 `}
                             >
-                                <div className="font-semibold">{size.label}</div>
-                                <div className="text-sm opacity-75">{size.description}</div>
+                                <div className="font-semibold font-inter">{size.label}</div>
+                                <div className="text-sm opacity-75 font-inter mt-0.5">{size.description}</div>
                             </button>
                         ))}
                     </div>

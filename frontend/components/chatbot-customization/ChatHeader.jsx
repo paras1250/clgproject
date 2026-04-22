@@ -17,14 +17,14 @@ const ChatHeader = () => {
                 <img
                     src={selectedAvatar}
                     alt="Assistant"
-                    className="w-10 h-10 rounded-full object-cover border-2 border-white"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
                 />
-                <span className="text-white font-semibold">Assistant</span>
+                <span className="text-white font-semibold font-sora">Assistant</span>
             </div>
 
             <button
                 onClick={handleClose}
-                className="text-white hover:bg-white/20 rounded-full p-1 transition-colors"
+                className="text-white hover:bg-black/20 rounded-full p-1 transition-colors"
             >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

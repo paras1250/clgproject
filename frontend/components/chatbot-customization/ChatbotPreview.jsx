@@ -46,7 +46,7 @@ const ChatbotPreview = () => {
             w-16 h-16 rounded-full shadow-2xl
             hover:scale-110 active:scale-95
             flex items-center justify-center
-            border-4 border-white
+            border-4 border-[#0A0F1C]
           `}
                     style={{ backgroundColor: themeColor }}
                 >
@@ -65,10 +65,10 @@ const ChatbotPreview = () => {
             ${currentSize.width}
           `}
                 >
-                    <div className="bg-white rounded-2xl shadow-xl">
+                    <div className="bg-[#121826] border border-white/[0.06] rounded-2xl shadow-xl overflow-hidden">
                         <ChatHeader />
 
-                        <div className={`p-4 ${currentSize.minHeight} ${currentSize.maxHeight} overflow-y-auto`}>
+                        <div className={`p-4 ${currentSize.minHeight} ${currentSize.maxHeight} overflow-y-auto custom-scrollbar`}>
                             <ChatBubble message={firstMessage} />
                         </div>
 

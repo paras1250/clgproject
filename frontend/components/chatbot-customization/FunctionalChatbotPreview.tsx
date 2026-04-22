@@ -80,7 +80,7 @@ const FunctionalChatbotPreview = forwardRef<any, FunctionalChatbotPreviewProps>(
             <div className="fixed bottom-8 right-8 z-50">
                 <button
                     onClick={handleLauncherClick}
-                    className="w-16 h-16 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center border-4 border-white"
+                    className="w-16 h-16 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center border-4 border-[#0A0F1C]"
                     style={{ backgroundColor: themeColor }}
                 >
                     <img
@@ -96,20 +96,20 @@ const FunctionalChatbotPreview = forwardRef<any, FunctionalChatbotPreviewProps>(
     // Show full chatbot when expanded
     return (
         <div className="w-full max-w-2xl mx-auto h-full flex flex-col">
-            <div className="bg-white rounded-2xl shadow-2xl flex flex-col h-full overflow-hidden">
+            <div className="bg-[#121826] border border-white/[0.06] rounded-2xl shadow-2xl flex flex-col h-full overflow-hidden">
                 <ChatHeader />
 
-                <div className="flex-1 p-6 overflow-y-auto space-y-3 bg-gray-50/50">
+                <div className="flex-1 p-6 overflow-y-auto space-y-3 bg-[#0A0F1C]/30 custom-scrollbar">
                     {messages.map((msg, idx) => (
                         <ChatBubble key={idx} message={msg.content} isUser={msg.role === 'user'} />
                     ))}
                     {isLoading && (
                         <div className="flex justify-start">
-                            <div className="bg-gray-100 rounded-2xl px-4 py-2">
+                            <div className="bg-[#0A0F1C] border border-white/[0.06] rounded-2xl px-4 py-3">
                                 <div className="flex space-x-1.5">
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse delay-75"></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse delay-150"></div>
+                                    <div className="w-2 h-2 bg-[#64748B] rounded-full animate-pulse"></div>
+                                    <div className="w-2 h-2 bg-[#64748B] rounded-full animate-pulse delay-75"></div>
+                                    <div className="w-2 h-2 bg-[#64748B] rounded-full animate-pulse delay-150"></div>
                                 </div>
                             </div>
                         </div>

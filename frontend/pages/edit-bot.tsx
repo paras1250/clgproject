@@ -12,10 +12,12 @@ import ChatbotWidgetPreview from '@/components/ChatbotWidgetPreview';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import OfflineDetector from '@/components/OfflineDetector';
 import TrainingDataViewer from '@/components/TrainingDataViewer';
+import { Sparkles, Layout, Palette, Database, Settings as SettingsIcon, BrainCircuit, Activity, ChevronRight, Save, LogOut } from 'lucide-react';
 
 export default function EditBot() {
   const router = useRouter();
   const { id } = router.query;
+  const [activeTab, setActiveTab] = useState('general');
   const [botData, setBotData] = useState({
     name: '',
     description: '',
@@ -25,8 +27,9 @@ export default function EditBot() {
     greetingMessage: 'Hi! How can I help you today?',
     widgetWidth: '380',
     widgetHeight: '600',
-    widgetColor: '#8b5cf6',
+    widgetColor: '#00F5D4',
     widgetAvatar: '',
+    widgetSize: 'medium',
     emailNotifications: false,
     emailAddress: '',
     systemPrompt: 'You are a helpful AI assistant.',
@@ -48,56 +51,66 @@ export default function EditBot() {
     title: '',
     message: '',
     onConfirm: () => { },
-    type: 'warning'
+    type: 'info'
   });
 
   useEffect(() => {
     const token = Cookies.get('token');
     if (!token) {
       router.push('/login');
-      return;
+    } else {
+      setIsAuthenticated(true);
     }
-    setIsAuthenticated(true);
+  }, [router]);
 
-    if (id) {
+  useEffect(() => {
+    if (id && isAuthenticated) {
       loadBot();
     }
-  }, [router, id]);
+  }, [id, isAuthenticated]);
 
   const loadBot = async () => {
     try {
       setIsLoadingBot(true);
-      const response = await botsAPI.get(id as string);
-      const bot = response.bot;
+      const data = await botsAPI.get(id as string);
+      if (data.bot) {
+        const bot = data.bot;
+        const widget = bot.widgetCustomization || {};
+        const embed = bot.embedSettings || {};
+        const notify = bot.notificationSettings || {};
 
-      const widgetCustom = bot.widgetCustomization || {};
-      const notificationSettings = bot.notificationSettings || {};
+        setBotData({
+          name: bot.name || '',
+          description: bot.description || '',
+          modelName: bot.modelName || 'google/flan-t5-large',
+          embedTheme: embed.theme || 'default',
+          embedPosition: embed.position || 'bottom-right',
+          greetingMessage: bot.greetingMessage || 'Hi! How can I help you today?',
+          widgetWidth: widget.width || '380',
+          widgetHeight: widget.height || '600',
+          widgetColor: widget.primaryColor || '#00F5D4',
+          widgetAvatar: widget.avatar || '',
+          widgetSize: widget.widgetSize || 'medium',
+          emailNotifications: notify.emailNotifications || false,
+          emailAddress: notify.emailAddress || '',
+          systemPrompt: bot.systemPrompt || 'You are a helpful AI assistant.',
+        });
 
-      setBotData({
-        name: bot.name || '',
-        description: bot.description || '',
-        modelName: bot.modelName || 'google/flan-t5-large',
-        embedTheme: bot.embedSettings?.theme || 'default',
-        embedPosition: bot.embedSettings?.position || 'bottom-right',
-        greetingMessage: bot.greetingMessage || 'Hi! How can I help you today?',
-        widgetWidth: widgetCustom.width || '380',
-        widgetHeight: widgetCustom.height || '600',
-        widgetColor: widgetCustom.primaryColor || '#8b5cf6',
-        widgetAvatar: widgetCustom.avatar || '',
-        emailNotifications: notificationSettings.emailNotifications || false,
-        emailAddress: notificationSettings.emailAddress || '',
-        systemPrompt: bot.system_prompt || bot.systemPrompt || 'You are a helpful AI assistant.',
-      });
+        if (bot.documents) {
+          setExistingDocuments(bot.documents);
+        }
 
-      if (bot.documents) {
-        setExistingDocuments(bot.documents);
-      }
-
-      // Load existing training text from document_contents
-      if (bot.document_contents && Array.isArray(bot.document_contents)) {
-        const textTraining = bot.document_contents.find((dc: any) => dc.type === 'text');
-        if (textTraining && textTraining.content) {
-          setTrainingText(textTraining.content);
+        if (bot.trainingDataSummary && bot.trainingDataSummary.totalItems > 0) {
+            // Need to fetch full training data if not in summary
+            try {
+                const trainingData = await botsAPI.getTrainingData(id as string);
+                if (trainingData.trainingData && trainingData.trainingData.textTraining) {
+                    const textContent = trainingData.trainingData.textTraining.map((t: any) => t.fullContent).join('\n\n');
+                    setTrainingText(textContent);
+                }
+            } catch (e) {
+                console.error("Failed to load full training data", e);
+            }
         }
       }
     } catch (error: any) {
@@ -117,7 +130,6 @@ export default function EditBot() {
   };
 
   const handleTrainChatbot = async () => {
-    // Only update training data (text and documents)
     if (!trainingText.trim() && uploadedFiles.length === 0) {
       showToast('Please add training text or upload documents to train the chatbot', 'warning');
       return;
@@ -126,13 +138,9 @@ export default function EditBot() {
     setIsLoading(true);
     try {
       const formData = new FormData();
-
-      // Add training text if provided
       if (trainingText && trainingText.trim()) {
         formData.append('trainingText', trainingText.trim());
       }
-
-      // Add files if provided
       if (uploadedFiles.length > 0) {
         uploadedFiles.forEach((file) => {
           formData.append('documents', file);
@@ -142,15 +150,13 @@ export default function EditBot() {
       await botsAPI.update(id as string, formData);
       showToast('Chatbot training data updated successfully! 🎉', 'success');
 
-      // Reload bot data to refresh training data viewer
-      if (id) {
-        const bot = await botsAPI.get(id as string);
-        setTrainingText('');
-        setUploadedFiles([]);
-        // Reload existing documents
-        if (bot.bot && bot.bot.documents) {
-          setExistingDocuments(bot.bot.documents);
-        }
+      // Reset local file selection
+      setUploadedFiles([]);
+      
+      // Reload documents
+      const data = await botsAPI.get(id as string);
+      if (data.bot && data.bot.documents) {
+        setExistingDocuments(data.bot.documents);
       }
     } catch (error: any) {
       const errorMessage = error.response?.data?.error || 'Failed to update training data. Please try again.';
@@ -166,25 +172,6 @@ export default function EditBot() {
       return;
     }
 
-    if (botData.name.length > 100) {
-      showToast('Bot name must be less than 100 characters', 'error');
-      return;
-    }
-
-    // Validate email if notifications are enabled
-    if (botData.emailNotifications) {
-      if (!botData.emailAddress || !botData.emailAddress.trim()) {
-        showToast('Please enter an email address for notifications', 'error');
-        return;
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(botData.emailAddress.trim())) {
-        showToast('Please enter a valid email address', 'error');
-        return;
-      }
-    }
-
     setIsLoading(true);
     try {
       const formData = new FormData();
@@ -198,25 +185,10 @@ export default function EditBot() {
       formData.append('widgetHeight', botData.widgetHeight);
       formData.append('widgetColor', botData.widgetColor);
       formData.append('widgetAvatar', botData.widgetAvatar);
+      formData.append('widgetSize', botData.widgetSize);
       formData.append('emailNotifications', botData.emailNotifications.toString());
-      if (botData.emailAddress) {
-        formData.append('emailAddress', botData.emailAddress);
-      }
-
-      if (botData.systemPrompt) {
-        formData.append('systemPrompt', botData.systemPrompt);
-      }
-
-      if (uploadedFiles.length > 0) {
-        uploadedFiles.forEach((file) => {
-          formData.append('documents', file);
-        });
-      }
-
-      // Add training text if provided
-      if (trainingText && trainingText.trim()) {
-        formData.append('trainingText', trainingText.trim());
-      }
+      if (botData.emailAddress) formData.append('emailAddress', botData.emailAddress);
+      if (botData.systemPrompt) formData.append('systemPrompt', botData.systemPrompt);
 
       await botsAPI.update(id as string, formData);
       showToast('Bot updated successfully! 🎉', 'success');
@@ -233,494 +205,530 @@ export default function EditBot() {
     setConfirmDialog({
       isOpen: true,
       title: 'Delete Document',
-      message: `Are you sure you want to delete "${docName}"? This action cannot be undone and the document will be removed from your chatbot's training data.`,
+      message: `Are you sure you want to delete "${docName}"?`,
       type: 'danger',
-      onConfirm: () => {
-        setExistingDocuments(existingDocuments.filter((_, i) => i !== index));
-        showToast('Document removed successfully', 'success');
-        setConfirmDialog(prev => ({ ...prev, isOpen: false }));
+      onConfirm: async () => {
+        try {
+            setIsLoading(true);
+            const formData = new FormData();
+            formData.append('documentsToRemove', JSON.stringify([index]));
+            await botsAPI.update(id as string, formData);
+            setExistingDocuments(existingDocuments.filter((_, i) => i !== index));
+            showToast('Document removed successfully', 'success');
+        } catch (e) {
+            showToast('Failed to remove document', 'error');
+        } finally {
+            setIsLoading(false);
+            setConfirmDialog(prev => ({ ...prev, isOpen: false }));
+        }
       }
     });
   };
 
-  if (!isAuthenticated) {
-    return <LoadingSpinner fullScreen text="Authenticating..." />;
-  }
+  const tabs = [
+    { id: 'general', label: 'General', icon: <Layout size={18} /> },
+    { id: 'knowledge', label: 'Knowledge', icon: <BrainCircuit size={18} /> },
+    { id: 'appearance', label: 'Appearance', icon: <Palette size={18} /> },
+    { id: 'settings', label: 'Settings', icon: <SettingsIcon size={18} /> },
+  ];
 
-  if (isLoadingBot) {
-    return (
-      <>
-        <AppHeader title="Edit Chatbot" breadcrumb="Dashboard / Edit Chatbot" />
-        <LoadingSpinner fullScreen text="Loading bot..." />
-      </>
-    );
-  }
+  if (!isAuthenticated) return <LoadingSpinner fullScreen text="Authenticating..." />;
+  if (isLoadingBot) return <LoadingSpinner fullScreen text="Loading bot data..." />;
 
   return (
     <>
       <Head>
-        <title>Edit Chatbot - Conversio AI</title>
+        <title>Edit Bot | Conversio AI</title>
       </Head>
 
-      <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute top-40 right-20 w-96 h-96 bg-[#00F5D4] rounded-full blur-[120px] animate-pulse"></div>
-          <div className="absolute bottom-40 left-20 w-80 h-80 bg-[#3A86FF] rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-        </div>
-        <div className="relative z-10">
-          <AppHeader title="Edit Chatbot" breadcrumb="Dashboard / Edit Chatbot" />
-        </div>
+      <div className="min-h-screen bg-[#0A0F1C] flex flex-col font-inter">
+        <AppHeader title="Bot Dashboard" breadcrumb={`Edit / ${botData.name || 'Bot'}`} />
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
-          <div className="mb-10 animate-fade-in">
-            <h1 className="font-sora text-4xl sm:text-5xl font-bold text-[#F1F5F9] mb-3 tracking-tight">
-              Customize Your Chatbot
-            </h1>
-            <p className="text-lg text-[#94A3B8] font-inter">
-              Configure appearance, behavior, and advanced settings ✨
-            </p>
+        <main className="flex-1 flex flex-col max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 gap-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 animate-fade-in">
+             <div className="flex items-center gap-4 min-w-0">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00F5D4]/20 to-[#3A86FF]/20 flex items-center justify-center text-2xl border border-white/5 shadow-lg shrink-0 overflow-hidden">
+                   {botData.widgetAvatar && (
+                     botData.widgetAvatar.startsWith('/') || 
+                     botData.widgetAvatar.startsWith('http') || 
+                     botData.widgetAvatar.includes('.') || 
+                     botData.widgetAvatar.length > 5
+                   ) ? (
+                     <img src={botData.widgetAvatar} alt="" className="w-full h-full object-cover" />
+                   ) : (
+                     botData.widgetAvatar || '🤖'
+                   )}
+                </div>
+                <div className="min-w-0">
+                   <h1 className="font-sora text-3xl font-black text-white tracking-tight truncate">{botData.name}</h1>
+                   <p className="text-[#64748B] text-xs font-bold uppercase tracking-[0.2em] mt-1 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#00F5D4] animate-pulse" />
+                      Configuration Active
+                   </p>
+                </div>
+             </div>
+             <div className="flex items-center gap-3 shrink-0">
+                <button
+                   onClick={() => router.push('/dashboard')}
+                   className="px-5 py-2.5 rounded-xl border border-white/5 text-[#94A3B8] font-bold text-sm hover:bg-white/5 transition-all flex items-center gap-2"
+                >
+                   <LogOut size={16} />
+                   Exit
+                </button>
+                <button
+                   onClick={handleUpdateBot}
+                   disabled={isLoading}
+                   className="px-6 py-2.5 rounded-xl bg-[#00F5D4] text-[#0A0F1C] font-black text-sm hover:bg-[#00D9C0] transition-all shadow-lg shadow-[#00F5D4]/20 flex items-center gap-2"
+                >
+                   {isLoading ? 'SAVING...' : <><Save size={16} /> SAVE CHANGES</>}
+                </button>
+             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Panel - Customization */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Basic Settings */}
-              <div className="bg-[#121826] rounded-2xl border border-white/[0.06] p-8 animate-fade-in">
-                <h2 className="font-sora text-xl font-bold text-[#F1F5F9] mb-6 flex items-center gap-3">
-                  <svg className="w-7 h-7 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Basic Settings
-                </h2>
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                      Bot Name <span className="text-red-600 text-xl">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={botData.name}
-                      onChange={(e) => setBotData({ ...botData, name: e.target.value })}
-                      className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all font-inter"
-                      placeholder="My Customer Support Bot"
-                      maxLength={100}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                      Description <span className="text-[#94A3B8] text-sm font-semibold">(Optional)</span>
-                    </label>
-                    <textarea
-                      value={botData.description}
-                      onChange={(e) => setBotData({ ...botData, description: e.target.value })}
-                      rows={4}
-                      className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all resize-none font-inter"
-                      placeholder="A helpful chatbot for customer support..."
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                      AI Model
-                    </label>
-                    <select
-                      value={botData.modelName}
-                      onChange={(e) => setBotData({ ...botData, modelName: e.target.value })}
-                      className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all font-inter"
-                    >
-                      <optgroup label="Google Gemini (Recommended)">
-                        <option value="gemini-pro">Gemini Pro</option>
-                        <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-                        <option value="gemini-1.5-flash">Gemini 1.5 Flash (Fast)</option>
-                      </optgroup>
-                      <optgroup label="Hugging Face Models">
-                        <option value="google/flan-t5-large">Google FLAN-T5 Large</option>
-                        <option value="gpt2">GPT-2</option>
-                        <option value="EleutherAI/gpt-neo-1.3B">GPT-Neo 1.3B</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Customization Sections */}
-              <div className="bg-[#121826] rounded-2xl border border-white/[0.06] p-8 animate-fade-in">
-                <h2 className="font-sora text-xl font-bold text-[#F1F5F9] mb-6 flex items-center gap-3">
-                  <svg className="w-7 h-7 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                  </svg>
-                  Widget Customization
-                </h2>
-
-                {/* First Message */}
-                <CollapsibleSection
-                  title="First Message"
-                  icon={
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                  }
-                  defaultOpen={true}
-                >
-                  <div className="mt-4">
-                    <textarea
-                      value={botData.greetingMessage}
-                      onChange={(e) => setBotData({ ...botData, greetingMessage: e.target.value })}
-                      rows={3}
-                      className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all resize-none font-inter"
-                      placeholder="Hi! How can I help you today?"
-                    />
-                    <p className="text-sm text-[#94A3B8] mt-3 font-semibold">This message appears when users first open the chatbot</p>
-                  </div>
-                </CollapsibleSection>
-
-                {/* Color */}
-                <CollapsibleSection
-                  title="Color"
-                  icon={
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                    </svg>
-                  }
-                  defaultOpen={true}
-                >
-                  <div className="mt-4">
-                    <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                      Primary Color
-                    </label>
-                    <div className="flex gap-4">
-                      <input
-                        type="color"
-                        value={botData.widgetColor}
-                        onChange={(e) => setBotData({ ...botData, widgetColor: e.target.value })}
-                        className="h-14 w-24 border-2 border-white/10 rounded-xl cursor-pointer shadow-sm"
-                      />
-                      <input
-                        type="text"
-                        value={botData.widgetColor}
-                        onChange={(e) => setBotData({ ...botData, widgetColor: e.target.value })}
-                        className="flex-1 border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all font-inter"
-                        placeholder="#8b5cf6"
-                      />
-                    </div>
-                  </div>
-                </CollapsibleSection>
-
-                {/* Size */}
-                <CollapsibleSection
-                  title="Size"
-                  icon={
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                    </svg>
-                  }
-                >
-                  <div className="mt-4 grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                        Width (px)
-                      </label>
-                      <input
-                        type="number"
-                        value={botData.widgetWidth}
-                        onChange={(e) => setBotData({ ...botData, widgetWidth: e.target.value })}
-                        min="300"
-                        max="600"
-                        className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all font-inter"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                        Height (px)
-                      </label>
-                      <input
-                        type="number"
-                        value={botData.widgetHeight}
-                        onChange={(e) => setBotData({ ...botData, widgetHeight: e.target.value })}
-                        min="400"
-                        max="800"
-                        className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all font-inter"
-                      />
-                    </div>
-                  </div>
-                </CollapsibleSection>
-
-                {/* Alignment */}
-                <CollapsibleSection
-                  title="Position & Theme"
-                  icon={
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                  }
-                >
-                  <div className="mt-4 space-y-4">
-                    <div>
-                      <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                        Position
-                      </label>
-                      <select
-                        value={botData.embedPosition}
-                        onChange={(e) => setBotData({ ...botData, embedPosition: e.target.value })}
-                        className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all font-inter"
-                      >
-                        <option value="bottom-right">Bottom Right</option>
-                        <option value="bottom-left">Bottom Left</option>
-                        <option value="top-right">Top Right</option>
-                        <option value="top-left">Top Left</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                        Theme
-                      </label>
-                      <select
-                        value={botData.embedTheme}
-                        onChange={(e) => setBotData({ ...botData, embedTheme: e.target.value })}
-                        className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all font-inter"
-                      >
-                        <option value="default">Light Theme</option>
-                        <option value="dark">Dark Theme</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                        Avatar
-                      </label>
-                      <input
-                        type="text"
-                        value={botData.widgetAvatar}
-                        onChange={(e) => setBotData({ ...botData, widgetAvatar: e.target.value })}
-                        maxLength={2}
-                        className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base text-center text-2xl font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all"
-                        placeholder="😊"
-                      />
-                      <p className="text-sm text-[#94A3B8] mt-2 font-semibold">Emoji or text (1-2 characters)</p>
-                    </div>
-                  </div>
-                </CollapsibleSection>
-              </div>
-
-              {/* Email Notifications */}
-              <div className="bg-[#121826] rounded-2xl border border-white/[0.06] p-8 animate-fade-in">
-                <h2 className="font-sora text-xl font-bold text-[#F1F5F9] mb-6 flex items-center gap-3">
-                  <svg className="w-7 h-7 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                  </svg>
-                  Notifications
-                </h2>
-                <div className="space-y-4">
-                  <label className="flex items-center gap-4 cursor-pointer bg-[#0A0F1C] p-4 rounded-xl border border-white/[0.08] hover:border-[#00F5D4]/30 transition-all">
-                    <input
-                      type="checkbox"
-                      checked={botData.emailNotifications}
-                      onChange={(e) => setBotData({ ...botData, emailNotifications: e.target.checked })}
-                      className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer"
-                    />
-                    <span className="text-sm font-semibold text-[#F1F5F9] font-inter">
-                      Receive email notifications for new conversations
-                    </span>
-                  </label>
-                  {botData.emailNotifications && (
-                    <div className="animate-fade-in">
-                      <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 font-inter">
-                        Email Address <span className="text-red-600">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        value={botData.emailAddress}
-                        onChange={(e) => setBotData({ ...botData, emailAddress: e.target.value })}
-                        className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-5 py-3 text-base font-medium text-[#F1F5F9] focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all font-inter"
-                        placeholder="you@example.com"
-                        required
-                      />
-                      <p className="text-xs text-[#94A3B8] mt-2 font-semibold">We'll send you an email when someone starts a new conversation</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Training Data Section */}
-              <div className="bg-[#121826] rounded-2xl border border-white/[0.06] p-8 animate-fade-in">
-                <h2 className="font-sora text-xl font-bold text-[#F1F5F9] mb-6 flex items-center gap-3">
-                  <svg className="w-7 h-7 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                  Training Data
-                </h2>
-
-                {/* Training Text Section */}
-                <div className="mb-8">
-                  <label className="block text-sm font-semibold text-[#F1F5F9] mb-2 flex items-center gap-2 font-inter">
-                    <svg className="w-5 h-5 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                    Training Text <span className="text-[#94A3B8] text-sm">(Edit your bot's knowledge)</span>
-                  </label>
-                  <textarea
-                    value={trainingText}
-                    onChange={(e) => setTrainingText(e.target.value)}
-                    rows={10}
-                    className="w-full border border-white/[0.08] bg-[#0A0F1C] rounded-xl px-6 py-4 text-[#F1F5F9] text-base font-medium focus:outline-none focus:ring-1 focus:ring-[#00F5D4]/30 focus:border-[#00F5D4] transition-all resize-none font-inter"
-                    placeholder="Enter or edit the training text for your chatbot...
-
-Example:
-- Product information
-- FAQs and answers  
-- Company policies
-- Service descriptions
-- Contact information
-- Any knowledge your bot should have"
-                  />
-                  <div className="mt-3 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-[#94A3B8]">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                      </svg>
-                      <span className="font-medium">Update training data to improve responses</span>
-                    </div>
-                    <span className={`text-sm font-bold ${trainingText.length >= 50 ? 'text-green-600' : trainingText.length > 0 ? 'text-yellow-600' : 'text-[#94A3B8]'}`}>
-                      {trainingText.length} characters
-                    </span>
-                  </div>
-                </div>
-
-                <div className="border-t border-white/[0.06] pt-6 mb-6">
-                  <h3 className="font-sora text-lg font-bold text-[#F1F5F9] mb-4 flex items-center gap-2">
-                    <svg className="w-5 h-5 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                    Training Documents
-                  </h3>
-                  {existingDocuments.length > 0 && (
-                    <div className="mb-6 space-y-3">
-                      {existingDocuments.map((doc, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between bg-[#0A0F1C] border border-white/[0.08] rounded-xl px-5 py-3"
-                        >
-                          <span className="text-base text-[#F1F5F9] font-medium font-inter">{doc.originalName || doc.filename}</span>
-                          <button
-                            onClick={() => removeDocument(index, doc.originalName || doc.filename)}
-                            className="text-[#EF4444] hover:text-[#EF4444]/80 text-sm font-semibold px-4 py-2 hover:bg-[#EF4444]/10 rounded-lg transition-colors flex items-center gap-2 font-inter"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            Remove
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <FileUploader
-                    onFilesSelected={handleFilesSelected}
-                    uploadedFiles={uploadedFiles}
-                    onFileRemove={(index) => {
-                      setUploadedFiles(prev => prev.filter((_, i) => i !== index));
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* View Training Data Section */}
-              {id && (
-                <div className="bg-[#121826] rounded-2xl border border-white/[0.06] p-8 animate-fade-in">
-                  <h2 className="font-sora text-xl font-bold text-[#F1F5F9] mb-6 flex items-center gap-3">
-                    <svg className="w-7 h-7 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    View Training Data
-                  </h2>
-                  <p className="text-[#94A3B8] mb-4">
-                    See all the training data (text and documents) that your chatbot is using to generate responses.
-                  </p>
-                  <TrainingDataViewer botId={id as string} />
-                </div>
-              )}
-
-              {/* Training Action Button */}
-              {(trainingText.trim() || uploadedFiles.length > 0) && (
-                <div className="mb-6 animate-fade-in">
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-0">
+            {/* Main Content Area */}
+            <div className="lg:col-span-8 flex flex-col gap-6 h-full">
+              {/* Tab Navigation */}
+              <nav className="flex items-center gap-2 bg-[#121826]/80 backdrop-blur-md p-1.5 rounded-2xl border border-white/5 shadow-sm sticky top-0 z-20">
+                {tabs.map((tab) => (
                   <button
-                    onClick={handleTrainChatbot}
-                    disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-[#00F5D4] to-[#3A86FF] text-[#0A0F1C] px-6 py-4 rounded-xl hover:shadow-lg hover:shadow-[#00F5D4]/15 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-base flex items-center justify-center gap-2 font-inter"
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all ${
+                      activeTab === tab.id
+                        ? 'bg-[#1e2536] text-[#00F5D4] shadow-lg border border-white/10'
+                        : 'text-[#64748B] hover:text-[#94A3B8] hover:bg-white/5'
+                    }`}
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                    </svg>
-                    {isLoading ? 'Training...' : 'Train Chatbot'}
+                    {tab.icon}
+                    <span className="hidden sm:inline">{tab.label}</span>
                   </button>
-                  <p className="text-xs text-[#94A3B8] mt-2 text-center">
-                    Click to update only the training data (text and documents)
-                  </p>
-                </div>
-              )}
+                ))}
+              </nav>
 
-              <div className="flex gap-4 animate-fade-in flex-wrap">
-                <button
-                  onClick={handleUpdateBot}
-                  disabled={isLoading || !botData.name || botData.name.trim().length < 2}
-                  className="flex-1 bg-[#00F5D4] text-[#0A0F1C] px-6 py-4 rounded-xl hover:bg-[#00D9C0] hover:shadow-lg hover:shadow-[#00F5D4]/15 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-base font-inter"
-                >
-                  {isLoading ? 'Updating...' : 'Save Changes'}
-                </button>
-                <button
-                  onClick={() => router.push('/dashboard')}
-                  className="px-6 py-4 border border-white/[0.08] text-[#94A3B8] rounded-xl hover:bg-[#182034] transition-colors font-semibold text-base hover:border-white/[0.12] font-inter"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={async () => {
-                    if (window.confirm('Are you sure you want to delete this bot? This action cannot be undone.')) {
-                      try {
-                        setIsLoading(true);
-                        await botsAPI.delete(id as string);
-                        showToast('Bot deleted successfully', 'success');
-                        router.push('/dashboard');
-                      } catch (error) {
-                        console.error('Failed to delete bot:', error);
-                        showToast('Failed to delete bot', 'error');
-                        setIsLoading(false);
-                      }
-                    }
-                  }}
-                  disabled={isLoading}
-                  className="px-6 py-4 bg-[#EF4444]/10 text-[#EF4444] rounded-xl hover:bg-[#EF4444]/20 transition-colors font-semibold text-base font-inter"
-                >
-                  Delete Bot
-                </button>
+              {/* Scrollable Form Content */}
+              <div className="flex-1 bg-[#121826] rounded-3xl border border-white/5 shadow-xl p-8 overflow-y-auto custom-scrollbar animate-slide-up relative">
+                {activeTab === 'general' && (
+                  <div className="space-y-8">
+                    <div className="flex items-center gap-4 mb-8">
+                        <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 border border-blue-500/20">
+                            <Layout size={24} />
+                        </div>
+                        <div>
+                            <h3 className="font-sora text-xl font-bold text-white">General Information</h3>
+                            <p className="text-sm text-[#64748B]">Define your bot's core identity and AI model.</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="md:col-span-2">
+                          <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-2">Bot Identity</label>
+                          <input
+                            type="text"
+                            value={botData.name}
+                            onChange={(e) => setBotData({ ...botData, name: e.target.value })}
+                            className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-5 py-4 text-white focus:border-[#00F5D4]/40 outline-none transition-all font-medium"
+                            placeholder="e.g. Support Hero"
+                          />
+                        </div>
+                        <div className="md:col-span-2">
+                          <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-2">Short Description</label>
+                          <textarea
+                            value={botData.description}
+                            onChange={(e) => setBotData({ ...botData, description: e.target.value })}
+                            className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-5 py-4 text-white focus:border-[#00F5D4]/40 outline-none transition-all font-medium h-32 resize-none"
+                            placeholder="What is the purpose of this bot?"
+                          />
+                        </div>
+                        <div className="md:col-span-2">
+                          <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-2">AI Model Engine</label>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              {[
+                                  { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', desc: 'Fast & Accurate' },
+                                  { id: 'gemini-pro', name: 'Gemini Pro', desc: 'Highly Intelligent' },
+                                  { id: 'google/flan-t5-large', name: 'FLAN-T5', desc: 'Lite & Stable' }
+                              ].map(model => (
+                                  <button
+                                      key={model.id}
+                                      onClick={() => setBotData({ ...botData, modelName: model.id })}
+                                      className={`p-4 rounded-2xl border text-left transition-all ${
+                                          botData.modelName === model.id 
+                                          ? 'bg-[#00F5D4]/5 border-[#00F5D4] text-[#00F5D4]' 
+                                          : 'bg-[#0A0F1C]/40 border-white/5 text-[#64748B] hover:border-white/10'
+                                      }`}
+                                  >
+                                      <p className="font-bold text-sm">{model.name}</p>
+                                      <p className="text-[10px] uppercase tracking-wider opacity-60 mt-1">{model.desc}</p>
+                                  </button>
+                              ))}
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'knowledge' && (
+                  <div className="space-y-10">
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 border border-purple-500/20">
+                                <BrainCircuit size={24} />
+                            </div>
+                            <div>
+                                <h3 className="font-sora text-xl font-bold text-white">Brain & Knowledge</h3>
+                                <p className="text-sm text-[#64748B]">Provide the data your bot uses to answer questions.</p>
+                            </div>
+                        </div>
+                        {(trainingText.trim() || uploadedFiles.length > 0) && (
+                            <button
+                               onClick={handleTrainChatbot}
+                               className="px-5 py-2.5 bg-[#00F5D4] text-[#0A0F1C] rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[#00D9C0] transition-all shadow-lg shadow-[#00F5D4]/10"
+                            >
+                               {isLoading ? 'Training...' : 'UPDATE BRAIN'}
+                            </button>
+                        )}
+                    </div>
+                    
+                    <div className="grid grid-cols-1 gap-8">
+                        <div className="p-6 bg-[#0A0F1C]/40 border border-white/5 rounded-2xl">
+                          <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-4 flex items-center gap-2 text-[#00F5D4]">
+                             <Database size={14} />
+                             Text-Based Knowledge
+                          </label>
+                          <textarea
+                            value={trainingText}
+                            onChange={(e) => setTrainingText(e.target.value)}
+                            className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-2xl px-6 py-4 text-[#F1F5F9] focus:border-[#00F5D4]/40 outline-none transition-all font-inter text-sm h-[250px] leading-relaxed custom-scrollbar"
+                            placeholder="Paste documentation, FAQs, or any text information here..."
+                          />
+                        </div>
+
+                        <div>
+                           <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-4">Document Training (PDF, DOCX, TXT)</label>
+                           <FileUploader
+                             onFilesSelected={handleFilesSelected}
+                             uploadedFiles={uploadedFiles}
+                             onFileRemove={(index) => setUploadedFiles(prev => prev.filter((_, i) => i !== index))}
+                           />
+                        </div>
+
+                        {existingDocuments.length > 0 && (
+                           <div className="pt-6 border-t border-white/5">
+                              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-4 flex items-center gap-2">
+                                  <Activity size={14} className="text-blue-500" />
+                                  Already Trained Documents
+                              </label>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {existingDocuments.map((doc, idx) => (
+                                  <div key={idx} className="flex items-center justify-between p-4 bg-[#0A0F1C]/40 border border-white/10 rounded-xl group hover:border-blue-500/30 transition-all">
+                                     <div className="flex items-center gap-3 truncate">
+                                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                        </div>
+                                        <span className="text-sm font-medium text-[#94A3B8] truncate">{doc.originalName || doc.filename}</span>
+                                     </div>
+                                     <button onClick={() => removeDocument(idx, doc.originalName || doc.filename)} className="p-2 text-[#EF4444] opacity-0 group-hover:opacity-100 hover:bg-red-500/10 rounded-lg transition-all">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                     </button>
+                                  </div>
+                                ))}
+                              </div>
+                           </div>
+                        )}
+
+                        <div className="pt-10 border-t border-white/5">
+                           <div className="flex items-center justify-between mb-6">
+                               <h4 className="font-sora text-lg font-bold text-white">Advanced Knowledge View</h4>
+                               <span className="text-[10px] font-black bg-white/5 px-2 py-1 rounded text-[#64748B] uppercase tracking-widest">Expert Mode</span>
+                           </div>
+                           <TrainingDataViewer botId={id as string} />
+                        </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'appearance' && (
+                  <div className="space-y-10">
+                    <div className="flex items-center gap-4 mb-8">
+                        <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-500 border border-teal-500/20">
+                            <Palette size={24} />
+                        </div>
+                        <div>
+                            <h3 className="font-sora text-xl font-bold text-white">Interface Design</h3>
+                            <p className="text-sm text-[#64748B]">Customize how your chatbot looks and feels to users.</p>
+                        </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div className="space-y-8">
+                           <div className="p-6 bg-[#0A0F1C]/40 border border-white/5 rounded-2xl">
+                              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-4">Brand Accent Color</label>
+                              <div className="flex items-center gap-6">
+                                 <div className="w-16 h-16 rounded-2xl overflow-hidden border-4 border-white/10 shadow-xl relative group">
+                                    <input
+                                      type="color"
+                                      value={botData.widgetColor}
+                                      onChange={(e) => setBotData({ ...botData, widgetColor: e.target.value })}
+                                      className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer"
+                                    />
+                                 </div>
+                                 <div className="flex-1 space-y-2">
+                                    <input
+                                      type="text"
+                                      value={botData.widgetColor}
+                                      onChange={(e) => setBotData({ ...botData, widgetColor: e.target.value })}
+                                      className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-4 py-3 text-white font-mono text-sm uppercase focus:border-[#00F5D4]/40 outline-none"
+                                    />
+                                    <p className="text-[10px] text-[#64748B] font-medium uppercase tracking-wider">Hex Color Code</p>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div className="p-6 bg-[#0A0F1C]/40 border border-white/5 rounded-2xl">
+                              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-3">Bot Avatar (Emoji or Image URL)</label>
+                              <input
+                                type="text"
+                                value={botData.widgetAvatar}
+                                onChange={(e) => setBotData({ ...botData, widgetAvatar: e.target.value })}
+                                className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-5 py-4 text-white font-medium focus:border-[#00F5D4]/40 outline-none"
+                                placeholder="e.g. 🤖 or https://example.com/logo.png"
+                              />
+                           </div>
+
+                           <div className="p-6 bg-[#0A0F1C]/40 border border-white/5 rounded-2xl">
+                              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-4">Widget Dimensions</label>
+                              <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                     <p className="text-[10px] text-[#64748B] font-bold uppercase tracking-wider mb-2">Width (px)</p>
+                                     <input
+                                       type="number"
+                                       value={botData.widgetWidth}
+                                       onChange={(e) => setBotData({ ...botData, widgetWidth: e.target.value })}
+                                       className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#00F5D4]/40 outline-none"
+                                     />
+                                  </div>
+                                  <div>
+                                     <p className="text-[10px] text-[#64748B] font-bold uppercase tracking-wider mb-2">Height (px)</p>
+                                     <input
+                                       type="number"
+                                       value={botData.widgetHeight}
+                                       onChange={(e) => setBotData({ ...botData, widgetHeight: e.target.value })}
+                                       className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#00F5D4]/40 outline-none"
+                                     />
+                                  </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div className="space-y-8">
+                           <div className="p-6 bg-[#0A0F1C]/40 border border-white/5 rounded-2xl">
+                              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-3">Greeting Message</label>
+                              <textarea
+                                value={botData.greetingMessage}
+                                onChange={(e) => setBotData({ ...botData, greetingMessage: e.target.value })}
+                                className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-5 py-4 text-white h-[100px] resize-none text-sm leading-relaxed focus:border-[#00F5D4]/40 outline-none"
+                                placeholder="Hi! I'm your AI assistant. How can I help?"
+                              />
+                           </div>
+
+                           <div className="p-6 bg-[#0A0F1C]/40 border border-white/5 rounded-2xl">
+                              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-4">Size & Position</label>
+                              <div className="space-y-4">
+                                  <div className="grid grid-cols-2 gap-3">
+                                      {['small', 'medium', 'large'].map((size) => (
+                                          <button
+                                              key={size}
+                                              onClick={() => setBotData({ ...botData, widgetSize: size })}
+                                              className={`py-2 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${
+                                                  botData.widgetSize === size ? 'bg-[#00F5D4] text-[#0A0F1C] border-[#00F5D4]' : 'bg-transparent text-[#64748B] border-white/5 hover:bg-white/5'
+                                              }`}
+                                          >
+                                              {size}
+                                          </button>
+                                      ))}
+                                  </div>
+                                  <select
+                                    value={botData.embedPosition}
+                                    onChange={(e) => setBotData({ ...botData, embedPosition: e.target.value })}
+                                    className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-5 py-4 text-white appearance-none focus:border-[#00F5D4]/40 outline-none cursor-pointer"
+                                  >
+                                     <option value="bottom-right">📍 Bottom Right</option>
+                                     <option value="bottom-left">📍 Bottom Left</option>
+                                  </select>
+                              </div>
+                           </div>
+
+                           <div className="p-6 bg-[#0A0F1C]/40 border border-white/5 rounded-2xl">
+                              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-4">Base UI Theme</label>
+                              <div className="flex gap-3">
+                                 {['default', 'dark'].map((t) => (
+                                    <button
+                                       key={t}
+                                       onClick={() => setBotData({ ...botData, embedTheme: t })}
+                                       className={`flex-1 py-3 rounded-xl border font-bold text-xs uppercase tracking-widest transition-all ${
+                                          botData.embedTheme === t ? 'bg-[#00F5D4]/10 text-[#00F5D4] border-[#00F5D4]/40 shadow-[0_0_20px_rgba(0,245,212,0.1)]' : 'bg-transparent text-[#64748B] border-white/5 hover:bg-white/5'
+                                       }`}
+                                    >
+                                       {t === 'default' ? 'Light' : 'Dark'}
+                                    </button>
+                                 ))}
+                              </div>
+                           </div>
+                        </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'settings' && (
+                  <div className="space-y-10">
+                    <div className="flex items-center gap-4 mb-8">
+                        <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 border border-orange-500/20">
+                            <SettingsIcon size={24} />
+                        </div>
+                        <div>
+                            <h3 className="font-sora text-xl font-bold text-white">System Settings</h3>
+                            <p className="text-sm text-[#64748B]">Advanced configurations for bot behavior and notifications.</p>
+                        </div>
+                    </div>
+
+                    <div className="space-y-8">
+                        <div className="p-6 bg-[#0A0F1C]/40 border border-white/5 rounded-2xl">
+                          <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-widest mb-4">System Instructions (Prompt Engineering)</label>
+                          <textarea
+                            value={botData.systemPrompt}
+                            onChange={(e) => setBotData({ ...botData, systemPrompt: e.target.value })}
+                            className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-2xl px-6 py-5 text-[#94A3B8] h-40 font-mono text-xs leading-relaxed focus:border-[#00F5D4]/40 outline-none custom-scrollbar"
+                            placeholder="Example: You are a professional support agent for X Corp. Your tone should be friendly..."
+                          />
+                        </div>
+
+                        <div className="p-8 border border-white/5 bg-[#121826] rounded-3xl space-y-6">
+                           <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-4">
+                                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${botData.emailNotifications ? 'bg-[#00F5D4]/10 text-[#00F5D4]' : 'bg-white/5 text-[#64748B]'}`}>
+                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                  </div>
+                                  <div>
+                                     <h4 className="font-bold text-white text-sm">Lead Capture Notifications</h4>
+                                     <p className="text-[11px] text-[#64748B] mt-0.5">Receive an email whenever a user interacts with your bot.</p>
+                                  </div>
+                              </div>
+                              <button
+                                 onClick={() => setBotData({ ...botData, emailNotifications: !botData.emailNotifications })}
+                                 className={`w-14 h-7 rounded-full transition-all relative ${botData.emailNotifications ? 'bg-[#00F5D4]' : 'bg-white/10 border border-white/5'}`}
+                              >
+                                 <div className={`absolute top-1 w-5 h-5 rounded-full transition-all shadow-md ${botData.emailNotifications ? 'left-8 bg-[#0A0F1C]' : 'left-1 bg-[#64748B]'}`} />
+                              </button>
+                           </div>
+                           
+                           {botData.emailNotifications && (
+                              <div className="animate-fade-in pl-14">
+                                  <input
+                                    type="email"
+                                    value={botData.emailAddress}
+                                    onChange={(e) => setBotData({ ...botData, emailAddress: e.target.value })}
+                                    className="w-full bg-[#0A0F1C]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white text-sm focus:border-[#00F5D4]/40 outline-none"
+                                    placeholder="your-email@company.com"
+                                  />
+                              </div>
+                           )}
+                        </div>
+
+                        <div className="pt-10 border-t border-white/10">
+                           <div className="p-8 bg-red-500/5 border border-red-500/10 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6">
+                              <div className="text-center sm:text-left">
+                                 <p className="text-sm font-bold text-white">Permanently Delete Chatbot</p>
+                                 <p className="text-[11px] text-red-400/60 mt-1 max-w-sm">This action cannot be undone. All training data, chat history, and settings will be wiped from our servers.</p>
+                              </div>
+                              <button
+                                 onClick={async () => {
+                                    setConfirmDialog({
+                                        isOpen: true,
+                                        title: 'Delete Chatbot',
+                                        message: 'Are you absolutely sure? This will permanently remove all bot data and training history.',
+                                        type: 'danger',
+                                        onConfirm: async () => {
+                                            try {
+                                                setIsLoading(true);
+                                                await botsAPI.delete(id as string);
+                                                showToast('Bot deleted successfully', 'success');
+                                                router.push('/dashboard');
+                                            } catch (error) {
+                                                showToast('Failed to delete bot', 'error');
+                                                setIsLoading(false);
+                                                setConfirmDialog(prev => ({ ...prev, isOpen: false }));
+                                            }
+                                        }
+                                    });
+                                 }}
+                                 className="px-6 py-3 bg-red-500 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-red-600 transition-all shadow-lg shadow-red-500/20"
+                              >
+                                 Delete Bot
+                              </button>
+                           </div>
+                        </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Right Panel - Preview */}
-            <div className="lg:col-span-1">
-              <div className="bg-[#121826] rounded-2xl border border-white/[0.06] p-6 sticky top-24 animate-fade-in">
-                <h3 className="font-sora text-lg font-bold text-[#F1F5F9] mb-6 flex items-center gap-2">
-                  <svg className="w-6 h-6 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  Live Preview
-                </h3>
-                <div className="flex justify-center">
-                  <ChatbotWidgetPreview
-                    greeting={botData.greetingMessage}
-                    avatar={botData.widgetAvatar}
-                    color={botData.widgetColor}
-                    width={botData.widgetWidth}
-                    height={botData.widgetHeight}
-                    theme={botData.embedTheme}
-                  />
-                </div>
+            {/* Sidebar Preview Area */}
+            <div className="lg:col-span-4 h-full">
+              <div className="sticky top-6 flex flex-col gap-6">
+                 <div className="bg-[#121826] rounded-3xl border border-white/5 p-8 shadow-xl relative overflow-hidden flex flex-col">
+                    <div className="flex items-center justify-between mb-8">
+                       <h3 className="font-sora text-lg font-bold text-white flex items-center gap-3">
+                          <div className="w-1.5 h-6 bg-[#00F5D4] rounded-full shadow-[0_0_15px_rgba(0,245,212,0.5)]" />
+                          Live Preview
+                       </h3>
+                       <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00F5D4]/10 border border-[#00F5D4]/20">
+                          <span className="w-2 h-2 rounded-full bg-[#00F5D4] animate-pulse" />
+                          <span className="text-[#00F5D4] text-[10px] font-black uppercase tracking-widest">Real-time</span>
+                       </div>
+                    </div>
+                    
+                    {/* The Actual Widget Preview */}
+                    <div className="flex-1 flex flex-col items-center justify-center py-10 bg-[#0A0F1C]/40 rounded-3xl border border-white/5 relative min-h-[500px]">
+                      <ChatbotWidgetPreview
+                        botId={id as string}
+                        greeting={botData.greetingMessage}
+                        avatar={botData.widgetAvatar}
+                        color={botData.widgetColor}
+                        width={botData.widgetWidth}
+                        height={botData.widgetHeight}
+                        theme={botData.embedTheme}
+                        widgetSize={botData.widgetSize}
+                        initiallyOpen={true}
+                      />
+                      
+                      {/* Grid background overlay for the preview area */}
+                      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]" />
+                    </div>
+
+                    <div className="mt-8 space-y-4">
+                       <div className="flex items-center justify-between text-[10px] font-black text-[#64748B] uppercase tracking-[0.2em]">
+                          <span>Configuration Confidence</span>
+                          <span className="text-[#00F5D4]">Optimal</span>
+                       </div>
+                       <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-[#00F5D4] via-[#3A86FF] to-[#00F5D4] bg-[length:200%_100%] animate-gradient-shift w-full" />
+                       </div>
+                    </div>
+                 </div>
+
+                 <div className="p-6 border border-[#3A86FF]/20 bg-gradient-to-br from-[#121826] to-[#0A0F1C] rounded-2xl relative overflow-hidden group">
+                    <div className="relative z-10">
+                        <h4 className="text-white font-bold text-sm mb-2 flex items-center gap-2">
+                           <Sparkles size={16} className="text-[#3A86FF]" />
+                           Quick Tip
+                        </h4>
+                        <p className="text-[#94A3B8] text-xs leading-relaxed font-medium">
+                           The preview on the left is **interactive**. Use the **Appearance** tab to adjust colors, sizes, and themes to match your brand's unique identity.
+                        </p>
+                    </div>
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-[#3A86FF]/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:bg-[#3A86FF]/10 transition-all duration-700" />
+                 </div>
               </div>
             </div>
           </div>
@@ -732,12 +740,37 @@ Example:
         title={confirmDialog.title}
         message={confirmDialog.message}
         type={confirmDialog.type}
-        confirmText="Delete"
+        confirmText="Confirm"
         cancelText="Cancel"
         onConfirm={confirmDialog.onConfirm}
         onCancel={() => setConfirmDialog(prev => ({ ...prev, isOpen: false }))}
       />
       <OfflineDetector />
+
+      <style jsx global>{`
+        @keyframes gradient-shift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-gradient-shift {
+          animation: gradient-shift 3s ease infinite;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.02);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.08);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.12);
+        }
+      `}</style>
     </>
   );
 }

@@ -237,7 +237,8 @@ router.get('/list', authMiddleware, async (req, res) => {
       description: bot.description,
       createdAt: bot.created_at,
       isActive: bot.is_active,
-      embedCode: bot.embed_code
+      embedCode: bot.embed_code,
+      widgetCustomization: bot.widget_customization || {}
     }));
 
     res.json({ bots: formattedBots });
@@ -1920,7 +1921,7 @@ router.put('/:id', authMiddleware, upload.array('documents', 5), async (req, res
         updateData.greeting_message = req.body.widget_customization.greetingMessage;
       }
     } else if (req.body.widgetWidth !== undefined || req.body.widgetHeight !== undefined ||
-      req.body.widgetColor !== undefined || req.body.widgetAvatar !== undefined) {
+      req.body.widgetColor !== undefined || req.body.widgetAvatar !== undefined || req.body.widgetSize !== undefined) {
       // Legacy: individual fields
       const widgetCustomization = bot.widget_customization || {};
       if (req.body.widgetWidth !== undefined) {
@@ -1934,6 +1935,9 @@ router.put('/:id', authMiddleware, upload.array('documents', 5), async (req, res
       }
       if (req.body.widgetAvatar !== undefined) {
         widgetCustomization.avatar = sanitizeString(req.body.widgetAvatar) || '🤖';
+      }
+      if (req.body.widgetSize !== undefined) {
+        widgetCustomization.widgetSize = sanitizeString(req.body.widgetSize) || 'medium';
       }
       updateData.widget_customization = widgetCustomization;
     }

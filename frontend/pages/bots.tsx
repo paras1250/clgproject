@@ -4,29 +4,35 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import DashboardLayout from '../components/DashboardLayout';
-import { MessageSquare, Plus, Settings } from 'lucide-react';
+import { MessageSquare, Plus, Settings, BarChart3 } from 'lucide-react';
 import { botsAPI } from '../lib/api';
 
 const BotCard = ({ bot }: any) => (
-    <div className="bg-[#121826] p-6 rounded-2xl border border-white/[0.06] hover:border-white/[0.1] transition-all flex flex-col justify-between gap-6">
+    <div className="premium-card p-6 flex flex-col gap-6 group hover:-translate-y-1 transition-all duration-300">
         <div className="flex items-start justify-between">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#00F5D4] to-[#3A86FF] text-[#0A0F1C] flex items-center justify-center font-bold text-xl">
-                {bot.avatar ? bot.avatar : bot.name.charAt(0)}
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00F5D4]/20 to-[#3A86FF]/10 flex items-center justify-center text-xl font-black text-[#00F5D4] border border-[#00F5D4]/20 shadow-inner group-hover:scale-110 transition-transform">
+                {bot.avatar ? (
+                    bot.avatar.length > 2 ? <img src={bot.avatar} className="w-full h-full object-cover rounded-2xl" /> : bot.avatar
+                ) : bot.name.charAt(0).toUpperCase()}
             </div>
-            <div className={`px-2 py-1 rounded-full text-xs font-semibold ${bot.isActive ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-white/5 text-[#64748B]'}`}>
-                {bot.isActive ? 'Active' : 'Inactive'}
+            <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${bot.isActive !== false ? 'bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20' : 'bg-white/5 text-[#64748B] border border-white/10'}`}>
+                <div className={`w-1.5 h-1.5 rounded-full ${bot.isActive !== false ? 'bg-[#10B981] animate-pulse' : 'bg-[#64748B]'}`} />
+                {bot.isActive !== false ? 'Active' : 'Inactive'}
             </div>
         </div>
 
-        <div>
-            <h3 className="font-sora text-lg font-bold text-[#F1F5F9] mb-1">{bot.name}</h3>
-            <p className="text-[#94A3B8] text-sm line-clamp-2 font-inter">{bot.description || 'No description provided.'}</p>
+        <div className="flex-1">
+            <h3 className="font-sora text-xl font-bold text-[#F1F5F9] mb-2 group-hover:text-[#00F5D4] transition-colors">{bot.name}</h3>
+            <p className="text-[#94A3B8] text-sm line-clamp-2 leading-relaxed font-inter">{bot.description || 'No description provided.'}</p>
         </div>
 
-        <div className="flex items-center gap-2 mt-auto">
-            <Link href={`/edit-bot?id=${bot.id}`} className="flex-1 bg-white/5 border border-white/[0.08] text-[#F1F5F9] py-2.5 rounded-xl font-medium hover:bg-white/10 transition-all flex items-center justify-center gap-2 font-inter">
+        <div className="flex items-center gap-3 pt-4 border-t border-white/[0.04]">
+            <Link href={`/edit-bot?id=${bot._id || bot.id}`} className="flex-1 bg-white/[0.03] border border-white/[0.08] text-[#F1F5F9] py-2.5 rounded-xl text-sm font-bold hover:bg-white/[0.08] transition-all flex items-center justify-center gap-2 font-inter">
                 <Settings size={16} />
                 Configure
+            </Link>
+            <Link href={`/analytics?id=${bot._id || bot.id}`} className="p-2.5 rounded-xl bg-[#00F5D4]/10 text-[#00F5D4] border border-[#00F5D4]/20 hover:bg-[#00F5D4]/20 transition-all">
+                <BarChart3 size={18} />
             </Link>
         </div>
     </div>

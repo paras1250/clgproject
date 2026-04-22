@@ -7,29 +7,32 @@ interface AnalyticsCardProps {
 
 const AnalyticsCard = ({ title, value, icon, trend }: AnalyticsCardProps) => {
   return (
-    <div className="bg-[#1E293B] rounded-xl border-2 border-white/10 p-6 hover:border-purple-300 hover:shadow-lg transition-all shadow-sm">
+    <div className="premium-card p-6 flex flex-col gap-4 group hover:-translate-y-1 transition-all duration-300">
       <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <p className="text-xs font-semibold text-[#94A3B8] mb-3 uppercase tracking-wider" style={{ color: '#4b5563' }}>
-            {title}
-          </p>
-          <p className="text-4xl font-extrabold text-[#F8FAFC] mb-2" style={{ color: '#111827' }}>
-            {value}
-          </p>
-          {trend && (
-            <div className="flex items-center mt-2">
-              <svg className="w-5 h-5 text-[#10B981] mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-              <p className="text-sm font-semibold text-green-700">{trend}</p>
-            </div>
-          )}
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00F5D4]/10 to-[#3A86FF]/5 flex items-center justify-center text-[#00F5D4] border border-[#00F5D4]/20 group-hover:scale-110 transition-transform shadow-lg shadow-[#00F5D4]/5">
+          {icon}
         </div>
-        <div className="bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl p-4 ml-4 flex items-center justify-center" style={{ backgroundColor: '#f3e8ff' }}>
-          <div className="w-7 h-7 text-purple-700" style={{ color: '#7e22ce' }}>
-            {icon}
+        {trend && (
+          <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#10B981]/10 border border-[#10B981]/20">
+            <svg className="w-3 h-3 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+            <span className="text-[10px] font-bold text-[#10B981]">{trend}</span>
           </div>
-        </div>
+        )}
+      </div>
+
+      <div className="space-y-1">
+        <p className="text-[11px] font-bold text-[#64748B] uppercase tracking-[0.1em]">
+          {title}
+        </p>
+        <p className="text-3xl font-black text-[#F1F5F9] tracking-tight">
+          {value}
+        </p>
+      </div>
+      
+      <div className="h-1.5 w-full bg-white/[0.03] rounded-full overflow-hidden">
+        <div className="h-full bg-gradient-to-r from-[#00F5D4] to-[#3A86FF] w-[65%] rounded-full opacity-60 group-hover:opacity-100 transition-opacity" />
       </div>
     </div>
   );

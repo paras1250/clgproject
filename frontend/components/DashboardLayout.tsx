@@ -177,17 +177,17 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     );
 
     return (
-        <div className="min-h-screen bg-[#0A0F1C] flex">
+        <div className="min-h-screen bg-[#0A0F1C] flex selection:bg-[#00F5D4]/30 selection:text-[#00F5D4]">
             {/* ─── Desktop Sidebar ─── */}
-            <aside className="hidden lg:flex flex-col w-[260px] bg-[#0F1629] border-r border-white/[0.06] fixed inset-y-0 left-0 z-30">
+            <aside className="hidden lg:flex flex-col w-[260px] bg-[#0F1629] border-r border-white/[0.06] fixed inset-y-0 left-0 z-30 shadow-[4px_0_24px_rgba(0,0,0,0.3)]">
                 <SidebarContent />
             </aside>
 
             {/* ─── Mobile Sidebar Overlay ─── */}
             {sidebarOpen && (
                 <div className="fixed inset-0 z-50 lg:hidden">
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-                    <aside className="absolute top-0 left-0 bottom-0 w-[280px] bg-[#0F1629] border-r border-white/[0.06] animate-fade-in">
+                    <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+                    <aside className="absolute top-0 left-0 bottom-0 w-[280px] bg-[#0F1629] border-r border-white/[0.06] animate-fade-in shadow-2xl">
                         <div className="absolute right-3 top-3 z-10">
                             <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-lg hover:bg-white/10 transition-colors text-[#94A3B8]">
                                 <X size={20} />
@@ -201,41 +201,42 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             {/* ─── Main Area ─── */}
             <div className="flex-1 lg:ml-[260px] flex flex-col min-h-screen">
                 {/* ─── Top Header ─── */}
-                <header className="sticky top-0 z-20 bg-[#0A0F1C]/80 backdrop-blur-xl border-b border-white/[0.06]">
-                    <div className="flex items-center justify-between h-14 px-4 lg:px-6">
+                <header className="sticky top-0 z-20 bg-[#0A0F1C]/70 backdrop-blur-xl border-b border-white/[0.04]">
+                    <div className="flex items-center justify-between h-16 px-4 lg:px-8">
                         {/* Left */}
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                             <button
                                 onClick={() => setSidebarOpen(true)}
                                 className="lg:hidden p-2 -ml-2 rounded-lg hover:bg-white/10 transition-colors text-[#94A3B8]"
                             >
-                                <Menu size={20} />
+                                <Menu size={22} />
                             </button>
-                            <div className="flex items-center gap-2 text-sm font-medium text-[#F1F5F9] cursor-default">
-                                <span className="w-5 h-5 rounded bg-gradient-to-br from-[#00F5D4] to-[#3A86FF] flex items-center justify-center text-[9px] font-bold text-[#0A0F1C]">
+                            <div className="flex items-center gap-2.5 text-sm font-semibold text-[#F1F5F9] cursor-default bg-white/[0.03] px-3 py-1.5 rounded-full border border-white/[0.05]">
+                                <span className="w-5 h-5 rounded-full bg-gradient-to-br from-[#00F5D4] to-[#3A86FF] flex items-center justify-center text-[9px] font-black text-[#0A0F1C]">
                                     {userInitial}
                                 </span>
-                                <span className="hidden sm:inline font-inter">My Workspace</span>
+                                <span className="hidden sm:inline font-sora tracking-wide">My Workspace</span>
                             </div>
                         </div>
 
                         {/* Right */}
-                        <div className="flex items-center gap-1.5">
-                            <Link href="/pricing" className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#00F5D4] to-[#3A86FF] text-[#0A0F1C] text-xs font-bold hover:shadow-lg hover:shadow-[#00F5D4]/20 transition-all mr-1">
-                                <Sparkles size={12} />
+                        <div className="flex items-center gap-2">
+                            <Link href="/pricing" className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#00F5D4] to-[#3A86FF] text-[#0A0F1C] text-xs font-black hover:shadow-[0_0_20px_rgba(0,245,212,0.3)] transition-all mr-2 uppercase tracking-wider">
+                                <Sparkles size={14} />
                                 UPGRADE
                             </Link>
-                            <button className="p-2 rounded-lg hover:bg-white/[0.06] transition-colors text-[#94A3B8] hover:text-[#F1F5F9]">
-                                <Search size={18} />
+                            <div className="h-6 w-[1px] bg-white/[0.06] mx-2 hidden sm:block"></div>
+                            <button className="p-2.5 rounded-xl hover:bg-white/[0.06] transition-all text-[#94A3B8] hover:text-[#F1F5F9] hover:scale-105 active:scale-95">
+                                <Search size={19} />
                             </button>
-                            <button className="p-2 rounded-lg hover:bg-white/[0.06] transition-colors text-[#94A3B8] hover:text-[#F1F5F9] relative">
-                                <Bell size={18} />
-                                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#00F5D4] rounded-full"></span>
+                            <button className="p-2.5 rounded-xl hover:bg-white/[0.06] transition-all text-[#94A3B8] hover:text-[#F1F5F9] relative hover:scale-105 active:scale-95">
+                                <Bell size={19} />
+                                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#00F5D4] rounded-full ring-2 ring-[#0A0F1C]"></span>
                             </button>
-                            <Link href="/settings" className="p-2 rounded-lg hover:bg-white/[0.06] transition-colors text-[#94A3B8] hover:text-[#F1F5F9]">
-                                <Settings size={18} />
+                            <Link href="/settings" className="p-2.5 rounded-xl hover:bg-white/[0.06] transition-all text-[#94A3B8] hover:text-[#F1F5F9] hover:scale-105 active:scale-95">
+                                <Settings size={19} />
                             </Link>
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#00F5D4] to-[#3A86FF] flex items-center justify-center text-[#0A0F1C] text-xs font-bold ml-1 cursor-pointer">
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#00F5D4] to-[#3A86FF] flex items-center justify-center text-[#0A0F1C] text-xs font-black ml-2 cursor-pointer shadow-lg shadow-[#00F5D4]/10 hover:scale-105 transition-transform ring-2 ring-white/10">
                                 {userInitial}
                             </div>
                         </div>
@@ -243,8 +244,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 </header>
 
                 {/* ─── Page Content ─── */}
-                <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
-                    <div className="max-w-5xl mx-auto">
+                <main className="flex-1 p-4 lg:p-10 overflow-y-auto">
+                    <div className="max-w-6xl mx-auto">
                         {children}
                     </div>
                 </main>

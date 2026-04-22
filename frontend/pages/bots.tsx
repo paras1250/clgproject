@@ -10,10 +10,25 @@ import { botsAPI } from '../lib/api';
 const BotCard = ({ bot }: any) => (
     <div className="premium-card p-6 flex flex-col gap-6 group hover:-translate-y-1 transition-all duration-300">
         <div className="flex items-start justify-between">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00F5D4]/20 to-[#3A86FF]/10 flex items-center justify-center text-xl font-black text-[#00F5D4] border border-[#00F5D4]/20 shadow-inner group-hover:scale-110 transition-transform">
-                {bot.avatar ? (
-                    bot.avatar.length > 2 ? <img src={bot.avatar} className="w-full h-full object-cover rounded-2xl" /> : bot.avatar
-                ) : bot.name.charAt(0).toUpperCase()}
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00F5D4]/20 to-[#3A86FF]/10 flex items-center justify-center text-xl font-black text-[#00F5D4] border border-[#00F5D4]/20 shadow-inner group-hover:scale-110 transition-transform overflow-hidden">
+                {(() => {
+                    const avatar = bot.widgetCustomization?.avatar || bot.avatar;
+                    const isImageUrl = avatar && (
+                        avatar.startsWith('/') || 
+                        avatar.startsWith('http') || 
+                        avatar.includes('.') || 
+                        avatar.length > 5
+                    );
+                    
+                    if (avatar) {
+                        return isImageUrl ? (
+                            <img src={avatar} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                            <span className="text-2xl">{avatar}</span>
+                        );
+                    }
+                    return bot.name.charAt(0).toUpperCase();
+                })()}
             </div>
             <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${bot.isActive !== false ? 'bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20' : 'bg-white/5 text-[#64748B] border border-white/10'}`}>
                 <div className={`w-1.5 h-1.5 rounded-full ${bot.isActive !== false ? 'bg-[#10B981] animate-pulse' : 'bg-[#64748B]'}`} />
@@ -70,12 +85,12 @@ export default function Bots() {
                 <title>My Chatbots - Conversio AI</title>
             </Head>
 
-            <div className="mb-8 flex items-center justify-between">
+            <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="font-sora text-2xl font-bold text-[#F1F5F9]">My Chatbots</h1>
-                    <p className="text-[#94A3B8] font-inter">Manage and monitor all your AI agents.</p>
+                    <p className="text-[#94A3B8] font-inter text-sm">Manage and monitor all your AI agents.</p>
                 </div>
-                <Link href="/builder" className="bg-[#00F5D4] text-[#0A0F1C] px-5 py-2.5 rounded-xl font-semibold flex items-center gap-2 hover:bg-[#00D9C0] transition-all shadow-lg shadow-[#00F5D4]/15 font-inter tracking-wide">
+                <Link href="/builder" className="w-full sm:w-auto bg-[#00F5D4] text-[#0A0F1C] px-5 py-2.5 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-[#00D9C0] transition-all shadow-lg shadow-[#00F5D4]/15 font-inter tracking-wide text-sm">
                     <Plus size={18} />
                     <span>Create New Bot</span>
                 </Link>

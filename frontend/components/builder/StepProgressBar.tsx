@@ -40,10 +40,10 @@ export default function StepProgressBar({ steps, currentStep }: StepProgressBarP
                             )}
                         </div>
                         <div className="mt-2.5 text-center">
-                            <p className={`text-sm font-semibold leading-tight font-sora ${currentStep >= step.number ? 'text-[#F1F5F9]' : 'text-[#64748B]'}`}>
+                            <p className={`text-[10px] sm:text-sm font-semibold leading-tight font-sora ${currentStep >= step.number ? 'text-[#F1F5F9]' : 'text-[#64748B]'}`}>
                                 {step.title}
                             </p>
-                            <p className={`text-xs mt-0.5 font-inter ${currentStep >= step.number ? 'text-[#00F5D4] font-medium' : 'text-[#64748B]'}`}>
+                            <p className={`hidden sm:block text-xs mt-0.5 font-inter ${currentStep >= step.number ? 'text-[#00F5D4] font-medium' : 'text-[#64748B]'}`}>
                                 {step.desc}
                             </p>
                         </div>

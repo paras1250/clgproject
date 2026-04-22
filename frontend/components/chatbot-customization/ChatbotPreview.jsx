@@ -60,15 +60,15 @@ const ChatbotPreview = () => {
                 // Expanded state: Full chatbot widget
                 <div
                     className={`
-            absolute bottom-8 transition-all duration-500
-            ${positionClass}
-            ${currentSize.width}
+            fixed inset-0 z-50 flex flex-col sm:absolute sm:inset-auto sm:bottom-8 sm:transition-all sm:duration-500
+            ${alignment === 'bottom-left' ? 'sm:left-8' : 'sm:right-8'}
+            w-full sm:${currentSize.width}
           `}
                 >
-                    <div className="bg-[#121826] border border-white/[0.06] rounded-2xl shadow-xl overflow-hidden">
+                    <div className="bg-[#121826] border-none sm:border border-white/[0.06] rounded-none sm:rounded-2xl shadow-xl overflow-hidden flex flex-col h-full">
                         <ChatHeader />
 
-                        <div className={`p-4 ${currentSize.minHeight} ${currentSize.maxHeight} overflow-y-auto custom-scrollbar`}>
+                        <div className={`flex-1 p-4 overflow-y-auto custom-scrollbar`}>
                             <ChatBubble message={firstMessage} />
                         </div>
 

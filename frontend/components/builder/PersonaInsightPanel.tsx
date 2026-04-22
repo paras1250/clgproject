@@ -36,7 +36,7 @@ export default function PersonaInsightPanel({
     const isImageAvatar = avatar && (avatar.startsWith('/') || avatar.startsWith('http'));
 
     return (
-        <div className="w-full h-full bg-[#0F1629] border-r border-white/[0.04] p-6 space-y-6 overflow-y-auto">
+        <div className="w-full h-auto lg:h-full border-b lg:border-r border-white/[0.04] p-6 space-y-6 overflow-y-auto">
             {/* Persona Insight Header */}
             <div className="flex items-center gap-2 pb-3 border-b border-white/[0.06]">
                 <svg className="w-5 h-5 text-[#00F5D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

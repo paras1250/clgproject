@@ -58,11 +58,10 @@ export default function Login() {
                 <title>{isLogin ? 'Login' : 'Sign Up'} - Conversio AI</title>
             </Head>
 
-            <div className="w-full max-w-md bg-[#121826] rounded-3xl shadow-xl p-8 border border-white/[0.06]">
+            <div className="w-full max-w-md bg-[#121826] rounded-3xl shadow-xl p-6 sm:p-8 border border-white/[0.06]">
                 <div className="text-center mb-8">
-                    <Link href="/" className="inline-flex items-center gap-2 mb-6">
-                        <img src="/assets/conversio-logo.png" alt="Conversio AI" className="w-10 h-10 object-contain" />
-                        <span className="font-sora font-bold text-2xl text-[#F1F5F9]">Conversio AI</span>
+                    <Link href="/" className="inline-flex items-center mb-6">
+                        <img src="/assets/conversio-logo-text.svg" alt="Conversio AI" style={{ height: '55px', width: 'auto' }} />
                     </Link>
                     <h1 className="font-sora text-2xl font-bold text-[#F1F5F9]">{isLogin ? 'Welcome back' : 'Create your account'}</h1>
                     <p className="text-[#94A3B8] mt-2 font-inter">{isLogin ? 'Enter your details to access your bots' : 'Start building AI chatbots in minutes'}</p>

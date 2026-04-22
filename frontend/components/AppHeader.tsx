@@ -73,35 +73,37 @@ export default function AppHeader({ title = 'Chat Builder', breadcrumb }: AppHea
                         <img
                             src="/assets/conversio-logo-text.svg"
                             alt="Conversio AI"
-                            style={{ height: '58px', width: 'auto' }}
+                            className="h-[40px] sm:h-[58px] w-auto"
                         />
                     </Link>
 
-                    <svg className="w-4 h-4 text-[#64748B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    <div className="hidden md:flex items-center gap-4">
+                        <svg className="w-4 h-4 text-[#64748B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
 
-                    {breadcrumb ? (
-                        <div className="flex items-center gap-1.5 text-sm">
-                            {breadcrumb.split(' / ').map((segment, i, arr) => (
-                                <span key={i} className="flex items-center gap-1.5">
-                                    {i > 0 && (
-                                        <svg className="w-3.5 h-3.5 text-[#64748B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    )}
-                                    <span className={i === arr.length - 1
-                                        ? 'font-semibold text-[#F1F5F9] font-inter'
-                                        : 'text-[#64748B] hover:text-[#94A3B8] cursor-pointer font-inter'
-                                    }>
-                                        {segment}
+                        {breadcrumb ? (
+                            <div className="flex items-center gap-1.5 text-sm">
+                                {breadcrumb.split(' / ').map((segment, i, arr) => (
+                                    <span key={i} className="flex items-center gap-1.5">
+                                        {i > 0 && (
+                                            <svg className="w-3.5 h-3.5 text-[#64748B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        )}
+                                        <span className={i === arr.length - 1
+                                            ? 'font-semibold text-[#F1F5F9] font-inter'
+                                            : 'text-[#64748B] hover:text-[#94A3B8] cursor-pointer font-inter'
+                                        }>
+                                            {segment}
+                                        </span>
                                     </span>
-                                </span>
-                            ))}
-                        </div>
-                    ) : (
-                        <span className="font-semibold text-[#F1F5F9] text-sm font-inter">{title}</span>
-                    )}
+                                ))}
+                            </div>
+                        ) : (
+                            <span className="font-semibold text-[#F1F5F9] text-sm font-inter">{title}</span>
+                        )}
+                    </div>
                 </div>
 
                 {/* Right: User area */}

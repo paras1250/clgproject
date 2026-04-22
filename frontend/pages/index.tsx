@@ -207,10 +207,10 @@ const Hero = () => (
         <div className="max-w-[1400px] mx-auto w-full px-6 md:px-20">
             <div className="grid lg:grid-cols-[1.1fr_1.3fr] gap-12 items-center w-full">
                 <div className="text-left animate-in fade-in slide-in-from-left-8 duration-700 relative">
-                    <h1 className="text-5xl md:text-[5.5rem] font-sora leading-[1.05] tracking-tight mb-8 text-[#F1F5F9] font-bold">
+                    <h1 className="text-4xl sm:text-5xl md:text-[5rem] font-sora leading-[1.1] md:leading-[1.05] tracking-tight mb-6 md:mb-8 text-[#F1F5F9] font-bold">
                         AI Chatbot for your site
                     </h1>
-                    <p className="text-xl md:text-2xl text-[#94A3B8] font-inter leading-relaxed mb-12 max-w-xl">
+                    <p className="text-lg md:text-2xl text-[#94A3B8] font-inter leading-relaxed mb-8 md:mb-12 max-w-xl">
                         Conversio AI chatbot instantly learns from your website and uses that knowledge to answer visitor questions — automatically.
                     </p>
 
@@ -271,8 +271,14 @@ const Footer = () => (
 
         <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-12 text-center relative z-10">
             <div className="flex flex-wrap justify-center gap-x-12 gap-y-6">
-                {["Terms & Conditions", "Privacy Policy", "About Us", "Contact Us", "Pricing", "Embed Guide"].map(item => (
-                    <Link key={item} href="#" className="text-[#94A3B8] hover:text-[#F1F5F9] transition-colors font-medium text-sm tracking-wide font-inter">{item}</Link>
+                {[
+                    { label: "Terms & Conditions", href: "#" },
+                    { label: "Privacy Policy", href: "#" },
+                    { label: "Blog", href: "/blog" },
+                    { label: "Features", href: "/features" },
+                    { label: "Pricing", href: "/pricing" }
+                ].map(item => (
+                    <Link key={item.label} href={item.href} className="text-[#94A3B8] hover:text-[#F1F5F9] transition-colors font-medium text-sm tracking-wide font-inter">{item.label}</Link>
                 ))}
             </div>
 
@@ -309,10 +315,14 @@ export default function LandingPage() {
 
                         {/* Desktop nav — visible on lg+ */}
                         <nav className="hidden lg:flex items-center gap-10">
-                            {["Solutions", "Blog", "Pricing"].map(item => (
-                                <Link key={item} href={item === "Pricing" ? "/pricing" : "#"}
+                            {[
+                                { label: "Solutions", href: "/features" },
+                                { label: "Blog", href: "/blog" },
+                                { label: "Pricing", href: "/pricing" }
+                            ].map(item => (
+                                <Link key={item.label} href={item.href}
                                     className="font-inter text-[#94A3B8] hover:text-[#F1F5F9] transition-colors text-base font-medium">
-                                    {item}
+                                    {item.label}
                                 </Link>
                             ))}
                             <Link href="/login"

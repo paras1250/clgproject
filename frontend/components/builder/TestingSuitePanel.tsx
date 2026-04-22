@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 interface TestingSuitePanelProps {
     onTestPrompt?: (prompt: string) => void;
     onProceedToEmbed?: () => void;
+    onBack?: () => void;
 }
 
-export default function TestingSuitePanel({ onTestPrompt, onProceedToEmbed }: TestingSuitePanelProps) {
+export default function TestingSuitePanel({ onTestPrompt, onProceedToEmbed, onBack }: TestingSuitePanelProps) {
     const [showDebugLog, setShowDebugLog] = useState(false);
 
     const quickTestPrompts = [
@@ -15,7 +16,18 @@ export default function TestingSuitePanel({ onTestPrompt, onProceedToEmbed }: Te
     ];
 
     return (
-        <div className="w-80 bg-[#0F1629] border-l border-white/[0.04] p-6 space-y-6 overflow-y-auto">
+        <div className="w-full lg:w-80 bg-[#0F1629] border-t lg:border-l border-white/[0.04] p-6 space-y-6 overflow-y-auto">
+            {/* Navigation / Back Button */}
+            <button
+                onClick={onBack}
+                className="flex items-center gap-2 text-[#94A3B8] hover:text-[#00F5D4] transition-all text-sm font-medium font-inter group"
+            >
+                <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to Customize
+            </button>
+
             {/* Ready to Launch */}
             <div className="bg-gradient-to-br from-[#00F5D4] to-[#3A86FF] rounded-xl p-5 text-[#0A0F1C] shadow-lg">
                 <h3 className="font-sora font-bold text-lg mb-2">Ready to Launch?</h3>

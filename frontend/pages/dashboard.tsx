@@ -15,7 +15,7 @@ const BotCard = ({ bot }: { bot: any }) => {
         : 'Recently';
 
     // Avatar logic: Handle both emojis and URLs
-    const botAvatar = bot.widgetCustomization?.avatar || bot.widgetCustomization?.widgetAvatar;
+    const botAvatar = bot.widgetCustomization?.avatar || bot.widgetCustomization?.widgetAvatar || bot.avatar;
     const isImageUrl = botAvatar && (
         botAvatar.startsWith('/') || 
         botAvatar.startsWith('http') || 

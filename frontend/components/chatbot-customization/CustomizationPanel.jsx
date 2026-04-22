@@ -7,7 +7,7 @@ import AlignmentSection from './AlignmentSection';
 
 const CustomizationPanel = () => {
     return (
-        <div className="w-[400px] bg-[#0F1629] border-r border-white/[0.06] overflow-y-auto h-screen custom-scrollbar">
+        <div className="w-full lg:w-[400px] bg-[#0F1629] border-b lg:border-r border-white/[0.06] overflow-y-auto h-auto lg:h-screen custom-scrollbar">
             <div className="px-6 py-4 border-b border-white/[0.06]">
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-sora font-bold text-[#F1F5F9]">Customization</h2>

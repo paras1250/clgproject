@@ -31,6 +31,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<any>(null);
     const [recentBots, setRecentBots] = useState<any[]>([]);
     const [profileOpen, setProfileOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [notificationsOpen, setNotificationsOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         try {
@@ -67,16 +70,27 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         return router.pathname.startsWith(href);
     };
 
+    // Keyboard shortcuts
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setSearchOpen(false);
+                setNotificationsOpen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     const userInitial = user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || 'U';
 
     /* ─── Sidebar Content ─── */
     const SidebarContent = () => (
         <div className="flex flex-col h-full">
             {/* Logo */}
-            <div className="px-5 pt-6 pb-4">
-                <Link href="/" className="flex items-center gap-2.5 group">
-                    <img src="/assets/conversio-logo.png" alt="Conversio AI" className="w-8 h-8 object-contain" />
-                    <span className="font-sora font-bold text-lg text-[#F1F5F9] tracking-tight">Conversio AI</span>
+            <div className="px-5 pt-4 pb-2">
+                <Link href="/" className="flex items-center group">
+                    <img src="/assets/conversio-logo-text.svg" alt="Conversio AI" style={{ height: '45px', width: 'auto' }} />
                 </Link>
             </div>
 
@@ -118,8 +132,25 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                             onClick={() => setSidebarOpen(false)}
                             className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-white/[0.04] transition-all group"
                         >
-                            <div className="w-5 h-5 rounded bg-gradient-to-br from-[#00F5D4]/20 to-[#3A86FF]/15 flex items-center justify-center text-[9px] font-bold text-[#00F5D4]">
-                                {bot.name?.charAt(0)?.toUpperCase() || '?'}
+                            <div className="w-5 h-5 rounded bg-gradient-to-br from-[#00F5D4]/20 to-[#3A86FF]/15 flex items-center justify-center text-[9px] font-bold text-[#00F5D4] overflow-hidden">
+                                {(() => {
+                                    const avatar = bot.widgetCustomization?.avatar || bot.avatar;
+                                    const isImageUrl = avatar && (
+                                        avatar.startsWith('/') || 
+                                        avatar.startsWith('http') || 
+                                        avatar.includes('.') || 
+                                        avatar.length > 5
+                                    );
+                                    
+                                    if (avatar) {
+                                        return isImageUrl ? (
+                                            <img src={avatar} alt="" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-[12px]">{avatar}</span>
+                                        );
+                                    }
+                                    return bot.name?.charAt(0)?.toUpperCase() || '?';
+                                })()}
                             </div>
                             <span className="truncate flex-1">{bot.name}</span>
                             <ChevronRight size={12} className="opacity-0 group-hover:opacity-60 transition-opacity" />
@@ -226,13 +257,65 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                 UPGRADE
                             </Link>
                             <div className="h-6 w-[1px] bg-white/[0.06] mx-2 hidden sm:block"></div>
-                            <button className="p-2.5 rounded-xl hover:bg-white/[0.06] transition-all text-[#94A3B8] hover:text-[#F1F5F9] hover:scale-105 active:scale-95">
-                                <Search size={19} />
-                            </button>
-                            <button className="p-2.5 rounded-xl hover:bg-white/[0.06] transition-all text-[#94A3B8] hover:text-[#F1F5F9] relative hover:scale-105 active:scale-95">
-                                <Bell size={19} />
-                                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[#00F5D4] rounded-full ring-2 ring-[#0A0F1C]"></span>
-                            </button>
+                            
+                            {/* Search Button */}
+                            <div className="relative">
+                                <button 
+                                    onClick={() => setSearchOpen(true)}
+                                    className="p-2.5 rounded-xl hover:bg-white/[0.06] transition-all text-[#94A3B8] hover:text-[#F1F5F9] hover:scale-105 active:scale-95"
+                                >
+                                    <Search size={19} />
+                                </button>
+                            </div>
+
+                            {/* Notifications Button */}
+                            <div className="relative">
+                                <button 
+                                    onClick={() => setNotificationsOpen(!notificationsOpen)}
+                                    className={`p-2.5 rounded-xl transition-all relative hover:scale-105 active:scale-95 ${notificationsOpen ? 'bg-white/10 text-[#F1F5F9]' : 'text-[#94A3B8] hover:bg-white/[0.06] hover:text-[#F1F5F9]'}`}
+                                >
+                                    <Bell size={19} />
+                                    <span className="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-[#00F5D4] rounded-full ring-2 ring-[#0A0F1C]"></span>
+                                </button>
+
+                                {/* Notifications Dropdown */}
+                                {notificationsOpen && (
+                                    <>
+                                        <div className="fixed inset-0 z-40" onClick={() => setNotificationsOpen(false)} />
+                                        <div className="absolute right-0 mt-3 w-80 bg-[#121826] border border-white/[0.08] rounded-2xl shadow-2xl z-50 animate-fade-in overflow-hidden">
+                                            <div className="px-5 py-4 border-b border-white/[0.06] flex items-center justify-between">
+                                                <h3 className="font-sora font-bold text-[#F1F5F9] text-sm">Notifications</h3>
+                                                <span className="text-[10px] font-bold text-[#00F5D4] bg-[#00F5D4]/10 px-2 py-0.5 rounded-full uppercase tracking-wider">3 New</span>
+                                            </div>
+                                            <div className="max-h-[400px] overflow-y-auto">
+                                                {[
+                                                    { title: 'Bot Created', desc: 'Bot "Support Hero" was successfully trained.', time: '2m ago', icon: Bot, color: 'text-[#00F5D4] bg-[#00F5D4]/10' },
+                                                    { title: 'New Message', desc: 'A user started a conversation with your bot.', time: '1h ago', icon: Bell, color: 'text-[#3A86FF] bg-[#3A86FF]/10' },
+                                                    { title: 'System Update', desc: 'v2.4.0 is now live with Gemini 1.5 support.', time: '5h ago', icon: Sparkles, color: 'text-purple-400 bg-purple-400/10' },
+                                                ].map((item, i) => (
+                                                    <div key={i} className="px-5 py-4 hover:bg-white/[0.02] transition-colors border-b border-white/[0.04] last:border-0 cursor-pointer group">
+                                                        <div className="flex gap-4">
+                                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${item.color}`}>
+                                                                <item.icon size={16} />
+                                                            </div>
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="flex items-center justify-between mb-1">
+                                                                    <p className="text-sm font-bold text-[#F1F5F9] group-hover:text-[#00F5D4] transition-colors">{item.title}</p>
+                                                                    <span className="text-[10px] text-[#64748B]">{item.time}</span>
+                                                                </div>
+                                                                <p className="text-xs text-[#94A3B8] leading-relaxed line-clamp-2">{item.desc}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <Link href="/notifications" className="block text-center py-3 bg-white/[0.02] text-[11px] font-bold text-[#64748B] hover:text-[#F1F5F9] transition-colors border-t border-white/[0.06]">
+                                                View all notifications
+                                            </Link>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                             <Link href="/settings" className="p-2.5 rounded-xl hover:bg-white/[0.06] transition-all text-[#94A3B8] hover:text-[#F1F5F9] hover:scale-105 active:scale-95">
                                 <Settings size={19} />
                             </Link>
@@ -249,6 +332,59 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                         {children}
                     </div>
                 </main>
+
+                {/* ─── Search Overlay ─── */}
+                {searchOpen && (
+                    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4">
+                        <div className="absolute inset-0 bg-[#0A0F1C]/80 backdrop-blur-sm animate-fade-in" onClick={() => setSearchOpen(false)} />
+                        <div className="w-full max-w-2xl bg-[#121826] border border-white/[0.08] rounded-3xl shadow-2xl overflow-hidden animate-slide-up z-10">
+                            <div className="p-4 border-b border-white/[0.06] flex items-center gap-4">
+                                <Search className="text-[#00F5D4]" size={22} />
+                                <input 
+                                    autoFocus
+                                    type="text" 
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Search bots, analytics, or settings..." 
+                                    className="flex-1 bg-transparent border-none outline-none text-[#F1F5F9] text-lg font-inter"
+                                />
+                                <button onClick={() => setSearchOpen(false)} className="p-2 rounded-xl hover:bg-white/5 text-[#64748B] transition-all">
+                                    <X size={20} />
+                                </button>
+                            </div>
+                            <div className="p-4 max-h-[60vh] overflow-y-auto">
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest mb-3 px-2">Suggestions</p>
+                                    {[
+                                        { label: 'My Chatbots', icon: Bot, href: '/bots' },
+                                        { label: 'Create New Bot', icon: Sparkles, href: '/builder' },
+                                        { label: 'Analytics Dashboard', icon: BarChart3, href: '/analytics' },
+                                        { label: 'Account Settings', icon: Settings, href: '/settings' },
+                                    ].map((item, i) => (
+                                        <Link 
+                                            key={i} 
+                                            href={item.href}
+                                            onClick={() => setSearchOpen(false)}
+                                            className="flex items-center justify-between p-3 rounded-xl hover:bg-[#00F5D4]/10 group transition-all"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-[#64748B] group-hover:text-[#00F5D4] transition-colors">
+                                                    <item.icon size={18} />
+                                                </div>
+                                                <span className="text-sm font-bold text-[#94A3B8] group-hover:text-[#F1F5F9] transition-colors">{item.label}</span>
+                                            </div>
+                                            <ChevronRight size={14} className="text-[#64748B] group-hover:translate-x-1 transition-all" />
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="px-6 py-3 bg-[#0A0F1C]/40 flex items-center justify-between border-t border-white/[0.04]">
+                                <p className="text-[10px] text-[#64748B] font-inter">Press <kbd className="bg-white/5 px-1.5 py-0.5 rounded border border-white/10">Esc</kbd> to close</p>
+                                <p className="text-[10px] text-[#64748B] font-inter">Tip: Use natural language search</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

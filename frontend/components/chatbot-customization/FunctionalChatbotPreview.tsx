@@ -10,10 +10,31 @@ interface FunctionalChatbotPreviewProps {
 }
 
 const FunctionalChatbotPreview = forwardRef<any, FunctionalChatbotPreviewProps>(({ botId }, ref) => {
-    const { firstMessage, selectedAvatar, themeColor, isMinimized, setIsMinimized } = useChatbot();
+    const { 
+        firstMessage, 
+        selectedAvatar, 
+        themeColor, 
+        isMinimized, 
+        setIsMinimized,
+        widgetSize,
+        alignment 
+    } = useChatbot();
     const [messages, setMessages] = useState<any[]>([{ role: 'assistant', content: firstMessage }]);
     const [isLoading, setIsLoading] = useState(false);
     const [sessionId, setSessionId] = useState<string | undefined>(undefined);
+
+    // Dynamic Sizing Classes
+    const sizeClasses = {
+        small: 'w-[320px] h-[450px]',
+        medium: 'w-[400px] h-[550px]',
+        large: 'w-[480px] h-[650px]'
+    }[widgetSize as 'small' | 'medium' | 'large'] || 'w-[400px] h-[550px]';
+
+    // Dynamic Alignment Classes
+    const alignmentClasses = {
+        'bottom-right': 'bottom-8 right-8',
+        'bottom-left': 'bottom-8 left-8'
+    }[alignment as 'bottom-right' | 'bottom-left'] || 'bottom-8 right-8';
 
     const handleSendMessage = async (message: string) => {
         // Add user message
@@ -77,7 +98,7 @@ const FunctionalChatbotPreview = forwardRef<any, FunctionalChatbotPreviewProps>(
     // Show floating launcher when minimized
     if (isMinimized) {
         return (
-            <div className="fixed bottom-8 right-8 z-50">
+            <div className={`fixed ${alignmentClasses} z-50`}>
                 <button
                     onClick={handleLauncherClick}
                     className="w-16 h-16 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center border-4 border-[#0A0F1C]"
@@ -95,7 +116,7 @@ const FunctionalChatbotPreview = forwardRef<any, FunctionalChatbotPreviewProps>(
 
     // Show full chatbot when expanded
     return (
-        <div className="w-full max-w-2xl mx-auto h-full flex flex-col">
+        <div className={`mx-auto flex flex-col transition-all duration-300 ${sizeClasses}`}>
             <div className="bg-[#121826] border border-white/[0.06] rounded-2xl shadow-2xl flex flex-col h-full overflow-hidden">
                 <ChatHeader />
 

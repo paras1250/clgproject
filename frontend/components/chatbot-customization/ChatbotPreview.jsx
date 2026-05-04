@@ -6,28 +6,25 @@ import ChatInput from './ChatInput';
 const ChatbotPreview = () => {
     const { firstMessage, widgetSize, alignment, isMinimized, setIsMinimized, selectedAvatar, themeColor } = useChatbot();
 
-    // Size configurations
+    // Size configurations - using explicit width and height
     const sizeConfig = {
         small: {
             width: 'w-[320px]',
-            minHeight: 'min-h-[250px]',
-            maxHeight: 'max-h-[350px]',
+            height: 'h-[450px]',
         },
         medium: {
-            width: 'w-[360px]',
-            minHeight: 'min-h-[300px]',
-            maxHeight: 'max-h-[400px]',
+            width: 'w-[400px]',
+            height: 'h-[550px]',
         },
         large: {
-            width: 'w-[420px]',
-            minHeight: 'min-h-[350px]',
-            maxHeight: 'max-h-[500px]',
+            width: 'w-[480px]',
+            height: 'h-[650px]',
         },
     };
 
-    const currentSize = sizeConfig[widgetSize];
+    const currentSize = sizeConfig[widgetSize] || sizeConfig.medium;
 
-    // ANCHOR-ONLY positioning - only changes widget position, NOT internal UI
+    // Positioning
     const positionClass = alignment === 'bottom-left' ? 'left-8' : 'right-8';
 
     const handleLauncherClick = () => {
@@ -35,7 +32,7 @@ const ChatbotPreview = () => {
     };
 
     return (
-        <div className="flex-1 h-screen bg-[#0A0F1C] relative bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:20px_20px]">
+        <div className="flex-1 min-h-[700px] bg-[#0A0F1C] relative bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:20px_20px] rounded-r-3xl overflow-hidden flex items-center justify-center">
             {isMinimized ? (
                 // Minimized state: Floating circular avatar launcher
                 <button
@@ -60,15 +57,15 @@ const ChatbotPreview = () => {
                 // Expanded state: Full chatbot widget
                 <div
                     className={`
-            fixed inset-0 z-50 flex flex-col sm:absolute sm:inset-auto sm:bottom-8 sm:transition-all sm:duration-500
-            ${alignment === 'bottom-left' ? 'sm:left-8' : 'sm:right-8'}
-            w-full sm:${currentSize.width}
+            absolute bottom-8 transition-all duration-500 z-50 flex flex-col
+            ${positionClass}
+            ${currentSize.width} ${currentSize.height}
           `}
                 >
-                    <div className="bg-[#121826] border-none sm:border border-white/[0.06] rounded-none sm:rounded-2xl shadow-xl overflow-hidden flex flex-col h-full">
+                    <div className="bg-[#121826] border border-white/[0.06] rounded-2xl shadow-2xl overflow-hidden flex flex-col h-full animate-fade-in-up">
                         <ChatHeader />
 
-                        <div className={`flex-1 p-4 overflow-y-auto custom-scrollbar`}>
+                        <div className="flex-1 p-4 overflow-y-auto custom-scrollbar bg-[#0A0F1C]/30">
                             <ChatBubble message={firstMessage} />
                         </div>
 

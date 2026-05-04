@@ -76,7 +76,8 @@ router.post('/register', authLimiter, async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
+        role: user.role
       }
     });
   } catch (error) {
@@ -134,7 +135,8 @@ router.post('/login', authLimiter, async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
+        role: user.role
       }
     });
   } catch (error) {
@@ -203,7 +205,7 @@ router.get('/google/callback', async (req, res) => {
     const token = generateToken(user.id);
 
     // Redirect to frontend with token
-    res.redirect(`${frontendUrl}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify({ id: user.id, email: user.email, name: user.name }))}`);
+    res.redirect(`${frontendUrl}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify({ id: user.id, email: user.email, name: user.name, role: user.role }))}`);
   } catch (error) {
     console.error('Google OAuth error:', error);
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -299,7 +301,8 @@ router.get('/me', authMiddleware, async (req, res) => {
         id: user.id,
         email: user.email,
         name: user.name,
-        provider: user.provider
+        provider: user.provider,
+        role: user.role
       }
     });
   } catch (error) {

@@ -194,13 +194,22 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
                 {profileOpen && (
                     <div className="mx-2 mb-1 rounded-lg bg-[#0A0F1C] border border-white/[0.08] overflow-hidden animate-fade-in">
-                        <button
-                            onClick={handleLogout}
-                            className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[#EF4444] hover:bg-[#EF4444]/10 transition-colors"
-                        >
-                            <LogOut size={15} />
-                            <span>Sign out</span>
-                        </button>
+                                {user?.role === 'admin' && (
+                                    <Link
+                                        href="/admin"
+                                        className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[#00F5D4] hover:bg-[#00F5D4]/10 transition-colors border-b border-white/[0.04]"
+                                    >
+                                        <Sparkles size={15} />
+                                        <span>Admin Panel</span>
+                                    </Link>
+                                )}
+                                <button
+                                    onClick={handleLogout}
+                                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[#EF4444] hover:bg-[#EF4444]/10 transition-colors"
+                                >
+                                    <LogOut size={15} />
+                                    <span>Sign out</span>
+                                </button>
                     </div>
                 )}
             </div>
@@ -360,6 +369,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                         { label: 'Create New Bot', icon: Sparkles, href: '/builder' },
                                         { label: 'Analytics Dashboard', icon: BarChart3, href: '/analytics' },
                                         { label: 'Account Settings', icon: Settings, href: '/settings' },
+                                        ...(user?.role === 'admin' ? [{ label: 'Admin Dashboard', icon: LayoutDashboard, href: '/admin' }] : []),
                                     ].map((item, i) => (
                                         <Link 
                                             key={i} 

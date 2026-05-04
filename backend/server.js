@@ -142,6 +142,7 @@ app.use('/avatars', express.static(path.join(__dirname, '../frontend/public/avat
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/bots', require('./routes/chatbot'));
 app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/admin', require('./routes/admin'));
 
 // Health check endpoint
 // Health check endpoint

@@ -149,5 +149,25 @@ export const analyticsAPI = {
   },
 };
 
+// Admin API
+export const adminAPI = {
+  getStats: async () => {
+    const response = await api.get('/api/admin/stats');
+    return response.data;
+  },
+  getUsers: async () => {
+    const response = await api.get('/api/admin/users');
+    return response.data;
+  },
+  deleteUser: async (id: string) => {
+    const response = await api.delete(`/api/admin/users/${id}`);
+    return response.data;
+  },
+  getBots: async () => {
+    const response = await api.get('/api/admin/bots');
+    return response.data;
+  }
+};
+
 export default api;
 

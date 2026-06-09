@@ -268,15 +268,21 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                                 </button>
 
                                 {/* Notifications Dropdown */}
-                                {notificationsOpen && (
+                                        {notificationsOpen && (
                                     <>
                                         <div className="fixed inset-0 z-40" onClick={() => setNotificationsOpen(false)} />
-                                        <div className="absolute right-0 mt-3 w-80 bg-[#121826] border border-white/[0.08] rounded-2xl shadow-2xl z-50 animate-fade-in overflow-hidden">
+                                        {/* On mobile: fixed to top bar, full-width below header. On sm+: absolute dropdown */}
+                                        <div className="fixed sm:absolute left-0 right-0 sm:left-auto sm:right-0 top-[64px] sm:top-auto sm:mt-3 mx-2 sm:mx-0 sm:w-80 bg-[#121826] border border-white/[0.08] rounded-2xl shadow-2xl z-50 animate-fade-in overflow-hidden">
                                             <div className="px-5 py-4 border-b border-white/[0.06] flex items-center justify-between">
                                                 <h3 className="font-sora font-bold text-[#F1F5F9] text-sm">Notifications</h3>
-                                                <span className="text-[10px] font-bold text-[#00F5D4] bg-[#00F5D4]/10 px-2 py-0.5 rounded-full uppercase tracking-wider">3 New</span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-[10px] font-bold text-[#00F5D4] bg-[#00F5D4]/10 px-2 py-0.5 rounded-full uppercase tracking-wider">3 New</span>
+                                                    <button onClick={() => setNotificationsOpen(false)} className="sm:hidden p-1 rounded-lg hover:bg-white/10 text-[#64748B] hover:text-[#F1F5F9] transition-colors">
+                                                        <X size={16} />
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div className="max-h-[400px] overflow-y-auto">
+                                            <div className="max-h-[60vh] sm:max-h-[400px] overflow-y-auto">
                                                 {[
                                                     { title: 'Bot Created', desc: 'Bot "Support Hero" was successfully trained.', time: '2m ago', icon: Bot, color: 'text-[#00F5D4] bg-[#00F5D4]/10' },
                                                     { title: 'New Message', desc: 'A user started a conversation with your bot.', time: '1h ago', icon: Bell, color: 'text-[#3A86FF] bg-[#3A86FF]/10' },
@@ -316,7 +322,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 </header>
 
                 {/* ─── Page Content ─── */}
-                <main className="flex-1 p-4 lg:p-10 overflow-y-auto">
+                <main className="flex-1 p-4 lg:p-10 overflow-y-auto dashboard-main-content">
                     <div className="max-w-6xl mx-auto">
                         {children}
                     </div>
@@ -376,6 +382,23 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                     </div>
                 )}
             </div>
+
+            {/* ─── Mobile Bottom Navigation ─── */}
+            <nav className="mobile-bottom-nav">
+                {primaryNav.map(item => {
+                    const active = isActive(item.href);
+                    return (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`mobile-nav-item ${active ? 'mobile-nav-item-active' : ''}`}
+                        >
+                            <item.icon size={20} />
+                            <span>{item.label}</span>
+                        </Link>
+                    );
+                })}
+            </nav>
         </div>
     );
 };

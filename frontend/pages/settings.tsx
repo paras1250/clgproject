@@ -155,13 +155,13 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-4">
-                        <div className="flex items-center gap-3">
-                            <div className="flex-1 bg-[#0A0F1C] border border-white/[0.08] rounded-xl px-4 py-3 font-mono text-sm text-[#94A3B8] overflow-hidden">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <div className="flex-1 bg-[#0A0F1C] border border-white/[0.08] rounded-xl px-4 py-3 font-mono text-sm text-[#94A3B8] overflow-hidden min-w-0 truncate">
                                 {maskApiKey(apiKey)}
                             </div>
                             <button
                                 onClick={copyApiKey}
-                                className="flex items-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-sm font-medium text-[#F1F5F9] font-inter"
+                                className="flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-sm font-medium text-[#F1F5F9] font-inter sm:flex-shrink-0"
                             >
                                 {copied ? (
                                     <>
@@ -219,7 +219,7 @@ export default function Settings() {
 
                 {/* Logout */}
                 <div className="bg-[#121826] rounded-2xl border border-white/[0.06] p-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-[#EF4444]/10 rounded-xl flex items-center justify-center">
                                 <LogOut size={20} className="text-[#EF4444]" />
@@ -231,7 +231,7 @@ export default function Settings() {
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="px-6 py-2.5 bg-[#EF4444]/10 text-[#EF4444] font-medium rounded-xl hover:bg-[#EF4444]/20 transition-colors font-inter"
+                            className="w-full sm:w-auto px-6 py-2.5 bg-[#EF4444]/10 text-[#EF4444] font-medium rounded-xl hover:bg-[#EF4444]/20 transition-colors font-inter"
                         >
                             Logout
                         </button>

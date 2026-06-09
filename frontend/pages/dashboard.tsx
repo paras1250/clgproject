@@ -149,10 +149,10 @@ export default function Dashboard() {
             <div className="animate-fade-in space-y-12">
                 {/* ─── Hero Heading ─── */}
                 <div className="text-center space-y-3 pt-4">
-                    <h1 className="font-sora text-3xl md:text-4xl lg:text-5xl font-black text-[#F1F5F9] tracking-tight">
+                    <h1 className="font-sora text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#F1F5F9] tracking-tight">
                         What will you <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F5D4] to-[#3A86FF]">build</span> today?
                     </h1>
-                    <p className="text-base text-[#94A3B8] font-inter max-w-xl mx-auto leading-relaxed">
+                    <p className="text-sm sm:text-base text-[#94A3B8] font-inter max-w-xl mx-auto leading-relaxed">
                         The most powerful way to build, deploy, and manage custom AI agents for your business.
                     </p>
                 </div>
@@ -165,7 +165,7 @@ export default function Dashboard() {
                             onChange={(e) => setPrompt(e.target.value)}
                             placeholder="Describe a chatbot you would like to create (e.g., 'A support bot for a bakery')..."
                             rows={3}
-                            className="w-full bg-transparent px-6 py-4 text-base text-[#F1F5F9] placeholder:text-[#64748B] resize-none focus:outline-none font-inter"
+                            className="w-full bg-transparent px-4 sm:px-6 py-4 text-sm sm:text-base text-[#F1F5F9] placeholder:text-[#64748B] resize-none focus:outline-none font-inter"
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
                                     e.preventDefault();
@@ -173,7 +173,7 @@ export default function Dashboard() {
                                 }
                             }}
                         />
-                        <div className="flex items-center justify-between px-4 pb-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between px-3 sm:px-4 pb-3 gap-3">
                             <div className="flex items-center gap-2">
                                 <button className="p-2.5 rounded-xl text-[#64748B] hover:text-[#F1F5F9] hover:bg-white/[0.06] transition-all">
                                     <Paperclip size={20} />
@@ -184,7 +184,7 @@ export default function Dashboard() {
                             </div>
                             <button
                                 onClick={handlePromptSubmit}
-                                className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#00F5D4] hover:bg-[#00D9C0] text-[#0A0F1C] font-black text-sm transition-all shadow-lg shadow-[#00F5D4]/20 hover:shadow-[#00F5D4]/40 hover:-translate-y-0.5 active:translate-y-0"
+                                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-[#00F5D4] hover:bg-[#00D9C0] text-[#0A0F1C] font-black text-sm transition-all shadow-lg shadow-[#00F5D4]/20 hover:shadow-[#00F5D4]/40 hover:-translate-y-0.5 active:translate-y-0"
                             >
                                 <span>GENERATE</span>
                                 <ArrowUp size={18} strokeWidth={3} />
@@ -207,7 +207,7 @@ export default function Dashboard() {
                         )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                         <CreateNewCard />
                         {bots.slice(0, 7).map((bot: any) => (
                             <BotCard key={bot._id || bot.id} bot={bot} />
@@ -228,7 +228,7 @@ export default function Dashboard() {
                         <div className="w-1.5 h-6 bg-[#3A86FF] rounded-full" />
                         Quick Actions
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
                         <QuickAction icon={Sparkles} label="New Assistant" color="bg-[#00F5D4]/10 text-[#00F5D4] border border-[#00F5D4]/20 shadow-[0_0_15px_rgba(0,245,212,0.1)]" href="/builder" />
                         <QuickAction icon={Globe} label="Deploy Channel" color="bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]" href="/bots" />
                         <QuickAction icon={BarChart3} label="View Analytics" color="bg-[#3A86FF]/10 text-[#3A86FF] border border-[#3A86FF]/20 shadow-[0_0_15px_rgba(58,134,255,0.1)]" href="/analytics" />

@@ -185,17 +185,17 @@ const ChatbotMockup = () => (
 );
 
 const FeatureCard = ({ title, description, image, fullWidth, bgClass = "bg-[#121826]" }: { title: string; description: string; image: string; fullWidth?: boolean; bgClass?: string }) => (
-    <div className={`relative group overflow-hidden rounded-[2.5rem] p-8 md:p-12 flex flex-col items-center gap-10 text-center transition-all duration-300 hover:shadow-2xl hover:shadow-[#00F5D4]/5 border border-white/[0.04] hover:border-white/[0.08] ${bgClass} ${fullWidth ? 'md:col-span-2' : ''}`}>
+    <div className={`relative group overflow-hidden rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 lg:p-12 flex flex-col items-center gap-6 md:gap-10 text-center transition-all duration-300 hover:shadow-2xl hover:shadow-[#00F5D4]/5 border border-white/[0.04] hover:border-white/[0.08] ${bgClass} ${fullWidth ? 'md:col-span-2' : ''}`}>
 
         {/* Hover Gradient Effect */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-        <div className="max-w-2xl px-4 relative z-10">
-            <h3 className="font-sora text-3xl md:text-4xl font-bold mb-4 text-[#F1F5F9] tracking-tight">{title}</h3>
-            <p className="text-[#94A3B8] text-lg md:text-xl leading-relaxed font-inter">{description}</p>
+        <div className="max-w-2xl px-2 md:px-4 relative z-10">
+            <h3 className="font-sora text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 text-[#F1F5F9] tracking-tight">{title}</h3>
+            <p className="text-[#94A3B8] text-base md:text-lg lg:text-xl leading-relaxed font-inter">{description}</p>
         </div>
         <div className="w-full relative z-10">
-            <img src={`/assets/${image}`} alt={title} className="w-full h-auto rounded-3xl shadow-xl border border-white/5 transition-transform duration-500 group-hover:scale-[1.02]" />
+            <img src={`/assets/${image}`} alt={title} className="w-full h-auto rounded-2xl md:rounded-3xl shadow-xl border border-white/5 transition-transform duration-500 group-hover:scale-[1.02]" />
         </div>
     </div>
 );
@@ -205,7 +205,7 @@ const Hero = () => (
         <BackgroundClouds />
 
         <div className="max-w-[1400px] mx-auto w-full px-6 md:px-20">
-            <div className="grid lg:grid-cols-[1.1fr_1.3fr] gap-12 items-center w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.3fr] gap-12 items-center w-full">
                 <div className="text-left animate-in fade-in slide-in-from-left-8 duration-700 relative">
                     <h1 className="text-4xl sm:text-5xl md:text-[5rem] font-sora leading-[1.1] md:leading-[1.05] tracking-tight mb-6 md:mb-8 text-[#F1F5F9] font-bold">
                         AI Chatbot for your site
@@ -253,7 +253,7 @@ const Hero = () => (
                     <p className="mt-8 text-[#94A3B8] font-semibold text-sm font-inter">It's free. No credit card required.</p>
                 </div>
 
-                <div className="flex justify-center lg:justify-end animate-in fade-in zoom-in-95 duration-1000">
+                <div className="hidden lg:flex justify-center lg:justify-end animate-in fade-in zoom-in-95 duration-1000">
                     <ChatbotMockup />
                 </div>
             </div>
@@ -378,15 +378,15 @@ export default function LandingPage() {
             {/* ══════════════════════════════════════════════
                FEATURES SECTION
                ══════════════════════════════════════════════ */}
-            <section className="bg-[#0F1629] text-white py-32 px-6 relative overflow-hidden">
+            <section className="bg-[#0F1629] text-white py-20 md:py-32 px-4 md:px-6 relative overflow-hidden">
                 {/* Background glow */}
                 <div className="absolute top-0 center w-full h-[500px] bg-gradient-to-b from-[#0A0F1C] to-transparent opacity-50 pointer-events-none" />
 
-                <div className="max-w-[1100px] mx-auto text-center mb-20 relative z-10">
-                    <h2 className="font-sora text-5xl md:text-[5rem] font-bold leading-[1.05] mb-6 text-[#F1F5F9] tracking-tight">
+                <div className="max-w-[1100px] mx-auto text-center mb-12 md:mb-20 relative z-10">
+                    <h2 className="font-sora text-3xl sm:text-4xl md:text-5xl lg:text-[5rem] font-bold leading-[1.1] mb-6 text-[#F1F5F9] tracking-tight">
                         Key features that <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F5D4] to-[#3A86FF] italic font-normal">power</span> your business
                     </h2>
-                    <p className="text-xl md:text-2xl text-[#94A3B8] max-w-3xl mx-auto leading-relaxed font-inter">
+                    <p className="text-lg md:text-xl lg:text-2xl text-[#94A3B8] max-w-3xl mx-auto leading-relaxed font-inter">
                         Conversio is packed with customer service–ready features designed to reduce support workload while improving customer experience.
                     </p>
                 </div>
@@ -436,8 +436,8 @@ export default function LandingPage() {
             {/* ══════════════════════════════════════════════
                BENEFITS / WHY LOVE SECTION
                ══════════════════════════════════════════════ */}
-            <section className="py-32 px-6 max-w-[1200px] mx-auto text-center">
-                <h2 className="font-sora text-4xl md:text-6xl font-bold mb-16 tracking-tight text-[#F1F5F9]">
+            <section className="py-20 md:py-32 px-4 md:px-6 max-w-[1200px] mx-auto text-center">
+                <h2 className="font-sora text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-10 md:mb-16 tracking-tight text-[#F1F5F9]">
                     Why you will <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F5D4] to-[#3A86FF] italic font-normal">love Conversio</span>
                 </h2>
                 <div className="grid md:grid-cols-2 gap-6">
@@ -447,14 +447,14 @@ export default function LandingPage() {
                         { text: "Sends conversations directly to your inbox", icon: "mail" },
                         { text: "100% free until 2026", icon: "gift" }
                     ].map((item, idx) => (
-                        <div key={idx} className="group bg-[#121826] p-8 rounded-[2rem] flex items-center gap-6 shadow-sm hover:shadow-xl hover:shadow-[#00F5D4]/5 hover:-translate-y-1 transition-all duration-300 text-left border border-white/[0.04] hover:border-[#00F5D4]/20">
-                            <div className="w-16 h-16 bg-[#00F5D4]/10 rounded-2xl flex items-center justify-center shrink-0 text-[#00F5D4] group-hover:scale-110 transition-transform duration-300">
+                        <div key={idx} className="group bg-[#121826] p-6 md:p-8 rounded-[2rem] flex items-center gap-4 md:gap-6 shadow-sm hover:shadow-xl hover:shadow-[#00F5D4]/5 hover:-translate-y-1 transition-all duration-300 text-left border border-white/[0.04] hover:border-[#00F5D4]/20">
+                            <div className="w-12 h-12 md:w-16 md:h-16 bg-[#00F5D4]/10 rounded-2xl flex items-center justify-center shrink-0 text-[#00F5D4] group-hover:scale-110 transition-transform duration-300">
                                 {item.icon === "rocket" && <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>}
                                 {item.icon === "globe" && <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" /></svg>}
                                 {item.icon === "mail" && <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" /></svg>}
                                 {item.icon === "gift" && <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15h-2v-2h2v2zm0-4h-2v-2h2v2zm-4 4H8v-2h8v2zm0-4H8v-2h8v2zm-8 4H4v-2h2v2zm0-4H4v-2h2v2zm-6-6v-2h16v2H2z" /></svg>}
                             </div>
-                            <span className="text-xl font-bold text-[#F1F5F9] tracking-tight font-inter">{item.text}</span>
+                            <span className="text-base md:text-xl font-bold text-[#F1F5F9] tracking-tight font-inter">{item.text}</span>
                         </div>
                     ))}
                 </div>

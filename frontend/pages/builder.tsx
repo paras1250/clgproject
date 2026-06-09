@@ -448,13 +448,13 @@ export default function Builder() {
           <AppHeader title="Chat Builder" breadcrumb="Dashboard / Builder" />
         </div>
 
-        <main className="px-6 py-6 relative z-10">
+        <main className="px-3 sm:px-6 py-6 relative z-10">
           {/* Header */}
-          <div className="mb-8 animate-fade-in text-center">
-            <h1 className="font-sora text-3xl font-bold text-[#F1F5F9] mb-2 tracking-tight">
+          <div className="mb-6 sm:mb-8 animate-fade-in text-center">
+            <h1 className="font-sora text-2xl sm:text-3xl font-bold text-[#F1F5F9] mb-2 tracking-tight">
               Build Your AI Workforce
             </h1>
-            <p className="text-base text-[#94A3B8] font-inter max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-[#94A3B8] font-inter max-w-2xl mx-auto">
               Create, train, and deploy intelligent agents in minutes.
             </p>
           </div>
@@ -467,8 +467,8 @@ export default function Builder() {
 
             {/* Step 1: Create & Train Agent - Two Panel Layout */}
             {currentStep === 1 && (
-              <div className="flex-1 flex flex-col items-center px-6 pt-6 min-h-[calc(100vh-220px)]">
-                <div className="w-full max-w-[1150px] mx-auto px-2">
+              <div className="flex-1 flex flex-col items-center px-2 sm:px-6 pt-6 min-h-[calc(100vh-220px)]">
+                <div className="w-full max-w-[1150px] mx-auto px-0 sm:px-2">
 
                   {/* Main Prompt Card */}
                   <div
@@ -504,17 +504,17 @@ export default function Builder() {
                     </div>
 
                     {/* Divider — stronger separation before training */}
-                    <div className="border-t border-white/[0.06] mb-8 mt-2"></div>
+                    <div className="border-t border-white/[0.06] mb-5 sm:mb-8 mt-2"></div>
 
                     {/* Section 3 — Training Data (Primary Workspace) */}
-                    <div className="bg-[#0B1120] rounded-2xl p-6 border border-white/[0.06] shadow-[inset_0_1px_0_rgba(0,245,212,0.04)]">
+                    <div className="bg-[#0B1120] rounded-2xl p-4 sm:p-6 border border-white/[0.06] shadow-[inset_0_1px_0_rgba(0,245,212,0.04)]">
                       {/* Training method toggle */}
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                         <label className="text-sm font-semibold text-[#E2E8F0] font-inter tracking-wide">
                           Training Data
-                          <span className="ml-2 text-[10px] font-normal text-[#00F5D4]/60">— feed knowledge to your AI</span>
+                          <span className="ml-2 text-[10px] font-normal text-[#00F5D4]/60 hidden sm:inline">— feed knowledge to your AI</span>
                         </label>
-                        <div className="p-0.5 bg-[#0A0F1C] rounded-lg inline-flex">
+                        <div className="p-0.5 bg-[#0A0F1C] rounded-lg inline-flex self-start sm:self-auto">
                           <button
                             onClick={() => setTrainingMethod('text')}
                             className={`px-3 py-1 rounded-md text-[11px] font-semibold transition-all duration-200 font-inter ${trainingMethod === 'text'
@@ -553,7 +553,7 @@ export default function Builder() {
                             onChange={(e) => setTrainingText(e.target.value)}
                             disabled={isLoading}
                             rows={8}
-                            className="w-full bg-transparent text-[#F1F5F9] text-sm font-inter placeholder-[#64748B] focus:outline-none resize-none min-h-[220px] max-h-[400px] leading-relaxed"
+                            className="w-full bg-transparent text-[#F1F5F9] text-sm font-inter placeholder-[#64748B] focus:outline-none resize-none min-h-[160px] sm:min-h-[220px] max-h-[400px] leading-relaxed"
                             placeholder="Paste training content, FAQs, product info, or any knowledge your AI should know..."
                           />
                           <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">

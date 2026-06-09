@@ -257,23 +257,23 @@ export default function Analytics() {
                                     .map((bot: any, idx: number) => (
                                         <div
                                             key={bot._id || bot.id || idx}
-                                            className="flex items-center justify-between px-6 py-4 hover:bg-[#182034] transition-colors cursor-pointer group"
+                                            className="flex items-center justify-between px-4 sm:px-6 py-4 hover:bg-[#182034] transition-colors cursor-pointer group"
                                             onClick={() => selectBot(bot._id || bot.id)}
                                         >
-                                            <div className="flex items-center gap-4">
+                                            <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                                                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#00F5D4] to-[#3A86FF] flex items-center justify-center text-[#0A0F1C] font-bold text-sm shrink-0">
                                                     {bot.name?.charAt(0)?.toUpperCase() || '?'}
                                                 </div>
-                                                <div>
-                                                    <p className="font-semibold text-[#F1F5F9] font-inter text-sm">{bot.name}</p>
+                                                <div className="min-w-0">
+                                                    <p className="font-semibold text-[#F1F5F9] font-inter text-sm truncate">{bot.name}</p>
                                                     <p className="text-xs text-[#64748B] font-inter flex items-center gap-1.5">
                                                         <span className={`w-1.5 h-1.5 rounded-full ${bot.isActive ? 'bg-[#10B981]' : 'bg-[#475569]'}`} />
                                                         {bot.isActive ? 'Active' : 'Inactive'}
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-4">
-                                                <div className="text-right">
+                                            <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+                                                <div className="text-right hidden sm:block">
                                                     <p className="font-bold text-[#F1F5F9] font-sora text-sm">{bot.conversationCount || 0}</p>
                                                     <p className="text-xs text-[#64748B] font-inter">conversations</p>
                                                 </div>
@@ -455,13 +455,13 @@ export default function Analytics() {
                             <div className="divide-y divide-white/[0.04]">
                                 {(stats?.recentChats || []).length > 0 ? (
                                     stats.recentChats.map((chat: any, idx: number) => (
-                                        <div key={chat.sessionId || idx} className="flex items-center justify-between px-6 py-4 hover:bg-[#182034] transition-colors">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-[#0A0F1C] border border-white/[0.06] flex items-center justify-center">
+                                        <div key={chat.sessionId || idx} className="flex items-center justify-between px-4 sm:px-6 py-4 hover:bg-[#182034] transition-colors">
+                                            <div className="flex items-center gap-3 min-w-0 flex-1">
+                                                <div className="w-8 h-8 rounded-lg bg-[#0A0F1C] border border-white/[0.06] flex items-center justify-center shrink-0">
                                                     <MessageCircle size={14} className="text-[#00F5D4]" />
                                                 </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-[#F1F5F9] font-inter">
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-medium text-[#F1F5F9] font-inter truncate">
                                                         Session #{(chat.sessionId || '').toString().slice(-8)}
                                                     </p>
                                                     <p className="text-xs text-[#64748B] font-inter">
@@ -469,7 +469,7 @@ export default function Analytics() {
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className="text-right">
+                                            <div className="text-right shrink-0 hidden sm:block">
                                                 <p className="text-sm font-bold text-[#F1F5F9] font-sora">
                                                     {chat.messages?.length || 0}
                                                 </p>

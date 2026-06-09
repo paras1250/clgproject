@@ -58,7 +58,7 @@ export default function Login() {
             }
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message || 'Authentication failed. Please try again.');
+            if (!res.ok) throw new Error(data.error || data.message || 'Authentication failed. Please try again.');
 
             const Cookies = (await import('js-cookie')).default;
             Cookies.set('token', data.token, { expires: 7 });
@@ -136,12 +136,15 @@ export default function Login() {
                             type="password"
                             name="password"
                             required
-                            minLength={6}
+                            minLength={8}
                             value={formData.password}
                             onChange={handleChange}
                             className="w-full px-4 py-3 rounded-xl bg-[#0A0F1C] border border-white/[0.08] text-[#F1F5F9] placeholder-[#64748B] focus:border-[#00F5D4] focus:ring-1 focus:ring-[#00F5D4]/30 outline-none transition-all font-inter"
                             placeholder="••••••••"
                         />
+                        {!isLogin && (
+                            <p className="text-xs text-[#64748B] mt-1 font-inter">Min. 8 characters with uppercase, lowercase and a number</p>
+                        )}
                     </div>
 
                     <button

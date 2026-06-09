@@ -91,4 +91,81 @@ router.get('/bots', async (req, res) => {
   }
 });
 
+// DELETE /api/admin/bots/:id - Admin deletes any bot and its chat logs
+router.delete('/bots/:id', async (req, res) => {
+  try {
+    const botId = req.params.id;
+
+    const bot = await Bot.findById(botId);
+    if (!bot) {
+      return res.status(404).json({ error: 'Bot not found' });
+    }
+
+    // Cascade: delete all chat logs for this bot
+    await ChatLog.deleteMany({ bot_id: botId });
+
+    // Delete the bot itself
+    await Bot.findByIdAndDelete(botId);
+
+    res.json({ message: 'Chatbot and all associated chat logs deleted successfully' });
+  } catch (error) {
+    console.error('Admin delete bot error:', error);
+    ErrorResponses.INTERNAL_SERVER_ERROR(res);
+  }
+});
+
+// GET /api/admin/bots/:id/training-data - Return training sources (no embeddings)
+router.get('/bots/:id/training-data', async (req, res) => {
+  try {
+    const botId = req.params.id;
+
+    const bot = await Bot.findById(botId)
+      .populate('user_id', 'name email')
+      .select('name document_contents documents system_prompt created_at user_id');
+
+    if (!bot) {
+      return res.status(404).json({ error: 'Bot not found' });
+    }
+
+    // Build a lightweight summary — strip out the heavy embedding arrays
+    const trainingData = (bot.document_contents || []).map((doc) => ({
+      filename: doc.filename || doc.originalName || 'Unknown File',
+      originalName: doc.originalName || doc.filename || 'Unknown File',
+      processedAt: doc.processedAt,
+      chunkCount: (doc.chunks || []).length,
+      // Return the full content of the first chunk, or the full document content
+      preview: doc.chunks && doc.chunks.length > 0
+        ? doc.chunks[0].text
+        : (doc.content ? doc.content : null),
+    }));
+
+    // Legacy documents list (if any)
+    const legacyDocs = (bot.documents || []).map((doc) => ({
+      filename: doc.name || 'Unknown',
+      originalName: doc.name || 'Unknown',
+      type: doc.type,
+      size: doc.size,
+      url: doc.url,
+      chunkCount: null,
+      preview: null,
+    }));
+
+    res.json({
+      bot: {
+        id: bot._id,
+        name: bot.name,
+        owner: bot.user_id,
+        system_prompt: bot.system_prompt,
+        created_at: bot.created_at,
+      },
+      trainingData,
+      legacyDocs,
+      totalSources: trainingData.length + legacyDocs.length,
+    });
+  } catch (error) {
+    console.error('Admin get bot training data error:', error);
+    ErrorResponses.INTERNAL_SERVER_ERROR(res);
+  }
+});
+
 module.exports = router;

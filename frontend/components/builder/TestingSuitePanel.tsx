@@ -12,7 +12,7 @@ export default function TestingSuitePanel({ onTestPrompt, onProceedToEmbed, onBa
     const quickTestPrompts = [
         "Who are you?",
         "I have a problem",
-        "What is your pricing?"
+        "How do you work?"
     ];
 
     return (

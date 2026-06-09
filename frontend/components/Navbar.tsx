@@ -20,7 +20,6 @@ export default function Navbar() {
                 <nav className="flex items-center gap-8">
                     {[
                         { label: "Features", href: "/features" },
-                        { label: "Pricing", href: "/pricing" },
                         { label: "Blog", href: "/blog" }
                     ].map(item => (
                         <Link key={item.label} href={item.href} className="text-[#94A3B8] hover:text-[#F1F5F9] font-medium transition-colors font-inter">
@@ -53,7 +52,6 @@ export default function Navbar() {
                     <nav className="flex flex-col items-center gap-8">
                         {[
                             { label: "Features", href: "/features" },
-                            { label: "Pricing", href: "/pricing" },
                             { label: "Blog", href: "/blog" }
                         ].map(item => (
                             <Link 

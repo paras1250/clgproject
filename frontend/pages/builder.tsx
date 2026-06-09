@@ -693,10 +693,10 @@ export default function Builder() {
                         <div className="bg-[#121826] border-t border-white/[0.06] px-6 py-4">
                           <div className="flex gap-2 flex-wrap">
                             <button
-                              onClick={() => chatRef.current?.sendMessage("What are your pricing options?")}
+                              onClick={() => chatRef.current?.sendMessage("Tell me about your services")}
                               className="text-xs bg-white/5 hover:bg-[#00F5D4]/10 hover:text-[#00F5D4] px-4 py-2 rounded-full text-[#94A3B8] transition-all font-inter border border-white/[0.05]"
                             >
-                              Ask about pricing
+                              Our services
                             </button>
                             <button
                               onClick={() => chatRef.current?.sendMessage("What are your support hours?")}

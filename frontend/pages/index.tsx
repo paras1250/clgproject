@@ -275,8 +275,7 @@ const Footer = () => (
                     { label: "Terms & Conditions", href: "#" },
                     { label: "Privacy Policy", href: "#" },
                     { label: "Blog", href: "/blog" },
-                    { label: "Features", href: "/features" },
-                    { label: "Pricing", href: "/pricing" }
+                    { label: "Features", href: "/features" }
                 ].map(item => (
                     <Link key={item.label} href={item.href} className="text-[#94A3B8] hover:text-[#F1F5F9] transition-colors font-medium text-sm tracking-wide font-inter">{item.label}</Link>
                 ))}
@@ -317,8 +316,7 @@ export default function LandingPage() {
                         <nav className="hidden lg:flex items-center gap-10">
                             {[
                                 { label: "Solutions", href: "/features" },
-                                { label: "Blog", href: "/blog" },
-                                { label: "Pricing", href: "/pricing" }
+                                { label: "Blog", href: "/blog" }
                             ].map(item => (
                                 <Link key={item.label} href={item.href}
                                     className="font-inter text-[#94A3B8] hover:text-[#F1F5F9] transition-colors text-base font-medium">
@@ -354,8 +352,8 @@ export default function LandingPage() {
                 {/* Mobile dropdown menu */}
                 {mobileOpen && (
                     <div className="lg:hidden px-6 pb-6 pt-2 flex flex-col gap-4 border-t border-white/[0.06] bg-[#0A0F1C]">
-                        {["Solutions", "Blog", "Pricing"].map(item => (
-                            <Link key={item} href={item === "Pricing" ? "/pricing" : "#"}
+                        {["Solutions", "Blog"].map(item => (
+                            <Link key={item} href="#"
                                 onClick={() => setMobileOpen(false)}
                                 className="font-inter text-[#94A3B8] hover:text-[#F1F5F9] transition-colors text-base font-medium py-1">
                                 {item}

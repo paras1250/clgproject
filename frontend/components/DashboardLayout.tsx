@@ -161,23 +161,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 )}
             </nav>
 
-            {/* Upgrade Card */}
-            <div className="px-4 mb-4">
-                <Link
-                    href="/pricing"
-                    onClick={() => setSidebarOpen(false)}
-                    className="block p-3.5 rounded-xl bg-gradient-to-br from-[#00F5D4]/8 to-[#3A86FF]/6 border border-[#00F5D4]/15 hover:border-[#00F5D4]/30 transition-all group"
-                >
-                    <div className="flex items-center gap-2 mb-1.5">
-                        <CreditCard size={15} className="text-[#00F5D4]" />
-                        <span className="text-xs font-bold text-[#F1F5F9]">Upgrade to Pro</span>
-                    </div>
-                    <p className="text-[11px] text-[#94A3B8] leading-relaxed">
-                        Unlock unlimited bots, analytics & priority support.
-                    </p>
-                </Link>
-            </div>
-
             {/* User Profile */}
             <div className="px-3 pb-4 border-t border-white/[0.06]">
                 <div className="flex items-center gap-3 px-2 py-3 mt-2 rounded-lg hover:bg-white/[0.04] transition-all cursor-pointer group"
@@ -261,10 +244,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
                         {/* Right */}
                         <div className="flex items-center gap-2">
-                            <Link href="/pricing" className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#00F5D4] to-[#3A86FF] text-[#0A0F1C] text-xs font-black hover:shadow-[0_0_20px_rgba(0,245,212,0.3)] transition-all mr-2 uppercase tracking-wider">
-                                <Sparkles size={14} />
-                                UPGRADE
-                            </Link>
+
                             <div className="h-6 w-[1px] bg-white/[0.06] mx-2 hidden sm:block"></div>
                             
                             {/* Search Button */}

@@ -11,6 +11,10 @@ A complete web application for building custom AI chatbots using document upload
 - **Embed Script**: Generate embeddable code for any website
 - **Modern UI**: Beautiful, responsive design with Tailwind CSS
 
+## 📄 Documentation
+
+For a detailed deep-dive into the architecture, RAG engine, and API integrations, please see the [Technical Documentation](TECHNICAL_DOCUMENTATION.md).
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14 + TypeScript + Tailwind CSS

@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Check, X, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
@@ -104,6 +105,18 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
     );
 };
 
+export default function Pricing() {
+    const router = useRouter();
+
+    useEffect(() => {
+        router.push('/dashboard');
+    }, [router]);
+
+    return null;
+}
+
+// Keeping the original component code commented out below for future use
+/*
 export default function Pricing() {
     return (
         <div className="min-h-screen bg-[#0A0F1C]">
@@ -230,3 +243,4 @@ export default function Pricing() {
         </div>
     );
 }
+*/

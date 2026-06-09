@@ -166,7 +166,15 @@ export const adminAPI = {
   getBots: async () => {
     const response = await api.get('/api/admin/bots');
     return response.data;
-  }
+  },
+  deleteBot: async (id: string) => {
+    const response = await api.delete(`/api/admin/bots/${id}`);
+    return response.data;
+  },
+  getBotTrainingData: async (id: string) => {
+    const response = await api.get(`/api/admin/bots/${id}/training-data`);
+    return response.data;
+  },
 };
 
 export default api;

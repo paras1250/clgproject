@@ -42,11 +42,11 @@ api.interceptors.response.use(
     if (!error.response) {
       // More specific error messages
       if (error.code === 'ECONNREFUSED') {
-        error.message = 'Cannot connect to backend server. Make sure the backend is running on http://localhost:5000';
+        error.message = `Cannot connect to backend server. Make sure the backend is running on ${API_URL}`;
       } else if (error.code === 'ETIMEDOUT') {
         error.message = 'Connection timeout. Your training data might be too large or backend is slow. Please try again.';
       } else if (error.message && error.message.includes('Network Error')) {
-        error.message = 'Network error. Please check:\n1. Backend server is running (http://localhost:5000)\n2. Your internet connection\n3. CORS settings in backend';
+        error.message = `Network error. Please check:\n1. Backend server is running (${API_URL})\n2. Your internet connection\n3. CORS settings in backend`;
       } else {
         error.message = 'Network error - please check your internet connection and ensure backend server is running';
       }

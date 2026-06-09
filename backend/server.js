@@ -106,6 +106,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Root endpoint - API information
 app.get('/', (req, res) => {
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
   res.json({
     message: 'AI Chatbot Builder API Server',
     version: '1.0.0',
@@ -129,8 +130,8 @@ app.get('/', (req, res) => {
         botAnalytics: 'GET /api/analytics/bot/:botId'
       }
     },
-    docs: 'Visit http://localhost:3000 for the frontend application',
-    note: 'This is the API server. Use the frontend at http://localhost:3000 to interact with the application.'
+    docs: `Visit ${frontendUrl} for the frontend application`,
+    note: `This is the API server. Use the frontend at ${frontendUrl} to interact with the application.`
   });
 });
 
@@ -145,7 +146,6 @@ app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/admin', require('./routes/admin'));
 
 // Health check endpoint
-// Health check endpoint
 app.get('/health', (req, res) => {
   res.json({
     status: 'OK',
@@ -155,7 +155,11 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Connect to MongoDB
+// Server configuration — declared BEFORE startServer() so they are available inside it
+const PORT = process.env.PORT || 5000;
+const BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
+
+// Connect to MongoDB and start server
 const startServer = async () => {
   try {
     console.log('Attempting to connect to MongoDB...');
@@ -178,11 +182,6 @@ const startServer = async () => {
 };
 
 startServer();
-
-const PORT = process.env.PORT || 5000;
-const BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
-
-
 
 module.exports = app;
 

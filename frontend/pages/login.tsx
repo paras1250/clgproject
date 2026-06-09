@@ -25,16 +25,40 @@ export default function Login() {
         setLoading(true);
         setError('');
 
+        const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+
+        const attemptRequest = async (): Promise<Response> => {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 25000); // 25s timeout
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                    signal: controller.signal,
+                });
+                clearTimeout(timeout);
+                return res;
+            } catch (err: any) {
+                clearTimeout(timeout);
+                throw err;
+            }
+        };
+
         try {
-            const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-            const res = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
+            let res: Response;
+            try {
+                res = await attemptRequest();
+            } catch (firstErr: any) {
+                // Server might be waking up (Render free tier cold start) — retry once
+                setError('⏳ Server is waking up, retrying in 5 seconds...');
+                await new Promise(r => setTimeout(r, 5000));
+                setError('');
+                res = await attemptRequest(); // second attempt
+            }
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message || 'Authentication failed');
+            if (!res.ok) throw new Error(data.message || 'Authentication failed. Please try again.');
 
             const Cookies = (await import('js-cookie')).default;
             Cookies.set('token', data.token, { expires: 7 });
@@ -42,7 +66,11 @@ export default function Login() {
 
             router.push('/dashboard');
         } catch (err: any) {
-            setError(err.message);
+            if (err.name === 'AbortError') {
+                setError('Request timed out. The server may be waking up — please try again in a few seconds.');
+            } else {
+                setError(err.message || 'Something went wrong. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
